@@ -11,6 +11,7 @@
         "datatables.net": "^1.13",
         "datatables.net-dt": "^1.13",
         "jquery": "^3.7",
+        "lucide": "^0.469.0",
         "moment": "^2.30"
     },
     "scripts": {

@@ -32,5 +32,16 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ============================================================
+// Lucide Icons
+// Usage Twig : <i data-lucide="icon-name"></i>
+// Icônes disponibles : https://lucide.dev/icons
+// ============================================================
+import { createIcons, icons } from 'lucide';
+
+document.addEventListener('DOMContentLoaded', () => {
+    createIcons({ icons });
+});
+
+// ============================================================
 // Ajoute tes imports et initialisations JS ici
 // ============================================================
