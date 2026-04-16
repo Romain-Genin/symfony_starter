@@ -1,0 +1,8 @@
+omines_datatables:
+    language_from_cdn: false
+    options:
+        # Options DataTables par défaut — surchargeables par table
+        pageLength: 25
+        stateSave: false
+    column_types:
+        # Paramétrage global des colonnes (optionnel)

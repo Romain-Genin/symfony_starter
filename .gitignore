@@ -1,0 +1,40 @@
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.pem
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+/.phpunit.result.cache
+###< phpunit/phpunit ###
+
+###> docker volumes
+.docker/mariadb/
+###< docker volumes
+
+###> OS
+.DS_Store
+Thumbs.db
+###< OS
+
+###> IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+###< IDE
+
+# Lock files (keep composer.lock, gitignore package-lock only if you prefer yarn)
+# package-lock.json
