@@ -5,8 +5,6 @@ services:
       dockerfile: .docker/php/Dockerfile
     volumes:
       - .:/var/www/html
-      - vendor_cache:/var/www/html/vendor
-      - node_modules_cache:/var/www/html/node_modules
     environment:
       APP_ENV: ${APP_ENV:-dev}
     depends_on:
@@ -58,8 +56,6 @@ services:
 
 volumes:
   mariadb_data:
-  vendor_cache:
-  node_modules_cache:
 
 networks:
   app:
