@@ -1,6 +1,9 @@
 // CSS — theme variables + Tailwind + components
 import '../styles/app.css';
 
+// PWA — Service Worker + Push Notifications
+import './pwa.js';
+
 // DataTables default stylesheet
 import 'datatables.net-dt/css/dataTables.dataTables.css';
 

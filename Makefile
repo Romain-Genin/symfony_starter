@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: help install start stop restart build bash cc migration migrate assets assets-watch logs db-shell test
+.PHONY: help install start stop restart build bash cc migration migrate assets assets-watch logs db-shell test vapid-keys
 
 DOCKER_COMPOSE = docker compose
 PHP = $(DOCKER_COMPOSE) exec php
@@ -82,6 +82,9 @@ routes: ## Lister les routes
 
 entities: ## Lister les entités Doctrine
 	$(PHP) php bin/console debug:doctrine:mapping
+
+vapid-keys: ## Générer les clés VAPID pour les push notifications
+	$(PHP) php bin/console app:generate-vapid-keys
 
 ##
 ## ── LOGS & TESTS ─────────────────────────────────────────────
