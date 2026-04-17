@@ -1,0 +1,41 @@
+{#
+  Navigation latérale de l'admin.
+  Pour ajouter une entrée, duplique un bloc <li> ci-dessous.
+  Pour grouper des liens, ajoute un <li class="nav-section"> avec un label.
+#}
+
+{% set route = app.request.attributes.get('_route') %}
+
+{# ── Macro item ─────────────────────────────────────────── #}
+{% macro item(current_route, route_name, label, icon, prefix) %}
+    {% set active = current_route starts with (prefix ?? route_name) %}
+    <li>
+        <a href="{{ path(route_name) }}"
+           class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-100
+                  {{ active
+                      ? 'bg-white/10 text-white'
+                      : 'text-slate-400 hover:bg-white/5 hover:text-slate-200' }}">
+            <i data-lucide="{{ icon }}" class="w-4 h-4 flex-shrink-0"></i>
+            <span>{{ label }}</span>
+        </a>
+    </li>
+{% endmacro %}
+
+{# ── Sections ───────────────────────────────────────────── #}
+
+<ul class="space-y-0.5 px-3">
+    {{ _self.item(route, 'admin_dashboard', 'Dashboard', 'layout-dashboard', 'admin_dashboard') }}
+</ul>
+
+{#
+<p class="px-5 pt-5 pb-1 text-xs font-semibold uppercase tracking-widest text-slate-500">Gestion</p>
+<ul class="space-y-0.5 px-3">
+    {{ _self.item(route, 'admin_users_index', 'Utilisateurs', 'users', 'admin_users_') }}
+    {{ _self.item(route, 'admin_orders_index', 'Commandes', 'shopping-cart', 'admin_orders_') }}
+</ul>
+
+<p class="px-5 pt-5 pb-1 text-xs font-semibold uppercase tracking-widest text-slate-500">Configuration</p>
+<ul class="space-y-0.5 px-3">
+    {{ _self.item(route, 'admin_settings', 'Paramètres', 'settings', 'admin_settings') }}
+</ul>
+#}

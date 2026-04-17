@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: help install start stop restart build bash cc migration migrate assets assets-watch logs db-shell test vapid-keys
+.PHONY: help install start stop restart build bash cc migration migrate assets assets-watch logs db-shell test vapid-keys create-admin
 
 DOCKER_COMPOSE = docker compose
 PHP = $(DOCKER_COMPOSE) exec php
@@ -76,6 +76,9 @@ assets-watch: ## Watch & rebuild les assets automatiquement
 ##
 ## ── SYMFONY ──────────────────────────────────────────────────
 ##
+
+create-admin: ## Créer un compte administrateur (interactif)
+	$(PHP) php bin/console app:create-admin
 
 routes: ## Lister les routes
 	$(PHP) php bin/console debug:router
