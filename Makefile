@@ -11,6 +11,7 @@ PHP = $(DOCKER_COMPOSE) exec php
 install: ## Premier lancement : build + composer + npm + migrations
 	$(DOCKER_COMPOSE) build --no-cache
 	$(DOCKER_COMPOSE) up -d
+	rm -f composer.lock
 	$(PHP) composer install
 	$(PHP) npm install
 	$(PHP) php bin/console doctrine:migrations:migrate --no-interaction

@@ -36,5 +36,6 @@ Thumbs.db
 *.swo
 ###< IDE
 
-# Lock files (keep composer.lock, gitignore package-lock only if you prefer yarn)
+# Lock files — générés au premier install, ne pas commiter dans un starter
+/composer.lock
 # package-lock.json
