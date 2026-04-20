@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Dashboard{% endblock %} — Admin</title>
+    <link rel="manifest" href="/manifest.webmanifest">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+    <meta name="vapid-public-key" content="{{ vapid_public_key }}">
+    {% block stylesheets %}{{ encore_entry_link_tags('app') }}{% endblock %}
+    {% block head %}{% endblock %}
+</head>
+<body class="bg-gray-100 text-gray-900 font-sans antialiased">
+
+<div class="flex h-screen overflow-hidden">
+
+    <aside id="sidebar"
+           class="fixed inset-y-0 left-0 z-40 flex w-64 flex-col bg-slate-900 transition-transform duration-200 lg:static lg:translate-x-0 -translate-x-full">
+        <div class="flex h-14 flex-shrink-0 items-center gap-3 border-b border-white/10 px-5">
+            <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600">
+                <i data-lucide="zap" class="h-4 w-4 text-white"></i>
+            </div>
+            <span class="text-base font-semibold text-white">Mon Projet</span>
+            <button id="sidebar-close" class="ml-auto lg:hidden text-slate-400 hover:text-white">
+                <i data-lucide="x" class="h-5 w-5"></i>
+            </button>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto py-4">
+            {% block sidebar_nav %}{% include 'admin/_nav.html.twig' %}{% endblock %}
+        </nav>
+
+        <div class="flex-shrink-0 border-t border-white/10 p-4">
+            <div class="flex items-center gap-3">
+                <div class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white">
+                    {{ app.user.name|first|upper }}
+                </div>
+                <div class="min-w-0 flex-1">
+                    <p class="truncate text-sm font-medium text-white">{{ app.user.name }}</p>
+                    <p class="truncate text-xs text-slate-400">{{ app.user.email }}</p>
+                </div>
+                <a href="{{ path('admin_logout') }}" class="text-slate-400 hover:text-white transition-colors" title="Déconnexion">
+                    <i data-lucide="log-out" class="h-4 w-4"></i>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <div id="sidebar-overlay" class="fixed inset-0 z-30 hidden bg-black/50 lg:hidden"></div>
+
+    <div class="flex min-w-0 flex-1 flex-col overflow-hidden">
+        <header class="flex h-14 flex-shrink-0 items-center gap-4 border-b border-gray-200 bg-white px-4 lg:px-6">
+            <button id="sidebar-toggle" class="lg:hidden rounded-lg p-1.5 text-gray-500 hover:bg-gray-100">
+                <i data-lucide="menu" class="h-5 w-5"></i>
+            </button>
+            <h1 class="text-base font-semibold text-gray-900 truncate">{% block page_title %}Dashboard{% endblock %}</h1>
+            <div class="ml-auto flex items-center gap-2">{% block header_actions %}{% endblock %}</div>
+        </header>
+
+        <main class="flex-1 overflow-y-auto p-4 lg:p-6">
+            {% for type, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="mb-4 flex items-start gap-2 rounded-lg border px-4 py-3 text-sm
+                        {{ type == 'success' ? 'border-green-200 bg-green-50 text-green-800' : '' }}
+                        {{ type == 'error'   ? 'border-red-200 bg-red-50 text-red-800' : '' }}
+                        {{ type == 'warning' ? 'border-yellow-200 bg-yellow-50 text-yellow-800' : '' }}
+                        {{ type == 'info'    ? 'border-blue-200 bg-blue-50 text-blue-800' : '' }}">
+                        <span>{{ message }}</span>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+</div>
+
+{% block javascripts %}{{ encore_entry_script_tags('app') }}{% endblock %}
+<script>
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    const btnOpen = document.getElementById('sidebar-toggle');
+    const btnClose = document.getElementById('sidebar-close');
+    function openSidebar()  { sidebar.classList.remove('-translate-x-full'); overlay.classList.remove('hidden'); document.body.classList.add('overflow-hidden'); }
+    function closeSidebar() { sidebar.classList.add('-translate-x-full');    overlay.classList.add('hidden');    document.body.classList.remove('overflow-hidden'); }
+    btnOpen?.addEventListener('click', openSidebar);
+    btnClose?.addEventListener('click', closeSidebar);
+    overlay?.addEventListener('click', closeSidebar);
+</script>
+</body>
+</html>

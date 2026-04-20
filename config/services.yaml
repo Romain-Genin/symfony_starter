@@ -1,0 +1,29 @@
+parameters:
+    mailer_sender_email: '%env(MAILER_SENDER_EMAIL)%'
+    mailer_sender_name:  '%env(MAILER_SENDER_NAME)%'
+    vapid_public_key:    '%env(VAPID_PUBLIC_KEY)%'
+    vapid_private_key:   '%env(VAPID_PRIVATE_KEY)%'
+    vapid_subject:       '%env(VAPID_SUBJECT)%'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    App\Service\Mailer\AppMailer:
+        arguments:
+            $senderEmail: '%mailer_sender_email%'
+            $senderName:  '%mailer_sender_name%'
+
+    App\Service\Push\PushNotificationService:
+        arguments:
+            $vapidPublicKey:  '%vapid_public_key%'
+            $vapidPrivateKey: '%vapid_private_key%'
+            $vapidSubject:    '%vapid_subject%'

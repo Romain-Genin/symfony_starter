@@ -1,0 +1,22 @@
+{
+    "devDependencies": {
+        "@symfony/webpack-encore": "^4.0",
+        "autoprefixer": "^10.4",
+        "postcss": "^8.4",
+        "postcss-loader": "^7.3",
+        "tailwindcss": "^3.4",
+        "webpack-notifier": "^1.15"
+    },
+    "dependencies": {
+        "datatables.net": "^1.13",
+        "datatables.net-dt": "^1.13",
+        "jquery": "^3.7",
+        "lucide": "^0.469.0",
+        "moment": "^2.30"
+    },
+    "scripts": {
+        "dev":   "encore dev",
+        "watch": "encore dev --watch",
+        "build": "encore production --progress"
+    }
+}
