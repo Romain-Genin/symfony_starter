@@ -21,13 +21,8 @@ install: ## Premier lancement complet
 		composer create-project symfony/skeleton:'^7.0' /tmp/sf $(COMPOSER_FLAGS) --quiet && \
 		rsync -a --ignore-existing /tmp/sf/ /var/www/html/ && \
 		rm -rf /tmp/sf"
-	@echo "→ Mise de côté des configs personnalisées (évite les conflits Flex)..."
-	$(PHP) bash -c "mkdir -p /tmp/sa-config/packages && \
-		mv config/packages/security.yaml  /tmp/sa-config/packages/ 2>/dev/null; \
-		mv config/packages/twig.yaml      /tmp/sa-config/packages/ 2>/dev/null; \
-		mv config/packages/mailer.yaml    /tmp/sa-config/packages/ 2>/dev/null; \
-		mv config/packages/datatables.yaml /tmp/sa-config/packages/ 2>/dev/null; \
-		cp config/services.yaml           /tmp/sa-config/ 2>/dev/null; true"
+	@echo "→ Suppression des configs qui entreraient en conflit avec Flex..."
+	$(PHP) bash -c "rm -f config/packages/security.yaml config/packages/twig.yaml config/packages/mailer.yaml config/packages/datatables.yaml"
 	@echo "→ Installation des packages..."
 	$(DOCKER_COMPOSE) exec -e COMPOSER_NO_INTERACTION=1 php composer require $(COMPOSER_FLAGS) --no-scripts \
 		symfony/asset \
@@ -55,10 +50,8 @@ install: ## Premier lancement complet
 		symfony/stopwatch \
 		symfony/web-profiler-bundle
 	$(call _clean_flex)
-	@echo "→ Restauration des configs personnalisées..."
-	$(PHP) bash -c "cp -f /tmp/sa-config/packages/*.yaml config/packages/ && \
-		cp -f /tmp/sa-config/services.yaml config/ && \
-		rm -rf /tmp/sa-config"
+	@echo "→ Restauration des configs personnalisées depuis git..."
+	$(PHP) git checkout -- config/packages/security.yaml config/packages/twig.yaml config/packages/mailer.yaml config/packages/datatables.yaml config/services.yaml
 	$(PHP) php bin/console cache:clear
 	@echo "→ Installation des dépendances JS..."
 	$(PHP) npm install
