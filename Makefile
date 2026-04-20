@@ -29,7 +29,7 @@ install: ## Premier lancement complet
 		mv config/packages/datatables.yaml /tmp/sa-config/packages/ 2>/dev/null; \
 		cp config/services.yaml           /tmp/sa-config/ 2>/dev/null; true"
 	@echo "→ Installation des packages..."
-	$(DOCKER_COMPOSE) exec -e COMPOSER_NO_INTERACTION=1 php composer require $(COMPOSER_FLAGS) \
+	$(DOCKER_COMPOSE) exec -e COMPOSER_NO_INTERACTION=1 php composer require $(COMPOSER_FLAGS) --no-scripts \
 		symfony/asset \
 		symfony/form \
 		symfony/http-client \
@@ -47,7 +47,7 @@ install: ## Premier lancement complet
 		"dompdf/dompdf:^2.0" \
 		"minishlink/web-push:^8.0" \
 		"omines/datatables-bundle:^0.8"
-	$(DOCKER_COMPOSE) exec -e COMPOSER_NO_INTERACTION=1 php composer require $(COMPOSER_FLAGS) --dev \
+	$(DOCKER_COMPOSE) exec -e COMPOSER_NO_INTERACTION=1 php composer require $(COMPOSER_FLAGS) --no-scripts --dev \
 		symfony/browser-kit \
 		symfony/css-selector \
 		symfony/debug-bundle \
