@@ -21,6 +21,7 @@ install: ## Premier lancement complet
 	@echo "→ Installation des dépendances JS..."
 	$(PHP) npm install
 	@echo "→ Migrations..."
+	$(PHP) php bin/console doctrine:migrations:diff --no-interaction || true
 	$(PHP) php bin/console doctrine:migrations:migrate --no-interaction
 	@echo "→ Build des assets..."
 	$(PHP) npm run dev

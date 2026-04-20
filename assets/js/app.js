@@ -1,5 +1,5 @@
 import '../styles/app.css';
-import 'datatables.net-dt/css/dataTables.dataTables.css';
+import 'datatables.net-dt';
 
 import './pwa.js';
 
