@@ -36,6 +36,7 @@ Thumbs.db
 *.swo
 ###< IDE
 
-# Lock files — générés au premier install, ne pas commiter dans un starter
+# Générés au premier install, ne pas commiter dans un starter
 /composer.lock
+/docker-compose.override.yml
 # package-lock.json

@@ -9,10 +9,11 @@ PHP = $(DOCKER_COMPOSE) exec php
 ##
 
 install: ## Premier lancement : build + composer + npm + migrations
+	rm -f composer.lock docker-compose.override.yml
 	$(DOCKER_COMPOSE) build --no-cache
 	$(DOCKER_COMPOSE) up -d
-	rm -f composer.lock
 	$(PHP) composer install
+	rm -f docker-compose.override.yml
 	$(PHP) npm install
 	$(PHP) php bin/console doctrine:migrations:migrate --no-interaction
 	$(PHP) npm run dev
