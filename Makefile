@@ -22,6 +22,7 @@ install: ## Premier lancement complet
 		rsync -a --ignore-existing /tmp/sf/ /var/www/html/ && \
 		rm -rf /tmp/sf"
 	@echo "→ Installation des packages..."
+	$(PHP) mv config/packages/datatables.yaml config/packages/datatables.yaml.bak 2>/dev/null || true
 	$(DOCKER_COMPOSE) exec -e COMPOSER_NO_INTERACTION=1 php composer require $(COMPOSER_FLAGS) \
 		symfony/asset \
 		symfony/form \
@@ -47,6 +48,7 @@ install: ## Premier lancement complet
 		symfony/maker-bundle \
 		symfony/stopwatch \
 		symfony/web-profiler-bundle
+	$(PHP) mv config/packages/datatables.yaml.bak config/packages/datatables.yaml 2>/dev/null || true
 	$(call _clean_flex)
 	@echo "→ Installation des dépendances JS..."
 	$(PHP) npm install
