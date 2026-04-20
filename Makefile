@@ -8,12 +8,17 @@ PHP = $(DOCKER_COMPOSE) exec php
 ## ── SETUP ────────────────────────────────────────────────────
 ##
 
-install: ## Premier lancement : build + composer + npm + migrations
-	rm -f composer.lock docker-compose.override.yml
+_clean-flex-files:
+	rm -f composer.lock
+	rm -f docker-compose.override.yml docker-compose.override.yaml
+	rm -f compose.override.yml compose.override.yaml
+	rm -f compose.yaml compose.yml
+
+install: _clean-flex-files ## Premier lancement : build + composer + npm + migrations
 	$(DOCKER_COMPOSE) build --no-cache
 	$(DOCKER_COMPOSE) up -d
 	$(PHP) composer install
-	rm -f docker-compose.override.yml
+	rm -f docker-compose.override.yml docker-compose.override.yaml compose.override.yml compose.override.yaml compose.yaml compose.yml
 	$(PHP) npm install
 	$(PHP) php bin/console doctrine:migrations:migrate --no-interaction
 	$(PHP) npm run dev
