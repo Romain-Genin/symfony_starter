@@ -16,43 +16,8 @@ install: ## Premier lancement complet
 	$(call _clean_flex)
 	$(DOCKER_COMPOSE) build --no-cache
 	$(DOCKER_COMPOSE) up -d
-	@echo "→ Génération du squelette Symfony via create-project..."
-	$(DOCKER_COMPOSE) exec -e COMPOSER_NO_INTERACTION=1 php bash -c " \
-		composer create-project symfony/skeleton:'^7.0' /tmp/sf $(COMPOSER_FLAGS) --quiet && \
-		rsync -a --ignore-existing /tmp/sf/ /var/www/html/ && \
-		rm -rf /tmp/sf"
-	@echo "→ Suppression des configs qui entreraient en conflit avec Flex..."
-	$(PHP) bash -c "rm -f config/packages/security.yaml config/packages/twig.yaml config/packages/mailer.yaml config/packages/datatables.yaml"
-	@echo "→ Installation des packages..."
-	$(DOCKER_COMPOSE) exec -e COMPOSER_NO_INTERACTION=1 php composer require $(COMPOSER_FLAGS) --no-scripts \
-		symfony/asset \
-		symfony/form \
-		symfony/http-client \
-		symfony/mailer \
-		symfony/password-hasher \
-		symfony/property-access \
-		symfony/security-bundle \
-		symfony/twig-bundle \
-		symfony/validator \
-		symfony/webpack-encore-bundle \
-		twig/extra-bundle \
-		"doctrine/doctrine-bundle:^2.12" \
-		"doctrine/doctrine-migrations-bundle:^3.3" \
-		"doctrine/orm:^3.2" \
-		"dompdf/dompdf:^2.0" \
-		"minishlink/web-push:^8.0" \
-		"omines/datatables-bundle:^0.8"
-	$(DOCKER_COMPOSE) exec -e COMPOSER_NO_INTERACTION=1 php composer require $(COMPOSER_FLAGS) --no-scripts --dev \
-		symfony/browser-kit \
-		symfony/css-selector \
-		symfony/debug-bundle \
-		symfony/maker-bundle \
-		symfony/stopwatch \
-		symfony/web-profiler-bundle
-	$(call _clean_flex)
-	@echo "→ Restauration des configs personnalisées depuis git..."
-	$(PHP) git checkout -- config/packages/security.yaml config/packages/twig.yaml config/packages/mailer.yaml config/packages/datatables.yaml config/services.yaml
-	$(PHP) php bin/console cache:clear
+	@echo "→ Installation des dépendances PHP..."
+	$(DOCKER_COMPOSE) exec -e COMPOSER_NO_INTERACTION=1 php composer install $(COMPOSER_FLAGS)
 	@echo "→ Installation des dépendances JS..."
 	$(PHP) npm install
 	@echo "→ Migrations..."
