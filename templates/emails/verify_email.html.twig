@@ -1,11 +1,11 @@
 {% extends 'emails/layout.html.twig' %}
 
 {% block content %}
-    <h1>Confirmez votre adresse email</h1>
-    <p>Bonjour{{ user.firstName ? ' ' ~ user.firstName }},</p>
-    <p>Merci pour votre inscription ! Pour activer votre compte, confirmez votre adresse email :</p>
+    <h1>{{ 'email.verify_email.subject'|trans }}</h1>
+    <p>{{ 'email.hello'|trans({'%name%': user.firstName ? ' ' ~ user.firstName : ''}) }}</p>
+    <p>{{ 'email.verify_email.text'|trans }}</p>
     
-    <p class="cta"><a href="{{ signedUrl }}" class="button">Confirmer mon adresse</a></p>
+    <p class="cta"><a href="{{ signedUrl }}" class="button">{{ 'email.verify_email.button'|trans }}</a></p>
     
-    <p class="muted">Ce lien expire le {{ expiresAt|date('d/m/Y à H:i') }}. Si vous n'êtes pas à l'origine de cette inscription, ignorez simplement cet email.</p>
+    <p class="muted">{{ 'email.verify_email.expires'|trans({'%date%': expiresAt|format_datetime('long', 'short')}) }}</p>
 {% endblock %}

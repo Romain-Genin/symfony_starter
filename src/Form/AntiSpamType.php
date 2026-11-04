@@ -26,7 +26,7 @@ final class AntiSpamType extends AbstractType
         $builder
             // Pot de miel : masqué visuellement ET pour les lecteurs d'écran, ignoré au clavier.
             ->add('website', TextType::class, [
-                'label' => 'Ne pas remplir ce champ',
+                'label' => 'form.honeypot',
                 'required' => false,
                 'attr' => ['autocomplete' => 'off', 'tabindex' => '-1'],
             ])

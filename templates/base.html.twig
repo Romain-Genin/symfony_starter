@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" class="h-full">
+<html lang="{{ app.request.locale|replace({'_': '-'}) }}" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -73,23 +73,24 @@
                 '@id': url('app_home') ~ '#website',
                 name: site.name,
                 url: url('app_home'),
-                inLanguage: 'fr-FR',
+                inLanguage: app.request.locale|replace({'_': '-'}),
                 publisher: {'@id': url('app_home') ~ '#organization'},
             },
         ],
     }|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_UNESCAPED_UNICODE') b-or constant('JSON_HEX_TAG'))|raw }}</script>
     {% block structured_data %}{% endblock %}
+    {% block head %}{% endblock %}
 </head>
 <body class="flex min-h-full flex-col">
     {# Lien d'évitement : premier élément focusable (RGAA 12.7) #}
     <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-brand-700 focus:px-4 focus:py-2 focus:text-white focus:shadow-lg">
-        Aller au contenu principal
+        {{ 'nav.skip_to_content'|trans }}
     </a>
 
     {% block header %}{{ include('layout/_header.html.twig') }}{% endblock %}
 
     <main id="main-content" tabindex="-1" class="flex-1 focus:outline-none">
-        {{ include('layout/_flashes.html.twig') }}
+        {% block flashes %}{{ include('layout/_flashes.html.twig') }}{% endblock %}
         {% block body %}{% endblock %}
     </main>
 

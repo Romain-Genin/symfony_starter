@@ -14,7 +14,7 @@
         "docker",
         "coolify"
     ],
-    "homepage": "https://github.com/StudioAstra/SA_SYMFONY",
+    "homepage": "https://github.com/Romain-Genin/symfony_starter",
     "authors": [
         {
             "name": "Romain Genin",
@@ -72,6 +72,7 @@
     "config": {
         "allow-plugins": {
             "php-http/discovery": true,
+            "phpstan/extension-installer": true,
             "symfony/flex": true,
             "symfony/runtime": true
         },

@@ -1,0 +1,248 @@
+# Traductions du site (domaine « messages »), langue par défaut : français.
+#
+# Autre langue : copiez ce fichier en messages.<code>.yaml (ex. messages.en.yaml) et traduisez les valeurs.
+# Contrôle : php bin/console debug:translation <code> --only-missing
+
+nav:
+    home: Accueil
+    contact: Contact
+    main: Navigation principale
+    main_mobile: Navigation principale (mobile)
+    back_home: retour à l'accueil
+    open_menu: Ouvrir le menu
+    close_menu: Fermer le menu
+    skip_to_content: Aller au contenu principal
+    admin: Admin
+    administration: Administration
+auth:
+    login: Connexion
+    register: Créer un compte
+    my_account: Mon compte
+    forgot_password: Mot de passe oublié ?
+    remember_me: Rester connecté
+    logout_action: Se déconnecter
+action:
+    close: Fermer
+    learn_more: En savoir plus
+    save: Enregistrer
+common:
+    new_window: (nouvelle fenêtre)
+    required_fields: Les champs marqués d'un %asterisk% sont obligatoires.
+    asterisk: astérisque
+footer:
+    title: Pied de page
+    site: Le site
+    sitemap: Plan du site
+    legal: Informations légales
+    legal_notice: Mentions légales
+    privacy_policy: Politique de confidentialité
+    cookie_policy: Politique cookies
+    terms: Conditions d'utilisation
+    accessibility: 'Accessibilité : non conforme'
+    manage_cookies: Gérer les cookies
+    copyright: © %year% %company%. Tous droits réservés.
+cookies:
+    title: Vos choix en matière de cookies
+    message: Nous utilisons des cookies nécessaires au fonctionnement du site. Avec votre accord, nous pourrions aussi en utiliser pour mesurer l'audience et afficher des contenus tiers. Vous pouvez changer d'avis à tout moment.
+    customize: Personnaliser
+    reject: Tout refuser
+    accept: Tout accepter
+    save: Enregistrer mes choix
+    preferences: Préférences cookies
+    always_on: Toujours actifs
+    necessary:
+        label: Cookies nécessaires
+        description: Session, sécurité (CSRF), mémorisation de vos choix. Toujours actifs.
+    analytics:
+        label: Mesure d'audience
+        description: Statistiques anonymisées de fréquentation pour améliorer le site.
+    marketing:
+        label: Contenus tiers & publicité
+        description: Vidéos intégrées, réseaux sociaux, publicité ciblée.
+alert:
+    success: Succès
+    error: Erreur
+    warning: Attention
+    info: Information
+    prefix: '%type% : '
+    close: Fermer ce message
+breadcrumb:
+    label: Fil d'Ariane
+error:
+    code: Erreur %code%
+    back_home: Retour à l'accueil
+    report: Signaler un problème
+    default_title: Une erreur est survenue
+    default_text: Merci de réessayer plus tard.
+    400_title: Requête invalide
+    400_text: La requête envoyée n'a pas pu être comprise par le serveur.
+    403_title: Accès refusé
+    403_text: Vous n'avez pas l'autorisation d'accéder à cette page.
+    404_title: Page introuvable
+    404_text: La page que vous cherchez n'existe pas ou a été déplacée.
+    405_title: Méthode non autorisée
+    405_text: Cette action n'est pas permise sur cette page.
+    410_title: Page supprimée
+    410_text: Cette page n'existe plus.
+    419_title: Session expirée
+    419_text: Votre session a expiré. Merci de recharger la page.
+    429_title: Trop de requêtes
+    429_text: Vous avez effectué trop de requêtes. Merci de patienter quelques instants.
+    500_title: Erreur interne
+    500_text: Une erreur inattendue est survenue. Nos équipes ont été prévenues.
+    503_title: Site en maintenance
+    503_text: Le site est momentanément indisponible. Merci de revenir dans quelques minutes.
+home:
+    hero:
+        title: Un socle solide pour lancer
+        title_highlight: votre prochain projet
+        text: 'Pages essentielles, back-office, emails transactionnels, SEO, accessibilité et données chiffrées : tout est prêt, il ne reste qu''à construire.'
+        cta: Nous contacter
+        discover: Découvrir
+    features:
+        title: Tout l'essentiel, déjà branché
+        intro: Des briques éprouvées, configurées avec soin, pour démarrer vite sans dette technique.
+        fast:
+            title: Rapide par défaut
+            text: Turbo Drive pour une navigation instantanée, AssetMapper sans build Node, cache HTTP et OPcache en production.
+        design:
+            title: Design system Tailwind v4
+            text: Thème centralisé en variables CSS, Twig Components réutilisables (boutons, alertes, cartes…).
+        a11y:
+            title: Accessible
+            text: Lien d'évitement, focus visible, formulaires annotés, annonces des changements de page, respect des préférences de mouvement.
+        encryption:
+            title: Données chiffrées
+            text: Données personnelles chiffrées en base (XChaCha20-Poly1305), recherche par empreinte, purge RGPD automatisable.
+        emails:
+            title: Emails transactionnels
+            text: Brevo en production, Mailpit en local, templates responsive écrits en Twig.
+        admin:
+            title: Back-office
+            text: EasyAdmin 5 pour gérer utilisateurs et messages, export PDF inclus.
+    cta:
+        title: Un projet en tête ?
+        text: 'Parlons-en : nous vous répondons sous 48 heures ouvrées.'
+        button: Écrire un message
+form:
+    email: Adresse email
+    password: Mot de passe
+    phone: Téléphone
+    address: Adresse
+    name: Nom
+    full_name: Nom et prénom
+    first_name: Prénom
+    last_name: Nom
+    subject: Objet
+    message: Message
+    optional: (facultatif)
+    honeypot: Ne pas remplir ce champ
+    current_password: Mot de passe actuel
+    confirm_with_password: Confirmez avec votre mot de passe
+    password_help: Au moins %min% caractères. Une phrase de passe est idéale.
+    password_confirm: Confirmer le mot de passe
+contact:
+    title: Contact
+    meta_description: 'Contactez %site% : une question, un projet ? Écrivez-nous, nous vous répondons rapidement.'
+    intro: Une question, un projet ? Écrivez-nous, nous vous répondons dans les meilleurs délais.
+    submit: Envoyer le message
+    privacy: Les informations recueillies sont utilisées uniquement pour répondre à votre demande et conservées de façon chiffrée. Pour en savoir plus et exercer vos droits, consultez notre %link%.
+    privacy_link: politique de confidentialité
+    details: Nos coordonnées
+    consent: J'accepte que mes données soient utilisées pour traiter ma demande, conformément à la politique de confidentialité.
+login:
+    subheading: Accédez à votre espace personnel.
+    submit: Se connecter
+    no_account: Pas encore de compte ?
+    no_confirmation: Email de confirmation non reçu ?
+registration:
+    subheading: Un email de confirmation vous sera envoyé.
+    privacy: Consultez notre %link% pour savoir comment vos données sont utilisées et protégées.
+    submit: Créer mon compte
+    already: Déjà inscrit ?
+    check_email:
+        title: Vérifiez vos emails
+        text: Si l'adresse indiquée correspond à un compte en attente de confirmation, vous allez recevoir un email contenant un lien de confirmation.
+        validity: Ce lien est valable une heure. Pensez à vérifier vos courriers indésirables.
+        nothing: Rien reçu ?
+    resend:
+        title: Renvoyer l'email de confirmation
+        subheading: Indiquez l'adresse utilisée lors de votre inscription.
+        submit: Renvoyer le lien
+    agree_terms: J'ai lu et j'accepte la politique de confidentialité.
+reset_password:
+    request:
+        title: Mot de passe oublié
+        subheading: Nous vous enverrons un lien pour choisir un nouveau mot de passe.
+        submit: Recevoir le lien
+        back: Retour à la connexion
+    check_email:
+        title: Vérifiez vos emails
+        text: Si un compte correspond à cette adresse, un email contenant un lien de réinitialisation vient d'être envoyé.
+        expires: Ce lien expirera dans %delay%.
+        spam: Pensez à vérifier vos courriers indésirables.
+        retry: Faire une nouvelle demande
+    reset:
+        title: Nouveau mot de passe
+        heading: Choisissez un nouveau mot de passe
+account:
+    infos: Mes informations
+    member_since: Membre depuis le
+    password:
+        submit: Modifier mon mot de passe
+    delete:
+        title: Supprimer mon compte
+        warning_title: Action irréversible
+        warning: Votre compte et toutes les données associées seront définitivement supprimés.
+        submit: Supprimer définitivement mon compte
+legal:
+    updated_at: 'Dernière mise à jour : %date%'
+    sitemap:
+        meta_description: 'Plan du site %site% : accès direct à toutes les pages.'
+        my_space: Mon espace
+        terms: Conditions générales d'utilisation
+        accessibility: Déclaration d'accessibilité
+flash:
+    account:
+        updated: Vos informations ont été mises à jour.
+        password_changed: Votre mot de passe a été modifié.
+        deleted: Votre compte et vos données ont été supprimés.
+    contact:
+        rate_limited: Vous avez envoyé plusieurs messages en peu de temps. Merci de réessayer dans quelques minutes.
+        sent: Merci, votre message a bien été envoyé. Nous vous répondrons dans les meilleurs délais.
+    registration:
+        rate_limited: Trop de tentatives. Merci de réessayer plus tard.
+        invalid_link: Ce lien de confirmation n'est pas valide.
+        expired_link: Ce lien de confirmation est invalide ou a expiré. Vous pouvez en demander un nouveau.
+        verified: Votre adresse email est confirmée. Vous pouvez vous connecter.
+    reset_password:
+        invalid_link: Ce lien de réinitialisation est invalide ou a expiré. Merci de refaire une demande.
+        changed: Votre mot de passe a été modifié. Vous pouvez vous connecter.
+email:
+    hello: Bonjour%name%,
+    signature: 'À très bientôt,
+
+        L''équipe %site%'
+    layout:
+        automatic: Cet email vous a été envoyé automatiquement.
+    contact_acknowledgement:
+        subject: Nous avons bien reçu votre message
+        title: Merci pour votre message, %name% !
+        text: Nous avons bien reçu votre demande « %subject% » et vous répondrons dans les meilleurs délais.
+        summary: 'Récapitulatif de votre message :'
+    contact_notification:
+        subject: '[Contact] %subject%'
+        title: Nouveau message de contact
+        received_at: Reçu le
+        reply: Répondez directement à cet email pour écrire à %name%.
+        admin_link: Voir les messages dans l'administration
+    verify_email:
+        subject: Confirmez votre adresse email
+        text: 'Merci pour votre inscription ! Pour activer votre compte, confirmez votre adresse email :'
+        button: Confirmer mon adresse
+        expires: Ce lien expire le %date%. Si vous n'êtes pas à l'origine de cette inscription, ignorez simplement cet email.
+    reset_password:
+        subject: Réinitialisation de votre mot de passe
+        text: 'Vous avez demandé à réinitialiser votre mot de passe. Cliquez sur le bouton ci-dessous pour en choisir un nouveau :'
+        button: Choisir un nouveau mot de passe
+        expires: 'Ce lien expirera dans %delay%. Si vous n''êtes pas à l''origine de cette demande, ignorez cet email : votre mot de passe reste inchangé.'

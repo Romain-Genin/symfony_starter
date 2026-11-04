@@ -4,7 +4,7 @@
 #}
 {% apply inline_css(source('@styles/email.css')) %}
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ (app.request.locale ?? site.locale|slice(0, 2))|replace({'_': '-'}) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -31,7 +31,7 @@
                     <tr>
                         <td class="footer">
                             <p>{{ site.name }} — {{ site.address.street }}, {{ site.address.postal_code }} {{ site.address.city }}</p>
-                            <p>Cet email vous a été envoyé automatiquement.</p>
+                            <p>{{ 'email.layout.automatic'|trans }}</p>
                         </td>
                     </tr>
                 </table>

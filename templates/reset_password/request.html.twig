@@ -1,18 +1,18 @@
 {% extends 'layout/auth.html.twig' %}
 
-{% block title %}Mot de passe oublié{% endblock %}
-{% block heading %}Mot de passe oublié{% endblock %}
-{% block subheading %}Nous vous enverrons un lien pour choisir un nouveau mot de passe.{% endblock %}
+{% block title %}{{ 'reset_password.request.title'|trans }}{% endblock %}
+{% block heading %}{{ 'reset_password.request.title'|trans }}{% endblock %}
+{% block subheading %}{{ 'reset_password.request.subheading'|trans }}{% endblock %}
 
 {% block card %}
     {{ form_start(form, {attr: {novalidate: 'novalidate', class: 'space-y-5'}}) }}
         {{ form_row(form.email) }}
-        <twig:Button class="w-full" icon="lucide:send">Recevoir le lien</twig:Button>
+        <twig:Button class="w-full" icon="lucide:send">{{ 'reset_password.request.submit'|trans }}</twig:Button>
     {{ form_end(form) }}
 {% endblock %}
 
 {% block after_card %}
     <p class="mt-6 text-center text-sm text-muted">
-        <a href="{{ path('app_login') }}" class="link">Retour à la connexion</a>
+        <a href="{{ path('app_login') }}" class="link">{{ 'reset_password.request.back'|trans }}</a>
     </p>
 {% endblock %}

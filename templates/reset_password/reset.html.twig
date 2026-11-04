@@ -1,11 +1,11 @@
 {% extends 'layout/auth.html.twig' %}
 
-{% block title %}Nouveau mot de passe{% endblock %}
-{% block heading %}Choisissez un nouveau mot de passe{% endblock %}
+{% block title %}{{ 'reset_password.reset.title'|trans }}{% endblock %}
+{% block heading %}{{ 'reset_password.reset.heading'|trans }}{% endblock %}
 
 {% block card %}
     {{ form_start(form, {attr: {novalidate: 'novalidate', class: 'space-y-5'}}) }}
         {{ form_row(form.plainPassword) }}
-        <twig:Button class="w-full" icon="lucide:key-round" iconPosition="start">Enregistrer</twig:Button>
+        <twig:Button class="w-full" icon="lucide:key-round" iconPosition="start">{{ 'action.save'|trans }}</twig:Button>
     {{ form_end(form) }}
 {% endblock %}

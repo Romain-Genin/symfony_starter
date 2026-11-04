@@ -1,8 +1,8 @@
 {% extends 'layout/auth.html.twig' %}
 
-{% block title %}Créer un compte{% endblock %}
-{% block heading %}Créer un compte{% endblock %}
-{% block subheading %}Un email de confirmation vous sera envoyé.{% endblock %}
+{% block title %}{{ 'auth.register'|trans }}{% endblock %}
+{% block heading %}{{ 'auth.register'|trans }}{% endblock %}
+{% block subheading %}{{ 'registration.subheading'|trans }}{% endblock %}
 
 {% block card %}
     {{ form_start(form, {attr: {novalidate: 'novalidate', class: 'space-y-5'}}) }}
@@ -17,15 +17,14 @@
         {{ form_row(form.antispam) }}
         {{ form_rest(form) }}
         <p class="text-xs text-muted">
-            Consultez notre <a href="{{ path('app_legal_privacy') }}" class="link">politique de confidentialité</a>
-            pour savoir comment vos données sont utilisées et protégées.
+            {{ 'registration.privacy'|trans({'%link%': '<a href="' ~ path('app_legal_privacy') ~ '" class="link">' ~ 'contact.privacy_link'|trans ~ '</a>'})|raw }}
         </p>
-        <twig:Button class="w-full" icon="lucide:user-plus" iconPosition="start">Créer mon compte</twig:Button>
+        <twig:Button class="w-full" icon="lucide:user-plus" iconPosition="start">{{ 'registration.submit'|trans }}</twig:Button>
     {{ form_end(form) }}
 {% endblock %}
 
 {% block after_card %}
     <p class="mt-6 text-center text-sm text-muted">
-        Déjà inscrit ? <a href="{{ path('app_login') }}" class="link">Se connecter</a>
+        {{ 'registration.already'|trans }} <a href="{{ path('app_login') }}" class="link">{{ 'login.submit'|trans }}</a>
     </p>
 {% endblock %}

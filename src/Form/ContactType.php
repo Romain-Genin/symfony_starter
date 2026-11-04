@@ -21,30 +21,30 @@ final class ContactType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Nom et prénom',
+                'label' => 'form.full_name',
                 'attr' => ['autocomplete' => 'name', 'maxlength' => 120],
             ])
             ->add('email', EmailType::class, [
-                'label' => 'Adresse email',
+                'label' => 'form.email',
                 'attr' => ['autocomplete' => 'email', 'maxlength' => 180],
             ])
             ->add('phone', TelType::class, [
-                'label' => 'Téléphone',
+                'label' => 'form.phone',
                 'required' => false,
                 'attr' => ['autocomplete' => 'tel', 'maxlength' => 30],
             ])
             ->add('subject', TextType::class, [
-                'label' => 'Objet',
+                'label' => 'form.subject',
                 'attr' => ['maxlength' => 150],
             ])
             ->add('message', TextareaType::class, [
-                'label' => 'Message',
+                'label' => 'form.message',
                 'attr' => ['rows' => 6, 'maxlength' => 5000],
             ])
             ->add('consent', CheckboxType::class, [
                 'mapped' => false,
-                'label' => 'J\'accepte que mes données soient utilisées pour traiter ma demande, conformément à la politique de confidentialité.',
-                'constraints' => [new IsTrue(message: 'Votre consentement est nécessaire pour traiter votre demande.')],
+                'label' => 'contact.consent',
+                'constraints' => [new IsTrue(message: 'contact.consent_required')],
             ])
             ->add('antispam', AntiSpamType::class);
     }

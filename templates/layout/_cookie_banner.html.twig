@@ -2,7 +2,11 @@
     Bannière & préférences cookies (Alpine store « consent », assets/js/cookie-consent.js).
     data-turbo-permanent : conservée telle quelle entre les pages Turbo.
 #}
-<div id="cookie-consent" data-turbo-permanent x-data>
+{%- set consent_texts = {
+    analytics: {label: 'cookies.analytics.label'|trans, description: 'cookies.analytics.description'|trans},
+    marketing: {label: 'cookies.marketing.label'|trans, description: 'cookies.marketing.description'|trans},
+} -%}
+<div id="cookie-consent" data-turbo-permanent x-data="{ texts: {{ consent_texts|json_encode }} }">
     {# Bannière : non bloquante, « Refuser » au même niveau que « Accepter » #}
     <section x-show="$store.consent.bannerOpen && !$store.consent.preferencesOpen" x-cloak
              x-transition.opacity
@@ -12,18 +16,17 @@
             <div class="flex items-start gap-3">
                 <twig:ux:icon name="lucide:cookie" class="mt-0.5 size-6 shrink-0 text-brand-700" />
                 <div>
-                    <h2 id="cookie-banner-title" class="font-semibold text-ink">Vos choix en matière de cookies</h2>
+                    <h2 id="cookie-banner-title" class="font-semibold text-ink">{{ 'cookies.title'|trans }}</h2>
                     <p class="mt-1 text-sm text-muted">
-                        Nous utilisons des cookies nécessaires au fonctionnement du site. Avec votre accord, nous pourrions
-                        aussi en utiliser pour mesurer l'audience et afficher des contenus tiers. Vous pouvez changer d'avis à tout moment.
-                        <a href="{{ path('app_legal_cookies') }}" class="link">En savoir plus</a>
+                        {{ 'cookies.message'|trans }}
+                        <a href="{{ path('app_legal_cookies') }}" class="link">{{ 'action.learn_more'|trans }}</a>
                     </p>
                 </div>
             </div>
             <div class="mt-4 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-                <twig:Button type="button" variant="ghost" x-on:click="$store.consent.openPreferences()">Personnaliser</twig:Button>
-                <twig:Button type="button" variant="secondary" x-on:click="$store.consent.rejectAll()">Tout refuser</twig:Button>
-                <twig:Button type="button" x-on:click="$store.consent.acceptAll()">Tout accepter</twig:Button>
+                <twig:Button type="button" variant="ghost" x-on:click="$store.consent.openPreferences()">{{ 'cookies.customize'|trans }}</twig:Button>
+                <twig:Button type="button" variant="secondary" x-on:click="$store.consent.rejectAll()">{{ 'cookies.reject'|trans }}</twig:Button>
+                <twig:Button type="button" x-on:click="$store.consent.acceptAll()">{{ 'cookies.accept'|trans }}</twig:Button>
             </div>
         </div>
     </section>
@@ -39,9 +42,9 @@
              x-show="$store.consent.preferencesOpen" x-transition
              x-trap.noscroll.inert="$store.consent.preferencesOpen">
             <div class="flex items-start justify-between gap-4">
-                <h2 id="cookie-prefs-title" class="text-lg font-semibold text-ink">Préférences cookies</h2>
+                <h2 id="cookie-prefs-title" class="text-lg font-semibold text-ink">{{ 'cookies.preferences'|trans }}</h2>
                 <button type="button" class="-m-1 rounded p-1 text-muted hover:text-ink" @click="$store.consent.preferencesOpen = false">
-                    <span class="sr-only">Fermer</span>
+                    <span class="sr-only">{{ 'action.close'|trans }}</span>
                     <twig:ux:icon name="lucide:x" class="size-5" />
                 </button>
             </div>
@@ -49,16 +52,16 @@
             <ul class="mt-4 divide-y divide-gray-200">
                 <li class="flex items-start justify-between gap-4 py-4">
                     <div>
-                        <p class="font-medium text-ink" id="consent-necessary-label">Cookies nécessaires</p>
-                        <p class="text-sm text-muted">Session, sécurité (CSRF), mémorisation de vos choix. Toujours actifs.</p>
+                        <p class="font-medium text-ink" id="consent-necessary-label">{{ 'cookies.necessary.label'|trans }}</p>
+                        <p class="text-sm text-muted">{{ 'cookies.necessary.description'|trans }}</p>
                     </div>
-                    <span class="shrink-0 rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-muted">Toujours actifs</span>
+                    <span class="shrink-0 rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-muted">{{ 'cookies.always_on'|trans }}</span>
                 </li>
                 <template x-for="(category, key) in $store.consent.categories" :key="key">
                     <li class="flex items-start justify-between gap-4 py-4">
                         <div>
-                            <p class="font-medium text-ink" :id="'consent-' + key + '-label'" x-text="category.label"></p>
-                            <p class="text-sm text-muted" :id="'consent-' + key + '-desc'" x-text="category.description"></p>
+                            <p class="font-medium text-ink" :id="'consent-' + key + '-label'" x-text="texts[key]?.label ?? category.label"></p>
+                            <p class="text-sm text-muted" :id="'consent-' + key + '-desc'" x-text="texts[key]?.description ?? category.description"></p>
                         </div>
                         <button type="button" role="switch"
                                 :aria-checked="$store.consent.choices[key].toString()"
@@ -76,9 +79,9 @@
             </ul>
 
             <div class="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-                <twig:Button type="button" variant="secondary" x-on:click="$store.consent.rejectAll()">Tout refuser</twig:Button>
-                <twig:Button type="button" variant="secondary" x-on:click="$store.consent.acceptAll()">Tout accepter</twig:Button>
-                <twig:Button type="button" x-on:click="$store.consent.save()">Enregistrer mes choix</twig:Button>
+                <twig:Button type="button" variant="secondary" x-on:click="$store.consent.rejectAll()">{{ 'cookies.reject'|trans }}</twig:Button>
+                <twig:Button type="button" variant="secondary" x-on:click="$store.consent.acceptAll()">{{ 'cookies.accept'|trans }}</twig:Button>
+                <twig:Button type="button" x-on:click="$store.consent.save()">{{ 'cookies.save'|trans }}</twig:Button>
             </div>
         </div>
     </div>

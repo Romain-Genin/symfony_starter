@@ -22,29 +22,29 @@ class ContactMessage
     private ?int $id = null;
 
     #[ORM\Column(type: EncryptedType::NAME)]
-    #[Assert\NotBlank(message: 'Merci d\'indiquer votre nom.')]
+    #[Assert\NotBlank(message: 'contact.name.required')]
     #[Assert\Length(max: 120)]
     private ?string $name = null;
 
     #[ORM\Column(type: EncryptedType::NAME)]
-    #[Assert\NotBlank(message: 'Merci d\'indiquer votre adresse email.')]
-    #[Assert\Email(message: 'Cette adresse email n\'est pas valide.')]
+    #[Assert\NotBlank(message: 'email.required')]
+    #[Assert\Email(message: 'email.invalid')]
     #[Assert\Length(max: 180)]
     private ?string $email = null;
 
     #[ORM\Column(type: EncryptedType::NAME, nullable: true)]
     #[Assert\Length(max: 30)]
-    #[Assert\Regex(pattern: '/^[0-9+().\s-]*$/', message: 'Ce numéro de téléphone n\'est pas valide.')]
+    #[Assert\Regex(pattern: '/^[0-9+().\s-]*$/', message: 'phone.invalid')]
     private ?string $phone = null;
 
     #[ORM\Column(type: EncryptedType::NAME)]
-    #[Assert\NotBlank(message: 'Merci d\'indiquer l\'objet de votre message.')]
+    #[Assert\NotBlank(message: 'contact.subject.required')]
     #[Assert\Length(max: 150)]
     private ?string $subject = null;
 
     #[ORM\Column(type: EncryptedType::NAME)]
-    #[Assert\NotBlank(message: 'Merci d\'écrire votre message.')]
-    #[Assert\Length(min: 10, max: 5000, minMessage: 'Votre message doit contenir au moins {{ limit }} caractères.')]
+    #[Assert\NotBlank(message: 'contact.message.required')]
+    #[Assert\Length(min: 10, max: 5000, minMessage: 'contact.message.too_short')]
     private ?string $message = null;
 
     #[ORM\Column]

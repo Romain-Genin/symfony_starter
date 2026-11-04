@@ -11,7 +11,7 @@ parameters:
     app.contact_retention_months: 12
 
     app.site:
-        name: 'Studio Astra'
+        name: 'Mon site'
         baseline: 'Starter Symfony 8'
         description: 'Starter Symfony 8 : Tailwind CSS v4, Alpine.js, Turbo, Twig Components et EasyAdmin.'
         locale: 'fr_FR'

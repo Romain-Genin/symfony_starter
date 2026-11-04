@@ -1,0 +1,3 @@
+# Messages d'authentification du site (domaine « security »), en plus de ceux de Symfony.
+security:
+    email_not_verified: "Vous devez confirmer votre adresse email avant de vous connecter. Vérifiez votre boîte de réception ou demandez un nouveau lien."

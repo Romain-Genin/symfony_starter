@@ -44,7 +44,7 @@ final class RegistrationController extends AbstractController
             }
 
             if (!$this->accountActionsLimiter->create($request->getClientIp())->consume()->isAccepted()) {
-                $this->addFlash('error', 'Trop de tentatives. Merci de réessayer plus tard.');
+                $this->addFlash('error', 'flash.registration.rate_limited');
 
                 return $this->redirectToRoute('app_register', status: Response::HTTP_SEE_OTHER);
             }
@@ -78,7 +78,7 @@ final class RegistrationController extends AbstractController
         $user = $users->find($request->query->getInt('id'));
 
         if (null === $user) {
-            $this->addFlash('error', 'Ce lien de confirmation n\'est pas valide.');
+            $this->addFlash('error', 'flash.registration.invalid_link');
 
             return $this->redirectToRoute('app_register_resend', status: Response::HTTP_SEE_OTHER);
         }
@@ -86,12 +86,12 @@ final class RegistrationController extends AbstractController
         try {
             $this->emailVerifier->handleConfirmation($request, $user);
         } catch (VerifyEmailExceptionInterface $e) {
-            $this->addFlash('error', 'Ce lien de confirmation est invalide ou a expiré. Vous pouvez en demander un nouveau.');
+            $this->addFlash('error', 'flash.registration.expired_link');
 
             return $this->redirectToRoute('app_register_resend', status: Response::HTTP_SEE_OTHER);
         }
 
-        $this->addFlash('success', 'Votre adresse email est confirmée. Vous pouvez vous connecter.');
+        $this->addFlash('success', 'flash.registration.verified');
 
         return $this->redirectToRoute('app_login', status: Response::HTTP_SEE_OTHER);
     }

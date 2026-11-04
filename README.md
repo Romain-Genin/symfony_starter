@@ -1,4 +1,4 @@
-# Starter Symfony 8 — Studio Astra
+# Starter Symfony 8
 
 Socle de projet prêt à développer : pages essentielles, back-office, emails transactionnels, SEO, accessibilité et **données personnelles chiffrées en base**.
 
@@ -62,6 +62,7 @@ src/
   Spam/SpamChecker.php               Anti-spam (honeypot + jeton horodaté)
   Mailer/AppMailer.php               Tous les emails transactionnels
   Twig/Components/                   Composants avec logique (NavLink, Breadcrumb)
+translations/             Textes du site (messages, validators, security), en français
 templates/
   components/             Composants anonymes (Button, Alert, Card, Section, PageHeader…)
   form/tailwind_theme.html.twig      Thème de formulaire accessible
@@ -111,6 +112,29 @@ Les messages sont **enregistrés chiffrés** (consultables dans l'admin) puis no
 Un robot détecté reçoit une fausse confirmation, pour ne pas lui donner d'indice.
 
 Conservation RGPD : `app.contact_retention_months` (12 mois par défaut). Planifiez `php bin/console app:contact:purge` (tâche planifiée Coolify, une fois par jour).
+
+## Traductions
+
+Le site est **monolingue, en français** (`framework.default_locale`), mais **aucun texte n'est écrit en dur** :
+templates, formulaires, messages flash, validation et emails passent par des clés de traduction.
+
+| Fichier | Contenu |
+|---|---|
+| `translations/messages.fr.yaml` | Textes du site (navigation, pages, formulaires, flashs, emails…) |
+| `translations/validators.fr.yaml` | Messages de validation |
+| `translations/security.fr.yaml` | Messages de connexion |
+
+- **Modifier un texte** : changez sa valeur dans `messages.fr.yaml`, le template ne bouge pas.
+- **Changer la langue du site** (site monolingue dans une autre langue) : traduisez ces fichiers en `*.<code>.yaml`
+  et passez `default_locale` à `<code>` dans `config/packages/translation.yaml`.
+- **Ajouter une langue** : copiez les fichiers `*.fr.yaml` en `*.<code>.yaml` et traduisez les valeurs.
+  Le test `TranslationFilesTest` vérifie qu'aucune clé ni aucun paramètre (`%name%`, `{{ limit }}`) ne manque.
+  Pour un site multilingue (URL par langue, sélecteur de langue…), ajoutez le bundle de votre choix et suivez
+  sa documentation.
+- **Pages légales** : textes longs et propres au droit de chaque pays, ils se traduisent par fichier :
+  copiez `templates/legal/notice.html.twig` en `templates/legal/notice.en.html.twig` (sinon, la version française s'affiche).
+
+---
 
 ## SEO
 

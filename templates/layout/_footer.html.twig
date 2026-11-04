@@ -1,5 +1,5 @@
 <footer class="mt-auto border-t border-gray-200 bg-gray-50" aria-labelledby="footer-title">
-    <h2 id="footer-title" class="sr-only">Pied de page</h2>
+    <h2 id="footer-title" class="sr-only">{{ 'footer.title'|trans }}</h2>
     <div class="container-page grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
         <div class="lg:col-span-2">
             <a href="{{ path('app_home') }}" class="inline-flex items-center gap-2 rounded-lg font-bold text-ink">
@@ -26,16 +26,16 @@
         </div>
 
         <nav aria-labelledby="footer-nav-site">
-            <h3 id="footer-nav-site" class="text-sm font-semibold text-ink">Le site</h3>
+            <h3 id="footer-nav-site" class="text-sm font-semibold text-ink">{{ 'footer.site'|trans }}</h3>
             <ul class="mt-3 space-y-2 text-sm">
-                <li><a href="{{ path('app_home') }}" class="text-muted hover:text-brand-700 hover:underline">Accueil</a></li>
-                <li><a href="{{ path('app_contact') }}" class="text-muted hover:text-brand-700 hover:underline">Contact</a></li>
-                <li><a href="{{ path('app_sitemap_page') }}" class="text-muted hover:text-brand-700 hover:underline">Plan du site</a></li>
+                <li><a href="{{ path('app_home') }}" class="text-muted hover:text-brand-700 hover:underline">{{ 'nav.home'|trans }}</a></li>
+                <li><a href="{{ path('app_contact') }}" class="text-muted hover:text-brand-700 hover:underline">{{ 'nav.contact'|trans }}</a></li>
+                <li><a href="{{ path('app_sitemap_page') }}" class="text-muted hover:text-brand-700 hover:underline">{{ 'footer.sitemap'|trans }}</a></li>
                 {% for network, social_url in site.social|filter(v => v) %}
                     <li>
                         <a href="{{ social_url }}" class="inline-flex items-center gap-1 text-muted hover:text-brand-700 hover:underline" target="_blank" rel="noopener">
                             {{ network|capitalize }}
-                            <twig:ux:icon name="lucide:external-link" class="size-3.5" aria-label="(nouvelle fenêtre)" />
+                            <twig:ux:icon name="lucide:external-link" class="size-3.5" aria-label="{{ 'common.new_window'|trans }}" />
                         </a>
                     </li>
                 {% endfor %}
@@ -43,22 +43,22 @@
         </nav>
 
         <nav aria-labelledby="footer-nav-legal">
-            <h3 id="footer-nav-legal" class="text-sm font-semibold text-ink">Informations légales</h3>
+            <h3 id="footer-nav-legal" class="text-sm font-semibold text-ink">{{ 'footer.legal'|trans }}</h3>
             <ul class="mt-3 space-y-2 text-sm">
-                <li><a href="{{ path('app_legal_notice') }}" class="text-muted hover:text-brand-700 hover:underline">Mentions légales</a></li>
-                <li><a href="{{ path('app_legal_privacy') }}" class="text-muted hover:text-brand-700 hover:underline">Politique de confidentialité</a></li>
-                <li><a href="{{ path('app_legal_cookies') }}" class="text-muted hover:text-brand-700 hover:underline">Politique cookies</a></li>
-                <li><a href="{{ path('app_legal_terms') }}" class="text-muted hover:text-brand-700 hover:underline">Conditions d'utilisation</a></li>
-                <li><a href="{{ path('app_legal_accessibility') }}" class="text-muted hover:text-brand-700 hover:underline">Accessibilité : non conforme</a></li>
+                <li><a href="{{ path('app_legal_notice') }}" class="text-muted hover:text-brand-700 hover:underline">{{ 'footer.legal_notice'|trans }}</a></li>
+                <li><a href="{{ path('app_legal_privacy') }}" class="text-muted hover:text-brand-700 hover:underline">{{ 'footer.privacy_policy'|trans }}</a></li>
+                <li><a href="{{ path('app_legal_cookies') }}" class="text-muted hover:text-brand-700 hover:underline">{{ 'footer.cookie_policy'|trans }}</a></li>
+                <li><a href="{{ path('app_legal_terms') }}" class="text-muted hover:text-brand-700 hover:underline">{{ 'footer.terms'|trans }}</a></li>
+                <li><a href="{{ path('app_legal_accessibility') }}" class="text-muted hover:text-brand-700 hover:underline">{{ 'footer.accessibility'|trans }}</a></li>
                 <li>
                     <button type="button" x-data @click="$store.consent.openPreferences()" class="text-muted hover:text-brand-700 hover:underline">
-                        Gérer les cookies
+                        {{ 'footer.manage_cookies'|trans }}
                     </button>
                 </li>
             </ul>
         </nav>
     </div>
     <div class="border-t border-gray-200">
-        <p class="container-page py-6 text-xs text-muted">&copy; {{ 'now'|date('Y') }} {{ site.name }}. Tous droits réservés.</p>
+        <p class="container-page py-6 text-xs text-muted">{{ 'footer.copyright'|trans({'%year%': 'now'|date('Y'), '%company%': site.name}) }}</p>
     </div>
 </footer>

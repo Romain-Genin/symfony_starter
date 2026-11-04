@@ -88,7 +88,7 @@ final class ResetPasswordController extends AbstractController
             /** @var User $user */
             $user = $this->resetPasswordHelper->validateTokenAndFetchUser($token);
         } catch (ResetPasswordExceptionInterface) {
-            $this->addFlash('error', 'Ce lien de réinitialisation est invalide ou a expiré. Merci de refaire une demande.');
+            $this->addFlash('error', 'flash.reset_password.invalid_link');
 
             return $this->redirectToRoute('app_forgot_password_request');
         }
@@ -107,7 +107,7 @@ final class ResetPasswordController extends AbstractController
             $this->em->flush();
 
             $this->cleanSessionAfterReset();
-            $this->addFlash('success', 'Votre mot de passe a été modifié. Vous pouvez vous connecter.');
+            $this->addFlash('success', 'flash.reset_password.changed');
 
             return $this->redirectToRoute('app_login', status: Response::HTTP_SEE_OTHER);
         }

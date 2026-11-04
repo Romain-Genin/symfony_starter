@@ -22,7 +22,7 @@ final class UserChecker implements UserCheckerInterface
         }
 
         if (!$user->isVerified()) {
-            throw new CustomUserMessageAccountStatusException('Vous devez confirmer votre adresse email avant de vous connecter. Vérifiez votre boîte de réception ou demandez un nouveau lien.');
+            throw new CustomUserMessageAccountStatusException('security.email_not_verified');
         }
     }
 

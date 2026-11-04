@@ -1,10 +1,10 @@
 {% extends 'emails/layout.html.twig' %}
 
 {% block content %}
-    <h1>Merci pour votre message, {{ message.name }} !</h1>
-    <p>Nous avons bien reçu votre demande « {{ message.subject }} » et vous répondrons dans les meilleurs délais.</p>
-    <p class="muted">Récapitulatif de votre message :</p>
+    <h1>{{ 'email.contact_acknowledgement.title'|trans({'%name%': message.name}) }}</h1>
+    <p>{{ 'email.contact_acknowledgement.text'|trans({'%subject%': message.subject}) }}</p>
+    <p class="muted">{{ 'email.contact_acknowledgement.summary'|trans }}</p>
     <div class="box">{{ message.message }}</div>
     
-    <p>À très bientôt,<br>L'équipe {{ site.name }}</p>
+    <p>{{ 'email.signature'|trans({'%site%': site.name})|nl2br }}</p>
 {% endblock %}

@@ -1,14 +1,14 @@
 {% extends 'account/_layout.html.twig' %}
 
-{% block title %}Mon compte{% endblock %}
-{% block heading %}Mon compte{% endblock %}
+{% block title %}{{ 'auth.my_account'|trans }}{% endblock %}
+{% block heading %}{{ 'auth.my_account'|trans }}{% endblock %}
 
 {% block account_content %}
     <section aria-labelledby="account-infos" class="space-y-6">
-        <h2 id="account-infos" class="text-lg font-semibold text-ink">Mes informations</h2>
+        <h2 id="account-infos" class="text-lg font-semibold text-ink">{{ 'account.infos'|trans }}</h2>
         <dl class="grid gap-4 rounded-card bg-gray-50 p-5 text-sm sm:grid-cols-2">
-            <div><dt class="text-muted">Adresse email</dt><dd class="font-medium text-ink">{{ app.user.email }}</dd></div>
-            <div><dt class="text-muted">Membre depuis le</dt><dd class="font-medium text-ink">{{ app.user.createdAt|date('d/m/Y') }}</dd></div>
+            <div><dt class="text-muted">{{ 'form.email'|trans }}</dt><dd class="font-medium text-ink">{{ app.user.email }}</dd></div>
+            <div><dt class="text-muted">{{ 'account.member_since'|trans }}</dt><dd class="font-medium text-ink">{{ app.user.createdAt|format_date('long') }}</dd></div>
         </dl>
 
         {{ form_start(form, {attr: {novalidate: 'novalidate', class: 'space-y-5'}}) }}
@@ -16,7 +16,7 @@
                 {{ form_row(form.firstName) }}
                 {{ form_row(form.lastName) }}
             </div>
-            <twig:Button>Enregistrer</twig:Button>
+            <twig:Button>{{ 'action.save'|trans }}</twig:Button>
         {{ form_end(form) }}
     </section>
 {% endblock %}

@@ -41,7 +41,7 @@ final class ContactController extends AbstractController
             }
 
             if (!$contactFormLimiter->create($request->getClientIp())->consume()->isAccepted()) {
-                $this->addFlash('error', 'Vous avez envoyé plusieurs messages en peu de temps. Merci de réessayer dans quelques minutes.');
+                $this->addFlash('error', 'flash.contact.rate_limited');
 
                 return $this->redirectToRoute('app_contact', status: Response::HTTP_SEE_OTHER);
             }
@@ -67,7 +67,7 @@ final class ContactController extends AbstractController
 
     private function success(): Response
     {
-        $this->addFlash('success', 'Merci, votre message a bien été envoyé. Nous vous répondrons dans les meilleurs délais.');
+        $this->addFlash('success', 'flash.contact.sent');
 
         return $this->redirectToRoute('app_contact', status: Response::HTTP_SEE_OTHER);
     }
