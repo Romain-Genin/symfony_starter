@@ -14,13 +14,22 @@ Socle de projet prêt à développer : pages essentielles, back-office, emails t
 
 ---
 
-## Démarrage
+## Créer un nouveau projet
 
 ```bash
-cp .env .env.local      # facultatif : surcharges locales
-make install            # build, composer, importmap, tailwind, migrations, fixtures
+composer create-project romain-genin/symfony-starter mon-projet
+cd mon-projet
+make install            # build Docker, composer, importmap, tailwind, migrations, fixtures
 make tailwind           # dans un autre terminal : recompile le CSS à chaque modification
 ```
+
+Pas de PHP 8.4 sur la machine ? Créez le projet via Docker :
+
+```bash
+docker run --rm -it -u "$(id -u):$(id -g)" -v "$PWD":/app -w /app composer:2 sh -c "composer create-project romain-genin/symfony-starter mon-projet --ignore-platform-reqs --no-scripts && php mon-projet/bin/init-project.php"
+```
+
+À la création, `bin/init-project.php` génère des secrets de dev propres au projet (`APP_SECRET`, `APP_ENCRYPTION_KEY` dans `.env.dev`) et nomme le projet Docker d'après le dossier (`COMPOSE_PROJECT_NAME`).
 
 | URL | |
 |---|---|
@@ -29,6 +38,8 @@ make tailwind           # dans un autre terminal : recompile le CSS à chaque mo
 | http://localhost:8025 | Mailpit (tous les emails envoyés en local) |
 
 `make` liste toutes les commandes disponibles (`make test`, `make qa`, `make migration`, `make admin email=…`, etc.).
+
+> Plusieurs projets en parallèle ? Changez les ports dans `.env.local` : `HTTP_PORT=8081`, `DB_PORT=5433`, `MAILPIT_PORT=8026`.
 
 ---
 
@@ -174,3 +185,16 @@ php bin/console app:user:create admin@mon-site.fr --admin
 - [ ] Authentifier le domaine d'envoi dans Brevo
 - [ ] `APP_INDEXABLE=1` en production
 - [ ] Planifier `app:contact:purge`
+
+---
+
+## Publier une nouvelle version du starter
+
+Le paquet est publié sur [Packagist](https://packagist.org/packages/romain-genin/symfony-starter), qui suit les tags Git du dépôt GitHub :
+
+```bash
+git tag -a v1.1.0 -m "v1.1.0" && git push origin v1.1.0
+```
+
+`composer create-project` installe automatiquement la dernière version taguée. Les projets déjà créés ne sont pas affectés : chacun vit sa vie.
+

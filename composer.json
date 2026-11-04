@@ -1,8 +1,26 @@
 {
     "name": "romain-genin/symfony-starter",
+    "description": "Starter Symfony 8 : Tailwind CSS v4, Alpine.js, Turbo, Twig Components, EasyAdmin 5, Brevo, données chiffrées, SEO & accessibilité, Docker (local + Coolify).",
     "type": "project",
     "license": "MIT",
-    "description": "A minimal Symfony project recommended to create bare bones applications",
+    "keywords": [
+        "symfony",
+        "starter",
+        "skeleton",
+        "tailwindcss",
+        "alpinejs",
+        "turbo",
+        "easyadmin",
+        "docker",
+        "coolify"
+    ],
+    "homepage": "https://github.com/StudioAstra/SA_SYMFONY",
+    "authors": [
+        {
+            "name": "Romain Genin",
+            "email": "romaingenin@icloud.com"
+        }
+    ],
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
@@ -96,6 +114,9 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "post-create-project-cmd": [
+            "@php bin/init-project.php"
         ]
     },
     "conflict": {
