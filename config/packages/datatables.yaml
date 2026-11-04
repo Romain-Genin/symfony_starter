@@ -1,0 +1,5 @@
+datatables:
+    language_from_cdn: false
+    options:
+        pageLength: 25
+        stateSave: false

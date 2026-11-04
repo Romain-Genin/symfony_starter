@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion — Administration</title>
+    {{ encore_entry_link_tags('app') }}
+</head>
+<body class="satoshi login-bg min-h-screen flex items-center justify-center p-[2rem] relative overflow-hidden">
+
+    <div class="login-blob-purple"></div>
+    <div class="login-blob-pink"></div>
+
+    <div class="login-grid">
+
+        {# ── Left panel ──────────────────────────────────────────── #}
+        <div class="login-panel-left">
+            <div>
+                <div class="login-logo-box">
+                    <img src="/studioastra/logo.svg" class="h-[2.8rem]" alt="Logo StudioAstra">
+                </div>
+                <p class="text-[1rem] font-bold uppercase tracking-[0.08em] text-[var(--admin-fg-muted)] mb-[1rem]">Portail sécurisé</p>
+                <h1 class="text-[2.8rem] font-bold leading-tight text-[var(--admin-fg)] mb-[1.2rem]">Gérez votre site web en toute simplicité.</h1>
+                <p class="text-[1.3rem] text-[var(--admin-fg-muted)] leading-relaxed">Modifiez vos informations, vos photos et vos contenus directement depuis votre espace personnel.</p>
+            </div>
+            <ul class="list-none p-0 mt-[3.2rem] flex flex-col gap-[1rem]">
+                <li class="flex items-center gap-[1rem] text-[1.3rem] text-[var(--admin-fg)]">
+                    <span class="w-[0.7rem] h-[0.7rem] rounded-full flex-shrink-0 bg-violet-400 inline-block"></span>
+                    Mise à jour des photos et médias
+                </li>
+                <li class="flex items-center gap-[1rem] text-[1.3rem] text-[var(--admin-fg)]">
+                    <span class="w-[0.7rem] h-[0.7rem] rounded-full flex-shrink-0 bg-rose-300 inline-block"></span>
+                    Gestion des informations de contact
+                </li>
+                <li class="flex items-center gap-[1rem] text-[1.3rem] text-[var(--admin-fg)]">
+                    <span class="w-[0.7rem] h-[0.7rem] rounded-full flex-shrink-0 bg-green-300 inline-block"></span>
+                    Personnalisation des contenus
+                </li>
+            </ul>
+        </div>
+
+        {# ── Right: login form ────────────────────────────────────── #}
+        <div class="login-panel-right">
+            <h2 class="text-[2.2rem] font-bold text-[var(--admin-fg)] mb-[0.4rem]">Connexion</h2>
+            <p class="text-[1.3rem] text-[var(--admin-fg-muted)] mb-[2.4rem]">Accédez à votre espace d'administration.</p>
+
+            {% if error %}
+            <div class="flash flash-error mb-[1.6rem]">
+                <i data-lucide="alert-circle" class="w-[1.4rem] h-[1.4rem] mt-[0.1rem] flex-shrink-0"></i>
+                <span>{{ error.messageKey|trans(error.messageData, 'security') }}</span>
+            </div>
+            {% endif %}
+
+            <form method="post" novalidate class="flex flex-col gap-[1.4rem]">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <div>
+                    <label for="username" class="admin-label">Adresse e-mail</label>
+                    <div class="admin-input-wrap">
+                        <span class="admin-input-icon">
+                            <i data-lucide="mail" class="w-[1.4rem] h-[1.4rem]"></i>
+                        </span>
+                        <input id="username" type="email" name="_username" value="{{ last_username }}"
+                               autocomplete="email" autofocus required
+                               placeholder="nom@exemple.com"
+                               class="admin-input with-icon">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="password" class="admin-label">Mot de passe</label>
+                    <div class="admin-input-wrap">
+                        <span class="admin-input-icon">
+                            <i data-lucide="lock" class="w-[1.4rem] h-[1.4rem]"></i>
+                        </span>
+                        <input id="password" type="password" name="_password"
+                               autocomplete="current-password" required
+                               placeholder="••••••••"
+                               class="admin-input with-icon">
+                    </div>
+                    <div class="text-right mt-[0.6rem]">
+                        <a href="#" class="text-[1.2rem] text-violet-400 font-medium no-underline">Mot de passe oublié ?</a>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-login">
+                    <i data-lucide="arrow-right" class="w-[1.5rem] h-[1.5rem]"></i>
+                    Se connecter
+                </button>
+            </form>
+
+            <div class="mt-[2rem] pt-[1.6rem] border-t border-black/[0.06] text-[1.2rem] text-[var(--admin-fg-muted)] text-center">
+                Plateforme administrée par <span class="text-violet-400 font-semibold">StudioAstra</span>
+            </div>
+        </div>
+
+    </div>
+
+    {{ encore_entry_script_tags('app') }}
+</body>
+</html>

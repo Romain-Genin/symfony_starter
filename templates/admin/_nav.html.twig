@@ -1,0 +1,60 @@
+{% set route = app.request.attributes.get('_route') %}
+
+{#
+  nav_item(href, label, icon, active)
+  Use path('route_name') for existing routes, '#' for placeholder routes.
+#}
+{% macro nav_item(href, label, icon, active) %}
+<a href="{{ href }}" class="admin-nav-btn{{ active ? ' is-active' : '' }}">
+    <i data-lucide="{{ icon }}" class="h-[1.5rem] w-[1.5rem] flex-shrink-0"></i>
+    {{ label }}
+</a>
+{% endmacro %}
+
+{# ── Tableau de bord ───────────────────────────────────────────── #}
+{{ _self.nav_item(path('admin_dashboard'), 'Tableau de bord', 'layout-dashboard', route starts with 'admin_dashboard') }}
+
+{# ── Mon site ──────────────────────────────────────────────────── #}
+<div class="mt-[0.8rem]">
+    <span class="admin-section-label">Mon site</span>
+
+    {# Replace '#' with path('admin_xxx') when the controller is created #}
+    {{ _self.nav_item('#', 'Images & Médias',   'image',      route starts with 'admin_images') }}
+    {{ _self.nav_item('#', 'Mon établissement', 'building-2', route starts with 'admin_infos') }}
+    {{ _self.nav_item('#', 'Horaires',          'clock',      route starts with 'admin_hours') }}
+    {{ _self.nav_item('#', 'Avis clients',      'star',       route starts with 'admin_reviews') }}
+    {{ _self.nav_item('#', 'Réseaux sociaux',   'share-2',    route starts with 'admin_social') }}
+</div>
+
+{# ── Mon contenu (collapsible, modules métier) ─────────────────── #}
+<div class="mt-[0.8rem]">
+    <details id="nav-modules" open class="admin-details">
+        <summary class="admin-details-summary">
+            <span class="flex-1">Mon contenu</span>
+            <i data-lucide="chevron-down" class="chevron h-[1.2rem] w-[1.2rem]"></i>
+        </summary>
+
+        <div class="admin-submenu">
+            {#
+              Add module entries here, one per client activity type.
+              Examples:
+                {{ _self.nav_item(path('admin_mod_rooms'),  'Chambres',     'bed-double', route starts with 'admin_mod_rooms') }}
+                {{ _self.nav_item(path('admin_mod_prices'), 'Tarifs',       'tag',        route starts with 'admin_mod_prices') }}
+                {{ _self.nav_item(path('admin_mod_menu'),   'Carte / Menu', 'utensils',   route starts with 'admin_mod_menu') }}
+            #}
+
+            <a href="#" class="admin-add-module-btn">
+                <i data-lucide="plus" class="h-[1.3rem] w-[1.3rem] flex-shrink-0"></i>
+                Ajouter un module
+            </a>
+        </div>
+    </details>
+</div>
+
+{# ── Separator ─────────────────────────────────────────────────── #}
+<hr class="my-[0.8rem] mx-[0.4rem] border-0 h-[0.1rem] bg-black/[0.06]">
+
+{# ── Abonnement & Paramètres ───────────────────────────────────── #}
+{# Replace '#' with path('admin_subscription') / path('admin_settings') when created #}
+{{ _self.nav_item('#', 'Mon abonnement', 'credit-card', route starts with 'admin_subscription') }}
+{{ _self.nav_item('#', 'Paramètres',    'settings',    route starts with 'admin_settings') }}
