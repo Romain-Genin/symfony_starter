@@ -1,5 +1,5 @@
 {
-    "name": "symfony/skeleton",
+    "name": "romain-genin/symfony-starter",
     "type": "project",
     "license": "MIT",
     "description": "A minimal Symfony project recommended to create bare bones applications",
