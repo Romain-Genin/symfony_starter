@@ -23,4 +23,12 @@ document.addEventListener('turbo:before-cache', () => {
 });
 
 window.Alpine = Alpine;
-Alpine.start();
+
+// Démarrage après les autres scripts différés de la page : les modules optionnels
+// (ex. la boutique romain-genin/symfony-ecom) peuvent ainsi enregistrer leurs composants
+// sur window.Alpine ou via l'événement « alpine:init » avant le démarrage.
+if (document.readyState === 'complete') {
+    Alpine.start();
+} else {
+    document.addEventListener('DOMContentLoaded', () => Alpine.start(), { once: true });
+}

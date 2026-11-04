@@ -1,0 +1,3 @@
+# Authentication messages ("security" domain), English.
+security:
+    email_not_verified: "You must confirm your email address before logging in. Check your inbox or request a new link."

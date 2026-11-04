@@ -1,4 +1,4 @@
-<nav aria-label="Fil d'Ariane" {{ attributes.defaults({class: 'text-sm'}) }}>
+<nav aria-label="{{ 'breadcrumb.label'|trans }}" {{ attributes.defaults({class: 'text-sm'}) }}>
     <ol class="flex flex-wrap items-center gap-1 text-muted">
         {% for link in this.links %}
             <li class="flex items-center gap-1">

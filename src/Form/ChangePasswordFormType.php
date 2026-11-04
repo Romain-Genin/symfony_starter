@@ -16,10 +16,10 @@ final class ChangePasswordFormType extends AbstractType
     {
         if ($options['require_current_password']) {
             $builder->add('currentPassword', PasswordType::class, [
-                'label' => 'Mot de passe actuel',
+                'label' => 'form.current_password',
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'current-password'],
-                'constraints' => [new UserPassword(message: 'Mot de passe actuel incorrect.')],
+                'constraints' => [new UserPassword(message: 'password.current_invalid')],
             ]);
         }
 

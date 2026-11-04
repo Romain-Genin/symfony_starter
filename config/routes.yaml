@@ -1,11 +1,11 @@
 # yaml-language-server: $schema=../vendor/symfony/routing/Loader/schema/routing.schema.json
 
-# This file is the entry point to configure the routes of your app.
-# Methods with the #[Route] attribute are automatically imported.
-# See also https://symfony.com/doc/current/routing.html
+# Routes toujours servies à la racine du site, quelle que soit la langue.
+# Les pages du site (src/Controller/) sont importées par src/Kernel.php : préfixées
+# par /{_locale} quand le module multilingue est installé (voir README, « Modules optionnels »).
+#
+# Pour lister les routes : bin/console debug:router
 
-# To list all registered routes, run the following command:
-#   bin/console debug:router
-
-controllers:
-    resource: routing.controllers
+seo:
+    resource: ../src/Controller/SeoController.php
+    type: attribute

@@ -6,10 +6,10 @@
 {% props type = 'info', title = null, dismissible = false %}
 
 {%- set styles = {
-    success: {box: 'bg-green-50 text-green-900 ring-green-600/30', icon: 'lucide:circle-check', iconColor: 'text-green-700', label: 'Succès'},
-    error: {box: 'bg-red-50 text-red-900 ring-red-600/30', icon: 'lucide:circle-x', iconColor: 'text-red-700', label: 'Erreur'},
-    warning: {box: 'bg-amber-50 text-amber-900 ring-amber-600/30', icon: 'lucide:triangle-alert', iconColor: 'text-amber-700', label: 'Attention'},
-    info: {box: 'bg-brand-50 text-brand-950 ring-brand-600/30', icon: 'lucide:info', iconColor: 'text-brand-700', label: 'Information'},
+    success: {box: 'bg-green-50 text-green-900 ring-green-600/30', icon: 'lucide:circle-check', iconColor: 'text-green-700', label: 'alert.success'|trans},
+    error: {box: 'bg-red-50 text-red-900 ring-red-600/30', icon: 'lucide:circle-x', iconColor: 'text-red-700', label: 'alert.error'|trans},
+    warning: {box: 'bg-amber-50 text-amber-900 ring-amber-600/30', icon: 'lucide:triangle-alert', iconColor: 'text-amber-700', label: 'alert.warning'|trans},
+    info: {box: 'bg-brand-50 text-brand-950 ring-brand-600/30', icon: 'lucide:info', iconColor: 'text-brand-700', label: 'alert.info'|trans},
 } -%}
 {%- set style = styles[type] ?? styles.info -%}
 
@@ -20,13 +20,13 @@
     {% if dismissible %}x-data="{ show: true }" x-show="show" x-transition.opacity{% endif %}>
     <twig:ux:icon :name="style.icon" class="mt-0.5 size-5 shrink-0 {{ style.iconColor }}" />
     <div class="flex-1">
-        <span class="sr-only">{{ style.label }} : </span>
+        <span class="sr-only">{{ 'alert.prefix'|trans({'%type%': style.label}) }}</span>
         {% if title %}<p class="font-semibold">{{ title }}</p>{% endif %}
         <div>{% block content %}{% endblock %}</div>
     </div>
     {% if dismissible %}
         <button type="button" @click="show = false" class="-m-1 shrink-0 self-start rounded p-1 opacity-70 hover:opacity-100">
-            <span class="sr-only">Fermer ce message</span>
+            <span class="sr-only">{{ 'alert.close'|trans }}</span>
             <twig:ux:icon name="lucide:x" class="size-4" />
         </button>
     {% endif %}

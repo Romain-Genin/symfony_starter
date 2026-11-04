@@ -1,0 +1,34 @@
+# Module boutique — chargé uniquement si romain-genin/symfony-ecom est installé (voir src/Kernel.php).
+# Référence complète : vendor/romain-genin/symfony-ecom/README.md
+astra_checkout:
+    shop_name: '%app.site_name%'
+    # Les pages de la boutique s'affichent dans le gabarit du site (en-tête, pied de page, SEO).
+    layout: base.html.twig
+
+    # Les clients sont les utilisateurs du site : mêmes comptes, connexion et inscription.
+    customer:
+        class: App\Entity\User
+        properties: { email: email, first_name: firstName, last_name: lastName, phone: ~ }
+    account:
+        login_route: app_login
+        logout_route: app_logout
+        register_route: app_register
+
+    routing:
+        home: false   # l'accueil reste celui du site
+        paths:
+            catalog: /boutique
+            search: /boutique/recherche
+            category: /boutique/categorie
+            product: /boutique/produit
+            cart: /panier
+            checkout: /commande
+            account: /mon-compte/boutique   # commandes et adresses, à côté de /mon-compte
+
+    assets:
+        css: true          # feuille de style autonome de la boutique (couleurs : voir README)
+        js: components     # le site charge déjà Alpine.js : la boutique n'ajoute que ses composants
+
+    mailer:
+        from: '%env(SHOP_MAILER_FROM)%'
+        from_name: '%app.site_name%'

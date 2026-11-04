@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" class="h-full">
+<html {{ app_html_attributes() }} class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,20 +7,24 @@
     {%- set page_title = block('title') is defined ? block('title')|trim : '' -%}
     <title>{{ page_title ? page_title ~ ' | ' ~ site.name : site.name ~ ' — ' ~ site.baseline }}</title>
 
+    {#- Bloc « meta » : balises propres à une page (les pages de la boutique y placent description et canonical) -#}
+    {%- set page_meta = block('meta') is defined ? block('meta')|trim : '' -%}
     {%- set meta_description = block('meta_description') is defined and block('meta_description')|trim ? block('meta_description')|trim : site.description -%}
     {%- set canonical = block('canonical') is defined and block('canonical')|trim ? block('canonical')|trim : url(app.current_route ?? 'app_home', app.current_route_parameters ?? {}) -%}
     {%- set og_image = block('og_image') is defined and block('og_image')|trim ? block('og_image')|trim : absolute_url(asset('images/og-default.png')) -%}
     {%- set robots = block('robots') is defined and block('robots')|trim ? block('robots')|trim : 'index, follow, max-image-preview:large' -%}
     {%- if not indexable -%}{%- set robots = 'noindex, nofollow' -%}{%- endif -%}
 
-    <meta name="description" content="{{ meta_description }}">
+    {% if 'name="description"' not in page_meta %}<meta name="description" content="{{ meta_description }}">{% endif %}
     <meta name="robots" content="{{ robots }}">
-    <link rel="canonical" href="{{ canonical }}">
+    {% if 'rel="canonical"' not in page_meta %}<link rel="canonical" href="{{ canonical }}">{% endif %}
+    {{ app_alternate_links() }}
+    {{ page_meta|raw }}
 
     {# Open Graph / réseaux sociaux #}
-    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    {% if 'og:type' not in page_meta %}<meta property="og:type" content="{% block og_type %}website{% endblock %}">{% endif %}
     <meta property="og:site_name" content="{{ site.name }}">
-    <meta property="og:locale" content="{{ site.locale }}">
+    <meta property="og:locale" content="{{ app_og_locale() }}">
     <meta property="og:title" content="{{ page_title ?: site.name }}">
     <meta property="og:description" content="{{ meta_description }}">
     <meta property="og:url" content="{{ canonical }}">
@@ -73,23 +77,24 @@
                 '@id': url('app_home') ~ '#website',
                 name: site.name,
                 url: url('app_home'),
-                inLanguage: 'fr-FR',
+                inLanguage: app_html_lang(),
                 publisher: {'@id': url('app_home') ~ '#organization'},
             },
         ],
     }|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_UNESCAPED_UNICODE') b-or constant('JSON_HEX_TAG'))|raw }}</script>
     {% block structured_data %}{% endblock %}
+    {% block head %}{% endblock %}
 </head>
 <body class="flex min-h-full flex-col">
     {# Lien d'évitement : premier élément focusable (RGAA 12.7) #}
     <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-brand-700 focus:px-4 focus:py-2 focus:text-white focus:shadow-lg">
-        Aller au contenu principal
+        {{ 'nav.skip_to_content'|trans }}
     </a>
 
     {% block header %}{{ include('layout/_header.html.twig') }}{% endblock %}
 
     <main id="main-content" tabindex="-1" class="flex-1 focus:outline-none">
-        {{ include('layout/_flashes.html.twig') }}
+        {% block flashes %}{{ include('layout/_flashes.html.twig') }}{% endblock %}
         {% block body %}{% endblock %}
     </main>
 

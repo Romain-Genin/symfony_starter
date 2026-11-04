@@ -17,11 +17,11 @@ final class EmailRequestFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('email', EmailType::class, [
-            'label' => 'Adresse email',
+            'label' => 'form.email',
             'attr' => ['autocomplete' => 'email'],
             'constraints' => [
-                new Assert\NotBlank(message: 'Merci d\'indiquer votre adresse email.'),
-                new Assert\Email(message: 'Cette adresse email n\'est pas valide.'),
+                new Assert\NotBlank(message: 'email.required'),
+                new Assert\Email(message: 'email.invalid'),
             ],
         ]);
     }

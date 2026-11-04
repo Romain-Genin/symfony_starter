@@ -1,8 +1,8 @@
 {% extends 'layout/auth.html.twig' %}
 
-{% block title %}Connexion{% endblock %}
-{% block heading %}Connexion{% endblock %}
-{% block subheading %}Accédez à votre espace personnel.{% endblock %}
+{% block title %}{{ 'auth.login'|trans }}{% endblock %}
+{% block heading %}{{ 'auth.login'|trans }}{% endblock %}
+{% block subheading %}{{ 'login.subheading'|trans }}{% endblock %}
 
 {% block card %}
     {% if error %}
@@ -11,15 +11,15 @@
 
     <form method="post" action="{{ path('app_login') }}" class="space-y-5">
         <div class="space-y-1.5">
-            <label for="username" class="block text-sm font-medium text-ink">Adresse email</label>
+            <label for="username" class="block text-sm font-medium text-ink">{{ 'form.email'|trans }}</label>
             <input type="email" value="{{ last_username }}" name="_username" id="username" required autofocus autocomplete="email"
                    class="block w-full rounded-lg border-gray-300 px-3 py-2.5 shadow-sm focus:border-brand-600 focus:ring-brand-600 sm:text-sm"
                    {% if error %}aria-invalid="true"{% endif %}>
         </div>
         <div class="space-y-1.5">
             <div class="flex items-center justify-between">
-                <label for="password" class="block text-sm font-medium text-ink">Mot de passe</label>
-                <a href="{{ path('app_forgot_password_request') }}" class="text-sm text-brand-700 hover:underline">Mot de passe oublié ?</a>
+                <label for="password" class="block text-sm font-medium text-ink">{{ 'form.password'|trans }}</label>
+                <a href="{{ path('app_forgot_password_request') }}" class="text-sm text-brand-700 hover:underline">{{ 'auth.forgot_password'|trans }}</a>
             </div>
             <input type="password" name="_password" id="password" required autocomplete="current-password"
                    class="block w-full rounded-lg border-gray-300 px-3 py-2.5 shadow-sm focus:border-brand-600 focus:ring-brand-600 sm:text-sm"
@@ -27,20 +27,20 @@
         </div>
         <div class="flex items-center gap-3">
             <input type="checkbox" name="_remember_me" id="remember_me" class="size-4 rounded border-gray-400 text-brand-700 focus:ring-brand-600">
-            <label for="remember_me" class="text-sm text-ink">Rester connecté</label>
+            <label for="remember_me" class="text-sm text-ink">{{ 'auth.remember_me'|trans }}</label>
         </div>
 
         <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
 
-        <twig:Button class="w-full">Se connecter</twig:Button>
+        <twig:Button class="w-full">{{ 'login.submit'|trans }}</twig:Button>
     </form>
 {% endblock %}
 
 {% block after_card %}
     <p class="mt-6 text-center text-sm text-muted">
-        Pas encore de compte ? <a href="{{ path('app_register') }}" class="link">Créer un compte</a>
+        {{ 'login.no_account'|trans }} <a href="{{ path('app_register') }}" class="link">{{ 'auth.register'|trans }}</a>
     </p>
     <p class="mt-2 text-center text-sm text-muted">
-        Email de confirmation non reçu ? <a href="{{ path('app_register_resend') }}" class="link">Renvoyer le lien</a>
+        {{ 'login.no_confirmation'|trans }} <a href="{{ path('app_register_resend') }}" class="link">{{ 'registration.resend.submit'|trans }}</a>
     </p>
 {% endblock %}

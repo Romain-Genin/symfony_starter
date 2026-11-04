@@ -23,21 +23,22 @@ final class NewPasswordType extends AbstractType
         $resolver->setDefaults([
             'type' => PasswordType::class,
             'label' => false,
-            'invalid_message' => 'Les deux mots de passe ne correspondent pas.',
+            'invalid_message' => 'password.mismatch',
             'first_options' => [
-                'label' => 'Mot de passe',
-                'help' => \sprintf('Au moins %d caractères. Une phrase de passe est idéale.', self::MIN_LENGTH),
+                'label' => 'form.password',
+                'help' => 'form.password_help',
+                'help_translation_parameters' => ['%min%' => self::MIN_LENGTH],
                 'attr' => ['autocomplete' => 'new-password', 'minlength' => self::MIN_LENGTH],
             ],
             'second_options' => [
-                'label' => 'Confirmer le mot de passe',
+                'label' => 'form.password_confirm',
                 'attr' => ['autocomplete' => 'new-password'],
             ],
             'constraints' => [
-                new Assert\NotBlank(message: 'Merci de saisir un mot de passe.'),
-                new Assert\Length(min: self::MIN_LENGTH, max: 4096, minMessage: 'Votre mot de passe doit contenir au moins {{ limit }} caractères.'),
-                new Assert\PasswordStrength(minScore: Assert\PasswordStrength::STRENGTH_MEDIUM, message: 'Ce mot de passe est trop faible. Allongez-le ou mélangez davantage les caractères.'),
-                new Assert\NotCompromisedPassword(message: 'Ce mot de passe figure dans une fuite de données connue. Choisissez-en un autre.', skipOnError: true),
+                new Assert\NotBlank(message: 'password.required'),
+                new Assert\Length(min: self::MIN_LENGTH, max: 4096, minMessage: 'password.too_short'),
+                new Assert\PasswordStrength(minScore: Assert\PasswordStrength::STRENGTH_MEDIUM, message: 'password.too_weak'),
+                new Assert\NotCompromisedPassword(message: 'password.compromised', skipOnError: true),
             ],
         ]);
     }

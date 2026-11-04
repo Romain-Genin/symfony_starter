@@ -1,0 +1,26 @@
+# Messages de validation du site (domaine « validators »). Autre langue : validators.<code>.yaml
+email:
+    required: "Merci d'indiquer votre adresse email."
+    invalid: "Cette adresse email n'est pas valide."
+    taken: "Un compte existe déjà avec cette adresse email."
+phone:
+    invalid: "Ce numéro de téléphone n'est pas valide."
+password:
+    required: "Merci de saisir un mot de passe."
+    mismatch: "Les deux mots de passe ne correspondent pas."
+    too_short: "Votre mot de passe doit contenir au moins {{ limit }} caractères."
+    too_weak: "Ce mot de passe est trop faible. Allongez-le ou mélangez davantage les caractères."
+    compromised: "Ce mot de passe figure dans une fuite de données connue. Choisissez-en un autre."
+    current_invalid: "Mot de passe actuel incorrect."
+    invalid: "Mot de passe incorrect."
+contact:
+    name:
+        required: "Merci d'indiquer votre nom."
+    subject:
+        required: "Merci d'indiquer l'objet de votre message."
+    message:
+        required: "Merci d'écrire votre message."
+        too_short: "Votre message doit contenir au moins {{ limit }} caractères."
+    consent_required: "Votre consentement est nécessaire pour traiter votre demande."
+registration:
+    agree_terms_required: "Vous devez accepter la politique de confidentialité."

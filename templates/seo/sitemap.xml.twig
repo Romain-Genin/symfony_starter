@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 {% for u in urls %}
     <url>
         <loc>{{ u.loc }}</loc>
+{% for hreflang, href in u.alternates %}
+        <xhtml:link rel="alternate" hreflang="{{ hreflang|replace({'_': '-'}) }}" href="{{ href }}"/>
+{% endfor %}
         <changefreq>{{ u.changefreq }}</changefreq>
         <priority>{{ u.priority|number_format(1, '.') }}</priority>
     </url>

@@ -1,23 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Contact{% endblock %}
-{% block meta_description %}Contactez {{ site.name }} : une question, un projet ? Écrivez-nous, nous vous répondons rapidement.{% endblock %}
+{% block title %}{{ 'contact.title'|trans }}{% endblock %}
+{% block meta_description %}{{ 'contact.meta_description'|trans({'%site%': site.name}) }}{% endblock %}
 
 {% block structured_data %}
     <script type="application/ld+json">{{ {
         '@context': 'https://schema.org',
         '@type': 'ContactPage',
-        name: 'Contact',
+        name: 'contact.title'|trans,
         url: url('app_contact'),
     }|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_UNESCAPED_UNICODE') b-or constant('JSON_HEX_TAG'))|raw }}</script>
 {% endblock %}
 
 {% block body %}
-    <twig:PageHeader title="Contact" intro="Une question, un projet ? Écrivez-nous, nous vous répondons dans les meilleurs délais." :breadcrumb="[{label: 'Contact'}]" />
+    <twig:PageHeader :title="'contact.title'|trans" :intro="'contact.intro'|trans" :breadcrumb="[{label: 'contact.title'|trans}]" />
 
     <div class="container-page grid gap-12 py-12 lg:grid-cols-3">
         <div class="lg:col-span-2">
-            <p class="mb-6 text-sm text-muted">Les champs marqués d'un <span class="text-red-700" aria-hidden="true">*</span><span class="sr-only">astérisque</span> sont obligatoires.</p>
+            <p class="mb-6 text-sm text-muted">{{ 'common.required_fields'|trans({'%asterisk%': '<span class="text-red-700" aria-hidden="true">*</span><span class="sr-only">' ~ 'common.asterisk'|trans ~ '</span>'})|raw }}</p>
 
             {{ form_start(form, {attr: {novalidate: 'novalidate', class: 'space-y-6'}}) }}
                 {{ form_errors(form) }}
@@ -34,31 +34,29 @@
                 {{ form_row(form.antispam) }}
                 {{ form_rest(form) }}
 
-                <twig:Button icon="lucide:send">Envoyer le message</twig:Button>
+                <twig:Button icon="lucide:send">{{ 'contact.submit'|trans }}</twig:Button>
             {{ form_end(form) }}
 
             <p class="mt-6 text-xs text-muted">
-                Les informations recueillies sont utilisées uniquement pour répondre à votre demande et conservées
-                de façon chiffrée. Pour en savoir plus et exercer vos droits, consultez notre
-                <a href="{{ path('app_legal_privacy') }}" class="link">politique de confidentialité</a>.
+                {{ 'contact.privacy'|trans({'%link%': '<a href="' ~ path('app_legal_privacy') ~ '" class="link">' ~ 'contact.privacy_link'|trans ~ '</a>'})|raw }}
             </p>
         </div>
 
         <aside aria-labelledby="contact-infos-title" class="space-y-6">
-            <h2 id="contact-infos-title" class="text-lg font-semibold text-ink">Nos coordonnées</h2>
+            <h2 id="contact-infos-title" class="text-lg font-semibold text-ink">{{ 'contact.details'|trans }}</h2>
             <dl class="space-y-4 text-sm">
                 <div class="flex gap-3">
-                    <dt><twig:ux:icon name="lucide:mail" class="size-5 text-brand-700" aria-label="Email" /></dt>
+                    <dt><twig:ux:icon name="lucide:mail" class="size-5 text-brand-700" aria-label="{{ 'form.email'|trans }}" /></dt>
                     <dd><a href="mailto:{{ site.email }}" class="link">{{ site.email }}</a></dd>
                 </div>
                 {% if site.phone %}
                     <div class="flex gap-3">
-                        <dt><twig:ux:icon name="lucide:phone" class="size-5 text-brand-700" aria-label="Téléphone" /></dt>
+                        <dt><twig:ux:icon name="lucide:phone" class="size-5 text-brand-700" aria-label="{{ 'form.phone'|trans }}" /></dt>
                         <dd><a href="tel:{{ site.phone|replace({' ': ''}) }}" class="link">{{ site.phone }}</a></dd>
                     </div>
                 {% endif %}
                 <div class="flex gap-3">
-                    <dt><twig:ux:icon name="lucide:map-pin" class="size-5 text-brand-700" aria-label="Adresse" /></dt>
+                    <dt><twig:ux:icon name="lucide:map-pin" class="size-5 text-brand-700" aria-label="{{ 'form.address'|trans }}" /></dt>
                     <dd class="text-muted">{{ site.address.street }}<br>{{ site.address.postal_code }} {{ site.address.city }}</dd>
                 </div>
             </dl>

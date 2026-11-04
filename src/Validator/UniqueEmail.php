@@ -13,5 +13,5 @@ use Symfony\Component\Validator\Constraint;
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 final class UniqueEmail extends Constraint
 {
-    public string $message = 'Un compte existe déjà avec cette adresse email.';
+    public string $message = 'email.taken';
 }

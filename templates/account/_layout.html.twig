@@ -3,17 +3,17 @@
 {% block robots %}noindex, nofollow{% endblock %}
 
 {% block body %}
-    <twig:PageHeader title="{{ block('heading') }}" :breadcrumb="block('breadcrumb') is defined ? [{label: 'Mon compte', route: 'app_account'}, {label: block('heading')}] : [{label: 'Mon compte'}]" />
+    <twig:PageHeader title="{{ block('heading') }}" :breadcrumb="block('breadcrumb') is defined ? [{label: 'auth.my_account'|trans, route: 'app_account'}, {label: block('heading')}] : [{label: 'auth.my_account'|trans}]" />
 
     <div class="container-page grid gap-10 py-10 lg:grid-cols-4">
-        <nav aria-label="Mon compte" class="lg:col-span-1">
+        <nav aria-label="{{ 'auth.my_account'|trans }}" class="lg:col-span-1">
             <ul class="flex gap-1 overflow-x-auto lg:flex-col">
-                <li><twig:NavLink route="app_account" class="flex items-center gap-2"><twig:ux:icon name="lucide:user" class="size-4" />Mes informations</twig:NavLink></li>
-                <li><twig:NavLink route="app_account_password" class="flex items-center gap-2"><twig:ux:icon name="lucide:key-round" class="size-4" />Mot de passe</twig:NavLink></li>
-                <li><twig:NavLink route="app_account_delete" class="flex items-center gap-2"><twig:ux:icon name="lucide:trash-2" class="size-4" />Supprimer mon compte</twig:NavLink></li>
+                <li><twig:NavLink route="app_account" class="flex items-center gap-2"><twig:ux:icon name="lucide:user" class="size-4" />{{ 'account.infos'|trans }}</twig:NavLink></li>
+                <li><twig:NavLink route="app_account_password" class="flex items-center gap-2"><twig:ux:icon name="lucide:key-round" class="size-4" />{{ 'form.password'|trans }}</twig:NavLink></li>
+                <li><twig:NavLink route="app_account_delete" class="flex items-center gap-2"><twig:ux:icon name="lucide:trash-2" class="size-4" />{{ 'account.delete.title'|trans }}</twig:NavLink></li>
                 <li>
                     <a href="{{ path('app_logout') }}" data-turbo-method="post" class="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-ink hover:bg-brand-50 hover:text-brand-700">
-                        <twig:ux:icon name="lucide:log-out" class="size-4" />Se déconnecter
+                        <twig:ux:icon name="lucide:log-out" class="size-4" />{{ 'auth.logout_action'|trans }}
                     </a>
                 </li>
             </ul>

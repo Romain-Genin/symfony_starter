@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Twig\Components;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
 /**
@@ -21,8 +22,10 @@ final class Breadcrumb
     /** @var list<array{label: string, route?: string, params?: array<string, mixed>}> */
     public array $items = [];
 
-    public function __construct(private readonly UrlGeneratorInterface $urlGenerator)
-    {
+    public function __construct(
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly TranslatorInterface $translator,
+    ) {
     }
 
     /**
@@ -30,7 +33,7 @@ final class Breadcrumb
      */
     public function getLinks(): array
     {
-        $links = [['label' => 'Accueil', 'url' => $this->urlGenerator->generate('app_home', [], UrlGeneratorInterface::ABSOLUTE_URL)]];
+        $links = [['label' => $this->translator->trans('nav.home'), 'url' => $this->urlGenerator->generate('app_home', [], UrlGeneratorInterface::ABSOLUTE_URL)]];
 
         foreach ($this->items as $item) {
             $links[] = [

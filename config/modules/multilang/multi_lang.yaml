@@ -1,0 +1,10 @@
+# Module multilingue — chargé uniquement si romain-genin/symfony-multilang-bundle est installé
+# (voir src/Kernel.php). Ajouter une langue : l'ajouter ici + translations/messages.<code>.yaml.
+multi_lang:
+    default_locale: fr
+    locales: [fr, en]
+    home_route: app_home
+    detect_browser_language: true
+
+framework:
+    enabled_locales: [fr, en]

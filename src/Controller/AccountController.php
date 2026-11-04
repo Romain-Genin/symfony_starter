@@ -29,7 +29,7 @@ final class AccountController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
-            $this->addFlash('success', 'Vos informations ont été mises à jour.');
+            $this->addFlash('success', 'flash.account.updated');
 
             return $this->redirectToRoute('app_account', status: Response::HTTP_SEE_OTHER);
         }
@@ -51,7 +51,7 @@ final class AccountController extends AbstractController
             $user->setPassword($hasher->hashPassword($user, $plainPassword));
             $em->flush();
 
-            $this->addFlash('success', 'Votre mot de passe a été modifié.');
+            $this->addFlash('success', 'flash.account.password_changed');
 
             return $this->redirectToRoute('app_account', status: Response::HTTP_SEE_OTHER);
         }
@@ -77,7 +77,7 @@ final class AccountController extends AbstractController
             $request->getSession()->invalidate();
             $this->container->get('security.token_storage')->setToken(null);
 
-            $this->addFlash('success', 'Votre compte et vos données ont été supprimés.');
+            $this->addFlash('success', 'flash.account.deleted');
 
             return $this->redirectToRoute('app_home', status: Response::HTTP_SEE_OTHER);
         }

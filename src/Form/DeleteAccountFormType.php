@@ -14,9 +14,9 @@ final class DeleteAccountFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('password', PasswordType::class, [
-            'label' => 'Confirmez avec votre mot de passe',
+            'label' => 'form.confirm_with_password',
             'attr' => ['autocomplete' => 'current-password'],
-            'constraints' => [new UserPassword(message: 'Mot de passe incorrect.')],
+            'constraints' => [new UserPassword(message: 'password.invalid')],
         ]);
     }
 }

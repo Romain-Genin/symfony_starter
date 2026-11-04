@@ -16,12 +16,12 @@ final class ProfileFormType extends AbstractType
     {
         $builder
             ->add('firstName', TextType::class, [
-                'label' => 'Prénom',
+                'label' => 'form.first_name',
                 'required' => false,
                 'attr' => ['autocomplete' => 'given-name'],
             ])
             ->add('lastName', TextType::class, [
-                'label' => 'Nom',
+                'label' => 'form.last_name',
                 'required' => false,
                 'attr' => ['autocomplete' => 'family-name'],
             ]);

@@ -40,7 +40,8 @@ security:
 
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/mon-compte, roles: ROLE_USER }
+        # Préfixe de langue facultatif (/fr/mon-compte) : module multilingue
+        - { path: '^/(?:[a-z]{2}(?:[-_][A-Za-z]{2,4})?/)?mon-compte', roles: ROLE_USER }
 
 when@test:
     security:

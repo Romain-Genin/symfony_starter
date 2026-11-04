@@ -4,7 +4,7 @@
     <div class="container-page mt-6 space-y-3" aria-live="polite">
         {% for type, messages in flashes %}
             {% for message in messages %}
-                <twig:Alert :type="type in ['success', 'error', 'warning', 'info'] ? type : 'info'" dismissible>{{ message }}</twig:Alert>
+                <twig:Alert :type="type in ['success', 'error', 'warning', 'info'] ? type : 'info'" dismissible>{{ message|trans }}</twig:Alert>
             {% endfor %}
         {% endfor %}
     </div>

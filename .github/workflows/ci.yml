@@ -1,0 +1,80 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+# Deux configurations : le starter seul, et le starter avec ses trois modules optionnels
+# (romain-genin/symfony-multilang-bundle, symfony-ecom, symfony-image-optimizer-bundle).
+jobs:
+  tests:
+    name: Tests (${{ matrix.modules && 'avec modules' || 'starter seul' }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        modules: [false, true]
+    services:
+      database:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: app
+          POSTGRES_PASSWORD: app
+          POSTGRES_DB: app
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U app" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://app:app@127.0.0.1:5432/app?serverVersion=17&charset=utf8
+      COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.GITHUB_TOKEN }}"}}'
+    steps:
+      - uses: actions/checkout@v5
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: intl, sodium, pdo_pgsql, gd
+          tools: composer
+      - name: Validate composer.json
+        run: composer validate --no-check-publish
+      - run: composer install --no-interaction --prefer-dist
+
+      - name: Install the optional modules
+        if: matrix.modules
+        run: |
+          # Branche du même nom dans les dépôts des modules (développement croisé), sinon la version 2.x.
+          branch="${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}"
+          packages=""
+          for module in "symfony_multilang:symfony-multilang-bundle" "symfony_ecom:symfony-ecom" "symfony_imageoptim:symfony-image-optimizer-bundle"; do
+            repo="${module%%:*}"; package="romain-genin/${module##*:}"
+            composer config "repositories.${repo}" vcs "https://github.com/Romain-Genin/${repo}"
+            if git ls-remote --exit-code --heads "https://github.com/Romain-Genin/${repo}" "$branch" > /dev/null; then
+              packages="$packages ${package}:dev-${branch}"
+            else
+              packages="$packages ${package}:^2.0@dev"
+            fi
+          done
+          composer require --no-interaction $packages
+          grep -E 'MultiLangBundle|AstraCheckoutBundle|ImageOptimizerBundle' config/bundles.php
+
+      - name: Assets
+        run: |
+          php bin/console importmap:install
+          php bin/console tailwind:build
+
+      - name: Lint
+        run: |
+          php bin/console lint:container
+          php bin/console lint:twig templates
+          php bin/console lint:yaml config translations
+
+      - name: Database
+        run: |
+          php bin/console doctrine:database:create --env=test
+          php bin/console doctrine:migrations:migrate --env=test -n
+          # Avec la boutique : génère la migration de ses tables, comme le ferait « make migration ».
+          if ${{ matrix.modules }}; then
+            php bin/console doctrine:migrations:diff --env=test -n
+            php bin/console doctrine:migrations:migrate --env=test -n
+          fi
+
+      - run: php bin/phpunit

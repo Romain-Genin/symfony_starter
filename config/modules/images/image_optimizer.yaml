@@ -1,0 +1,5 @@
+# Module images — chargé uniquement si romain-genin/symfony-image-optimizer-bundle est installé
+# (voir src/Kernel.php). Chaque image envoyée (formulaires, EasyAdmin…) est optimisée sans perte ;
+# responsive_image() sert des variantes AVIF/WebP adaptées à l'écran (routes /_image/…).
+# Valeurs par défaut : vendor/romain-genin/symfony-image-optimizer-bundle/README.md
+image_optimizer: ~

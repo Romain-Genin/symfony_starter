@@ -19,17 +19,17 @@ final class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('firstName', TextType::class, [
-                'label' => 'Prénom',
+                'label' => 'form.first_name',
                 'required' => false,
                 'attr' => ['autocomplete' => 'given-name'],
             ])
             ->add('lastName', TextType::class, [
-                'label' => 'Nom',
+                'label' => 'form.last_name',
                 'required' => false,
                 'attr' => ['autocomplete' => 'family-name'],
             ])
             ->add('email', EmailType::class, [
-                'label' => 'Adresse email',
+                'label' => 'form.email',
                 'attr' => ['autocomplete' => 'email'],
             ])
             ->add('plainPassword', NewPasswordType::class, [
@@ -37,8 +37,8 @@ final class RegistrationFormType extends AbstractType
             ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
-                'label' => 'J\'ai lu et j\'accepte la politique de confidentialité.',
-                'constraints' => [new IsTrue(message: 'Vous devez accepter la politique de confidentialité.')],
+                'label' => 'registration.agree_terms',
+                'constraints' => [new IsTrue(message: 'registration.agree_terms_required')],
             ])
             ->add('antispam', AntiSpamType::class);
     }

@@ -1,0 +1,26 @@
+# Validation messages ("validators" domain), English.
+email:
+    required: Please enter your email address.
+    invalid: This email address is not valid.
+    taken: An account already exists with this email address.
+phone:
+    invalid: This phone number is not valid.
+password:
+    required: Please enter a password.
+    mismatch: The two passwords do not match.
+    too_short: Your password must contain at least {{ limit }} characters.
+    too_weak: This password is too weak. Make it longer or mix more characters.
+    compromised: This password appears in a known data breach. Please choose another one.
+    current_invalid: Current password is incorrect.
+    invalid: Incorrect password.
+contact:
+    name:
+        required: Please enter your name.
+    subject:
+        required: Please enter the subject of your message.
+    message:
+        required: Please write your message.
+        too_short: Your message must contain at least {{ limit }} characters.
+    consent_required: Your consent is required to process your request.
+registration:
+    agree_terms_required: You must accept the privacy policy.
