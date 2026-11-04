@@ -2,9 +2,6 @@
 User-agent: *
 Disallow: /admin
 Disallow: /mon-compte
-{% if app_module('multilang') %}
-Disallow: /*/mon-compte
-{% endif %}
 
 Sitemap: {{ url('app_sitemap') }}
 {%- else -%}

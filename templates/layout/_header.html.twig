@@ -2,10 +2,6 @@
     {route: 'app_home', label: 'nav.home'|trans},
     {route: 'app_contact', label: 'nav.contact'|trans},
 ] -%}
-{#- Module boutique (romain-genin/symfony-ecom) : lien vers le catalogue -#}
-{%- if app_module('shop') -%}
-    {%- set nav = nav|merge([{route: 'astra_catalog', label: 'nav.shop'|trans, activePrefix: 'astra_'}]) -%}
-{%- endif -%}
 <header class="sticky top-0 z-40 border-b border-gray-200/80 bg-white/90 backdrop-blur"
         x-data="{ open: false }"
         @keydown.escape.window="open = false"
@@ -19,16 +15,13 @@
         <nav aria-label="{{ 'nav.main'|trans }}" class="hidden md:block">
             <ul class="flex items-center gap-1">
                 {% for item in nav %}
-                    <li><twig:NavLink :route="item.route" :activePrefix="item.activePrefix ?? null">{{ item.label }}</twig:NavLink></li>
+                    <li><twig:NavLink :route="item.route">{{ item.label }}</twig:NavLink></li>
                 {% endfor %}
             </ul>
         </nav>
 
         <div class="flex items-center gap-2">
             <div class="hidden items-center gap-2 md:flex">
-                {% if app_multilingual() %}
-                    <twig:MultiLang:LocaleSwitcher display="code" />
-                {% endif %}
                 {% if is_granted('ROLE_ADMIN') %}
                     <twig:Button href="{{ path('admin') }}" variant="ghost" size="sm" icon="lucide:gauge" iconPosition="start" data-turbo="false">{{ 'nav.admin'|trans }}</twig:Button>
                 {% endif %}
@@ -39,10 +32,6 @@
                     <twig:Button href="{{ path('app_register') }}" size="sm">{{ 'auth.register'|trans }}</twig:Button>
                 {% endif %}
             </div>
-
-            {% if app_module('shop') %}
-                <twig:Astra:CartButton class="text-ink" />
-            {% endif %}
 
             <button type="button"
                     class="inline-flex items-center justify-center rounded-lg p-2 text-ink hover:bg-gray-100 md:hidden"
@@ -61,7 +50,7 @@
          x-show="open" x-collapse x-cloak x-trap.noscroll="open" @click.outside="open = false">
         <ul class="container-page space-y-1 py-4">
             {% for item in nav %}
-                <li><twig:NavLink :route="item.route" :activePrefix="item.activePrefix ?? null" class="block">{{ item.label }}</twig:NavLink></li>
+                <li><twig:NavLink :route="item.route" class="block">{{ item.label }}</twig:NavLink></li>
             {% endfor %}
             <li class="border-t border-gray-200 pt-3">
                 {% if app.user %}
@@ -74,11 +63,6 @@
                     <twig:NavLink route="app_register" class="block">{{ 'auth.register'|trans }}</twig:NavLink>
                 {% endif %}
             </li>
-            {% if app_multilingual() %}
-                <li class="border-t border-gray-200 pt-3">
-                    <twig:MultiLang:LocaleSwitcher variant="list" />
-                </li>
-            {% endif %}
         </ul>
     </nav>
 </header>

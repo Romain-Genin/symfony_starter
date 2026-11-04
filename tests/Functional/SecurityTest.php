@@ -13,7 +13,6 @@ use Zenstruck\Foundry\Test\ResetDatabase;
 
 final class SecurityTest extends WebTestCase
 {
-    use SitePaths;
     use Factories;
     use ResetDatabase;
 
@@ -22,7 +21,7 @@ final class SecurityTest extends WebTestCase
         $client = self::createClient();
 
         $client->request('GET', '/admin');
-        self::assertResponseRedirects(self::page('/connexion'));
+        self::assertResponseRedirects('/connexion');
 
         $client->loginUser(UserFactory::createOne());
         $client->request('GET', '/admin');
@@ -41,7 +40,7 @@ final class SecurityTest extends WebTestCase
     public function testRegistrationCreatesUnverifiedUserAndSendsConfirmation(): void
     {
         $client = self::createClient();
-        $crawler = $client->request('GET', self::page('/inscription'));
+        $crawler = $client->request('GET', '/inscription');
         $client->submit($crawler->selectButton('Créer mon compte')->form(), [
             'registration_form[email]' => 'Alice@Example.com',
             'registration_form[plainPassword][first]' => 'Une-phrase-de-passe-solide-42',
@@ -50,7 +49,7 @@ final class SecurityTest extends WebTestCase
             'registration_form[antispam][token]' => self::getContainer()->get(SpamChecker::class)->createToken(time() - 10),
         ]);
 
-        self::assertResponseRedirects(self::page('/inscription/verifiez-vos-emails'), 303);
+        self::assertResponseRedirects('/inscription/verifiez-vos-emails', 303);
         self::assertEmailCount(1);
 
         $user = self::getContainer()->get(UserRepository::class)->findOneByEmail('alice@example.com');
@@ -62,7 +61,7 @@ final class SecurityTest extends WebTestCase
     {
         $client = self::createClient();
         UserFactory::createOne(['email' => 'bob@example.com']);
-        $crawler = $client->request('GET', self::page('/inscription'));
+        $crawler = $client->request('GET', '/inscription');
         $client->submit($crawler->selectButton('Créer mon compte')->form(), [
             'registration_form[email]' => 'BOB@example.com',
             'registration_form[plainPassword][first]' => 'Une-phrase-de-passe-solide-42',
@@ -78,7 +77,7 @@ final class SecurityTest extends WebTestCase
     {
         $client = self::createClient();
         UserFactory::new()->unverified()->create(['email' => 'carol@example.com']);
-        $crawler = $client->request('GET', self::page('/connexion'));
+        $crawler = $client->request('GET', '/connexion');
         $client->submit($crawler->selectButton('Se connecter')->form(), [
             '_username' => 'carol@example.com',
             '_password' => UserFactory::DEFAULT_PASSWORD,
@@ -92,22 +91,22 @@ final class SecurityTest extends WebTestCase
     {
         $client = self::createClient();
         UserFactory::createOne(['email' => 'dave@example.com']);
-        $crawler = $client->request('GET', self::page('/connexion'));
+        $crawler = $client->request('GET', '/connexion');
         $client->submit($crawler->selectButton('Se connecter')->form(), [
             '_username' => 'dave@example.com',
             '_password' => UserFactory::DEFAULT_PASSWORD,
         ]);
 
-        self::assertResponseRedirects(self::page('/mon-compte'));
+        self::assertResponseRedirects('/mon-compte');
     }
 
     public function testForgotPasswordDoesNotRevealAccounts(): void
     {
         $client = self::createClient();
-        $crawler = $client->request('GET', self::page('/mot-de-passe-oublie'));
+        $crawler = $client->request('GET', '/mot-de-passe-oublie');
         $client->submit($crawler->selectButton('Recevoir le lien')->form(), ['email_request_form[email]' => 'inconnu@example.com']);
 
-        self::assertResponseRedirects(self::page('/mot-de-passe-oublie/verifiez-vos-emails'), 303);
+        self::assertResponseRedirects('/mot-de-passe-oublie/verifiez-vos-emails', 303);
         self::assertEmailCount(0);
     }
 }

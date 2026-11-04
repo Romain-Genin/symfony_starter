@@ -4,7 +4,7 @@
 #}
 {% apply inline_css(source('@styles/email.css')) %}
 <!DOCTYPE html>
-<html lang="{{ app_html_lang() }}">
+<html lang="{{ (app.request.locale ?? site.locale|slice(0, 2))|replace({'_': '-'}) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">

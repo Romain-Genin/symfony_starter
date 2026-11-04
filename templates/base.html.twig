@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html {{ app_html_attributes() }} class="h-full">
+<html lang="{{ app.request.locale|replace({'_': '-'}) }}" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,24 +7,20 @@
     {%- set page_title = block('title') is defined ? block('title')|trim : '' -%}
     <title>{{ page_title ? page_title ~ ' | ' ~ site.name : site.name ~ ' — ' ~ site.baseline }}</title>
 
-    {#- Bloc « meta » : balises propres à une page (les pages de la boutique y placent description et canonical) -#}
-    {%- set page_meta = block('meta') is defined ? block('meta')|trim : '' -%}
     {%- set meta_description = block('meta_description') is defined and block('meta_description')|trim ? block('meta_description')|trim : site.description -%}
     {%- set canonical = block('canonical') is defined and block('canonical')|trim ? block('canonical')|trim : url(app.current_route ?? 'app_home', app.current_route_parameters ?? {}) -%}
     {%- set og_image = block('og_image') is defined and block('og_image')|trim ? block('og_image')|trim : absolute_url(asset('images/og-default.png')) -%}
     {%- set robots = block('robots') is defined and block('robots')|trim ? block('robots')|trim : 'index, follow, max-image-preview:large' -%}
     {%- if not indexable -%}{%- set robots = 'noindex, nofollow' -%}{%- endif -%}
 
-    {% if 'name="description"' not in page_meta %}<meta name="description" content="{{ meta_description }}">{% endif %}
+    <meta name="description" content="{{ meta_description }}">
     <meta name="robots" content="{{ robots }}">
-    {% if 'rel="canonical"' not in page_meta %}<link rel="canonical" href="{{ canonical }}">{% endif %}
-    {{ app_alternate_links() }}
-    {{ page_meta|raw }}
+    <link rel="canonical" href="{{ canonical }}">
 
     {# Open Graph / réseaux sociaux #}
-    {% if 'og:type' not in page_meta %}<meta property="og:type" content="{% block og_type %}website{% endblock %}">{% endif %}
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
     <meta property="og:site_name" content="{{ site.name }}">
-    <meta property="og:locale" content="{{ app_og_locale() }}">
+    <meta property="og:locale" content="{{ site.locale }}">
     <meta property="og:title" content="{{ page_title ?: site.name }}">
     <meta property="og:description" content="{{ meta_description }}">
     <meta property="og:url" content="{{ canonical }}">
@@ -77,7 +73,7 @@
                 '@id': url('app_home') ~ '#website',
                 name: site.name,
                 url: url('app_home'),
-                inLanguage: app_html_lang(),
+                inLanguage: app.request.locale|replace({'_': '-'}),
                 publisher: {'@id': url('app_home') ~ '#organization'},
             },
         ],

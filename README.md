@@ -55,7 +55,6 @@ assets/
   icons/lucide/           Icônes SVG locales → {{ ux_icon('lucide:mail') }}
 config/packages/
   app_site.yaml           ⚠️ Identité du site / infos légales (variable Twig `site`)
-config/modules/           Configuration des modules optionnels (chargée seulement s'ils sont installés)
 docker/                   Dockerfile de dev, nginx, php.ini, entrypoint prod
 src/
   Doctrine/Type/EncryptedType.php    Type Doctrine « encrypted »
@@ -63,7 +62,6 @@ src/
   Spam/SpamChecker.php               Anti-spam (honeypot + jeton horodaté)
   Mailer/AppMailer.php               Tous les emails transactionnels
   Twig/Components/                   Composants avec logique (NavLink, Breadcrumb)
-  Twig/ModuleExtension.php           app_module(), app_html_attributes()… (pont vers les modules)
 translations/             Textes du site (messages, validators, security), en français
 templates/
   components/             Composants anonymes (Button, Alert, Card, Section, PageHeader…)
@@ -129,75 +127,12 @@ templates, formulaires, messages flash, validation et emails passent par des cl�
 - **Modifier un texte** : changez sa valeur dans `messages.fr.yaml`, le template ne bouge pas.
 - **Changer la langue du site** (site monolingue dans une autre langue) : traduisez ces fichiers en `*.<code>.yaml`
   et passez `default_locale` à `<code>` dans `config/packages/translation.yaml`.
-- **Plusieurs langues** : installez le [module multilingue](#multilingue), puis ajoutez une langue en déposant
-  ses fichiers `*.<code>.yaml` (copies traduites des `*.fr.yaml`). Le test `TranslationFilesTest` vérifie
-  qu'aucune clé ni aucun paramètre (`%name%`, `{{ limit }}`) ne manque.
+- **Ajouter une langue** : copiez les fichiers `*.fr.yaml` en `*.<code>.yaml` et traduisez les valeurs.
+  Le test `TranslationFilesTest` vérifie qu'aucune clé ni aucun paramètre (`%name%`, `{{ limit }}`) ne manque.
+  Pour un site multilingue (URL par langue, sélecteur de langue…), ajoutez le bundle de votre choix et suivez
+  sa documentation.
 - **Pages légales** : textes longs et propres au droit de chaque pays, ils se traduisent par fichier :
   copiez `templates/legal/notice.html.twig` en `templates/legal/notice.en.html.twig` (sinon, la version française s'affiche).
-- Les noms de clés reprennent ceux du module multilingue (`nav.home`, `auth.login`, `form.email`, `footer.*`, `cookies.*`,
-  `error.*`…) : avec lui, ces textes génériques sont déjà traduits dans 14 langues.
-
----
-
-## Modules optionnels
-
-Trois bundles se branchent sur le starter **sans modifier son code** : il suffit de les installer.
-Ils ne dépendent pas du starter : chacun est un bundle Symfony autonome, utilisable seul dans n'importe quel projet
-Symfony 6.4 à 8 (voir son README), et les modules s'utilisent indépendamment les uns des autres ou ensemble.
-
-| Module | Paquet | Apport |
-|---|---|---|
-| `multilang` | [`romain-genin/symfony-multilang-bundle`](https://packagist.org/packages/romain-genin/symfony-multilang-bundle) | URL préfixées (`/fr/contact`, `/en/contact`), sélecteur de langue, `lang`/`dir`, `hreflang`, RTL |
-| `shop` | [`romain-genin/symfony-ecom`](https://packagist.org/packages/romain-genin/symfony-ecom) | Boutique : catalogue, panier, commande, commandes et adresses du client |
-| `images` | [`romain-genin/symfony-image-optimizer-bundle`](https://packagist.org/packages/romain-genin/symfony-image-optimizer-bundle) | Optimisation sans perte des images envoyées, variantes AVIF/WebP responsives |
-
-```bash
-make composer c="require romain-genin/symfony-multilang-bundle"
-make composer c="require romain-genin/symfony-ecom"
-make composer c="require romain-genin/symfony-image-optimizer-bundle"
-```
-
-Comment ça marche : `src/Kernel.php` détecte les bundles installés et charge leur configuration depuis
-`config/modules/<module>/` (rien n'est chargé pour un module absent). Dans les templates, `app_module('shop')`
-indique si un module est actif, et `app_html_attributes()`, `app_alternate_links()`, `app_og_locale()` délèguent au
-module multilingue quand il est là.
-
-### Multilingue
-
-- **Les langues sont celles qui ont un fichier `translations/messages.<code>.yaml`** : le starter n'a que le français,
-  ajouter `messages.en.yaml` (et `validators.en.yaml`, `security.en.yaml`) ajoute l'anglais, sans autre configuration.
-  Le sélecteur de langue n'apparaît qu'à partir de deux langues.
-- Les pages du site et de la boutique sont préfixées par la langue (`/fr/contact`, `/en/contact`) ; `/` redirige vers
-  la langue du visiteur (cookie, puis `Accept-Language`). `sitemap.xml`, `robots.txt` et `/admin` restent à la racine.
-- Le sélecteur apparaît dans l'en-tête, le menu mobile et le pied de page ; `<html lang dir>`, `og:locale`,
-  les balises `hreflang` et le sitemap (une entrée par langue, avec alternatives) suivent.
-- Réglages (détection du navigateur, cookie…) : `config/modules/multilang/multi_lang.yaml`.
-  Ne lancez pas `multilang:install` : la configuration et les routes sont déjà fournies par le starter.
-- Après l'installation, recompilez le CSS (`make tailwind-build`) : il inclut alors les styles du sélecteur.
-
-### Boutique
-
-- Les clients sont les **utilisateurs du site** (`App\Entity\User`) : même connexion, même inscription ;
-  le panier anonyme est fusionné à la connexion.
-- Les pages s'affichent dans le gabarit du site ; l'en-tête gagne un lien « Boutique » et le bouton panier.
-- URL : `/boutique`, `/boutique/produit/{slug}`, `/panier`, `/commande`, `/mon-compte/boutique` (commandes, adresses).
-  Tout se règle dans `config/modules/shop/astra_checkout.yaml`.
-- Après l'installation : `make migration && make migrate` (tables `astra_*`), puis éventuellement
-  `make console c="astra:demo:load"` pour des produits de démonstration.
-- E-mails de commande : expéditeur `SHOP_MAILER_FROM` (`.env`).
-
-### Images
-
-- Chaque image envoyée (formulaires, EasyAdmin…) est optimisée sans perte avant d'arriver au contrôleur.
-- `{{ responsive_image('uploads/photo.jpg', {alt: 'Texte alternatif'}) }}` sert des variantes AVIF/WebP adaptées à l'écran
-  (routes `/_image/…`). Les images produits de la boutique en profitent automatiquement.
-- Pour de meilleurs résultats, ajoutez les outils au conteneur PHP :
-  `apt-get install -y libjpeg-turbo-progs optipng webp gifsicle libavif-bin` (voir le README du bundle).
-
-### Retirer un module
-
-`make composer c="remove <paquet>"` : le site revient à son fonctionnement sans le module.
-Pour la boutique, supprimez aussi la migration de ses tables si elle n'a jamais été appliquée.
 
 ---
 
@@ -205,7 +140,7 @@ Pour la boutique, supprimez aussi la migration de ses tables si elle n'a jamais 
 
 - `<title>`, meta description, canonical, Open Graph et Twitter Card, par page via des blocs Twig (`title`, `meta_description`, `og_image`, `robots`…).
 - JSON-LD : `Organization` et `WebSite` dans le layout, `BreadcrumbList` via `<twig:Breadcrumb>`, `ContactPage`.
-- `/sitemap.xml` généré à partir des routes qui déclarent `options: ['sitemap' => [...]]` (une entrée par langue avec le module multilingue).
+- `/sitemap.xml` généré à partir des routes qui déclarent `options: ['sitemap' => [...]]`.
 - `/robots.txt` dynamique. **L'indexation est bloquée tant que `APP_INDEXABLE=1` n'est pas défini** (robots.txt, meta robots et en-tête `X-Robots-Tag`), ce qui protège les préprods.
 
 ## Accessibilité

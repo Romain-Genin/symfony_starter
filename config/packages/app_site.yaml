@@ -10,11 +10,8 @@ parameters:
     # Durée de conservation des messages de contact (RGPD), en mois
     app.contact_retention_months: 12
 
-    # Nom du site (réutilisé par la boutique si le module est installé)
-    app.site_name: 'Mon site'
-
     app.site:
-        name: '%app.site_name%'
+        name: 'Mon site'
         baseline: 'Starter Symfony 8'
         description: 'Starter Symfony 8 : Tailwind CSS v4, Alpine.js, Turbo, Twig Components et EasyAdmin.'
         locale: 'fr_FR'

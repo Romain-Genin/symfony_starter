@@ -1,15 +1,11 @@
 # Traductions du site (domaine « messages »), langue par défaut : français.
 #
-# Ajouter une langue : copiez ce fichier en messages.<code>.yaml (ex. messages.en.yaml) et traduisez
-# les valeurs. Avec le module multilingue (romain-genin/symfony-multilang-bundle), les clés génériques
-# déjà traduites par le bundle (nav.*, auth.*, action.*, form.*, footer.*, cookies.*, error.*…) sont
-# fournies dans 14 langues : seules les clés propres au site restent à traduire.
+# Autre langue : copiez ce fichier en messages.<code>.yaml (ex. messages.en.yaml) et traduisez les valeurs.
 # Contrôle : php bin/console debug:translation <code> --only-missing
 
 nav:
     home: Accueil
     contact: Contact
-    shop: Boutique
     main: Navigation principale
     main_mobile: Navigation principale (mobile)
     back_home: retour à l'accueil

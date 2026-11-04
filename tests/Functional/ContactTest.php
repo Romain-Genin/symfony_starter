@@ -14,7 +14,6 @@ use Zenstruck\Foundry\Test\ResetDatabase;
 
 final class ContactTest extends WebTestCase
 {
-    use SitePaths;
     use ResetDatabase;
 
     public function testValidMessageIsStoredEncryptedAndEmailed(): void
@@ -22,7 +21,7 @@ final class ContactTest extends WebTestCase
         $client = self::createClient();
         $this->submitContactForm($client);
 
-        self::assertResponseRedirects(self::page('/contact'), 303);
+        self::assertResponseRedirects('/contact', 303);
         self::assertEmailCount(2);
 
         $messages = self::getContainer()->get(ContactMessageRepository::class)->findAll();
@@ -47,7 +46,7 @@ final class ContactTest extends WebTestCase
         $client = self::createClient();
         $this->submitContactForm($client, ['contact[antispam][website]' => 'https://spam.example']);
 
-        self::assertResponseRedirects(self::page('/contact'), 303);
+        self::assertResponseRedirects('/contact', 303);
         self::assertEmailCount(0);
         self::assertSame(0, self::getContainer()->get(ContactMessageRepository::class)->count());
     }
@@ -65,7 +64,7 @@ final class ContactTest extends WebTestCase
     public function testInvalidFormShowsAccessibleErrors(): void
     {
         $client = self::createClient();
-        $crawler = $client->request('GET', self::page('/contact'));
+        $crawler = $client->request('GET', '/contact');
         $client->submit($crawler->selectButton('Envoyer le message')->form(), ['contact[email]' => 'pas-un-email']);
 
         self::assertResponseStatusCodeSame(422);
@@ -78,7 +77,7 @@ final class ContactTest extends WebTestCase
      */
     private function submitContactForm(KernelBrowser $client, array $overrides = []): void
     {
-        $crawler = $client->request('GET', self::page('/contact'));
+        $crawler = $client->request('GET', '/contact');
         $form = $crawler->selectButton('Envoyer le message')->form();
 
         $client->submit($form, $overrides + [

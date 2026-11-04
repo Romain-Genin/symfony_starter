@@ -8,7 +8,6 @@
     <ul>
         <li><a href="{{ path('app_home') }}">{{ 'nav.home'|trans }}</a></li>
         <li><a href="{{ path('app_contact') }}">{{ 'nav.contact'|trans }}</a></li>
-        {% if app_module('shop') %}<li><a href="{{ path('astra_catalog') }}">{{ 'nav.shop'|trans }}</a></li>{% endif %}
         <li>{{ 'legal.sitemap.my_space'|trans }}
             <ul>
                 <li><a href="{{ path('app_login') }}">{{ 'auth.login'|trans }}</a></li>

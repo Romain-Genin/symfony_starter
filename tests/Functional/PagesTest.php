@@ -10,7 +10,6 @@ use Zenstruck\Foundry\Test\ResetDatabase;
 
 final class PagesTest extends WebTestCase
 {
-    use SitePaths;
     use ResetDatabase;
 
     /** @return iterable<string, array{string}> */
@@ -34,7 +33,7 @@ final class PagesTest extends WebTestCase
     public function testPublicPageIsAccessibleAndWellFormed(string $url): void
     {
         $client = self::createClient();
-        $crawler = $client->request('GET', self::page($url));
+        $crawler = $client->request('GET', $url);
 
         self::assertResponseIsSuccessful();
         self::assertSelectorCount(1, 'h1', 'Une page doit avoir un unique <h1>.');
@@ -61,7 +60,7 @@ final class PagesTest extends WebTestCase
         self::assertResponseIsSuccessful();
         self::assertResponseHeaderSame('Content-Type', 'application/xml; charset=UTF-8');
         $content = (string) $client->getResponse()->getContent();
-        self::assertStringContainsString('<loc>http://localhost'.self::page('/contact').'</loc>', $content);
+        self::assertStringContainsString('<loc>http://localhost/contact</loc>', $content);
         self::assertStringNotContainsString('/admin', $content);
         self::assertStringNotContainsString('/connexion', $content);
     }
@@ -79,7 +78,7 @@ final class PagesTest extends WebTestCase
     public function testSecurityHeaders(): void
     {
         $client = self::createClient();
-        $client->request('GET', self::page('/'));
+        $client->request('GET', '/');
 
         self::assertResponseHeaderSame('X-Content-Type-Options', 'nosniff');
         self::assertResponseHeaderSame('X-Frame-Options', 'SAMEORIGIN');

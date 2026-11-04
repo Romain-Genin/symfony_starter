@@ -9,8 +9,6 @@
 
 @source "../../templates";
 @source "../../src";
-/* Modules optionnels : templates scannés s'ils sont installés (chemin absent = ignoré) */
-@source "../../vendor/romain-genin/symfony-multilang-bundle/templates";
 
 /* Mode sombre piloté par la classe .dark (non activé par défaut) */
 @custom-variant dark (&:where(.dark, .dark *));
