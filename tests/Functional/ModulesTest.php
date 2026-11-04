@@ -9,7 +9,7 @@ use Zenstruck\Foundry\Test\ResetDatabase;
 
 /**
  * Modules optionnels (src/Kernel.php) : chaque test ne s'exécute que si le bundle est installé.
- * La CI lance la suite sans module puis avec les trois (.github/workflows/ci.yml).
+ * La CI lance la suite sans module puis avec les trois, et une seconde langue (.github/workflows/ci.yml).
  */
 final class ModulesTest extends WebTestCase
 {
@@ -20,6 +20,9 @@ final class ModulesTest extends WebTestCase
     {
         $client = self::createClient();
         self::skipUnless('multilang');
+        if (!\in_array('en', (array) self::getContainer()->getParameter('app.locales'), true)) {
+            self::markTestSkipped('Ajoutez translations/messages.en.yaml pour tester le changement de langue.');
+        }
 
         $client->request('GET', '/');
         self::assertResponseRedirects();
@@ -28,8 +31,6 @@ final class ModulesTest extends WebTestCase
         $crawler = $client->request('GET', '/en/contact');
         self::assertResponseIsSuccessful();
         self::assertSame('en', $crawler->filter('html')->attr('lang'));
-        self::assertSame('Contact', trim($crawler->filter('h1')->text()));
-        self::assertSelectorTextContains('a[href="#main-content"]', 'Skip to main content');
         self::assertSelectorExists('link[rel="alternate"][hreflang="fr"]');
         self::assertSelectorExists('meta[property="og:locale"][content="en_US"]');
 

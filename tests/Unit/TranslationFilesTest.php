@@ -19,6 +19,7 @@ final class TranslationFilesTest extends TestCase
     /** @return iterable<string, array{string, string}> */
     public static function translationFiles(): iterable
     {
+        yield 'référence' => ['messages', 'fr'];
         foreach (glob(self::DIR.'/*.yaml') ?: [] as $file) {
             if (preg_match('/^(\w+)\.(?!fr\.)([\w-]+)\.yaml$/', basename($file), $m)) {
                 yield basename($file) => [$m[1], $m[2]];
@@ -29,6 +30,12 @@ final class TranslationFilesTest extends TestCase
     #[DataProvider('translationFiles')]
     public function testLocaleTranslatesEveryReferenceKey(string $domain, string $locale): void
     {
+        if ('fr' === $locale) {
+            self::assertNotEmpty(self::load($domain, 'fr'), 'Le site est monolingue par défaut : messages.fr.yaml fait référence.');
+
+            return;
+        }
+
         $reference = self::load($domain, 'fr');
         $translated = self::load($domain, $locale);
 

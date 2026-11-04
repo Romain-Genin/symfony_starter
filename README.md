@@ -64,7 +64,7 @@ src/
   Mailer/AppMailer.php               Tous les emails transactionnels
   Twig/Components/                   Composants avec logique (NavLink, Breadcrumb)
   Twig/ModuleExtension.php           app_module(), app_html_attributes()… (pont vers les modules)
-translations/             Textes du site (messages, validators, security), FR + EN
+translations/             Textes du site (messages, validators, security), en français
 templates/
   components/             Composants anonymes (Button, Alert, Card, Section, PageHeader…)
   form/tailwind_theme.html.twig      Thème de formulaire accessible
@@ -117,32 +117,33 @@ Conservation RGPD : `app.contact_retention_months` (12 mois par défaut). Planif
 
 ## Traductions
 
-Le site est en français par défaut, mais **aucun texte n'est écrit en dur** : templates, formulaires, messages flash,
-validation et emails passent par des clés de traduction.
+Le site est **monolingue, en français** (`framework.default_locale`), mais **aucun texte n'est écrit en dur** :
+templates, formulaires, messages flash, validation et emails passent par des clés de traduction.
 
 | Fichier | Contenu |
 |---|---|
 | `translations/messages.fr.yaml` | Textes du site (navigation, pages, formulaires, flashs, emails…) |
 | `translations/validators.fr.yaml` | Messages de validation |
 | `translations/security.fr.yaml` | Messages de connexion |
-| `translations/*.en.yaml` | Traduction anglaise complète (prête pour le module multilingue) |
 
 - **Modifier un texte** : changez sa valeur dans `messages.fr.yaml`, le template ne bouge pas.
-- **Ajouter une langue** : copiez les fichiers `*.fr.yaml` en `*.<code>.yaml` et traduisez les valeurs.
-  Le test `TranslationFilesTest` vérifie qu'aucune clé ni aucun paramètre (`%name%`, `{{ limit }}`) ne manque.
+- **Changer la langue du site** (site monolingue dans une autre langue) : traduisez ces fichiers en `*.<code>.yaml`
+  et passez `default_locale` à `<code>` dans `config/packages/translation.yaml`.
+- **Plusieurs langues** : installez le [module multilingue](#multilingue), puis ajoutez une langue en déposant
+  ses fichiers `*.<code>.yaml` (copies traduites des `*.fr.yaml`). Le test `TranslationFilesTest` vérifie
+  qu'aucune clé ni aucun paramètre (`%name%`, `{{ limit }}`) ne manque.
 - **Pages légales** : textes longs et propres au droit de chaque pays, ils se traduisent par fichier :
   copiez `templates/legal/notice.html.twig` en `templates/legal/notice.en.html.twig` (sinon, la version française s'affiche).
 - Les noms de clés reprennent ceux du module multilingue (`nav.home`, `auth.login`, `form.email`, `footer.*`, `cookies.*`,
-  `error.*`…) : avec lui, ces textes génériques sont déjà disponibles dans 14 langues.
-
-Sans le module multilingue, le site reste monolingue (langue `framework.default_locale`).
+  `error.*`…) : avec lui, ces textes génériques sont déjà traduits dans 14 langues.
 
 ---
 
 ## Modules optionnels
 
 Trois bundles se branchent sur le starter **sans modifier son code** : il suffit de les installer.
-À l'inverse, chacun reste un bundle Symfony autonome, utilisable dans n'importe quel autre projet.
+Ils ne dépendent pas du starter : chacun est un bundle Symfony autonome, utilisable seul dans n'importe quel projet
+Symfony 6.4 à 8 (voir son README), et les modules s'utilisent indépendamment les uns des autres ou ensemble.
 
 | Module | Paquet | Apport |
 |---|---|---|
@@ -163,13 +164,16 @@ module multilingue quand il est là.
 
 ### Multilingue
 
-- Les pages du site et de la boutique sont préfixées par la langue ; `/` redirige vers la langue du visiteur
-  (cookie, puis `Accept-Language`). `sitemap.xml`, `robots.txt` et `/admin` restent à la racine.
-- Langues : `config/modules/multilang/multi_lang.yaml` (par défaut `fr` et `en`), puis un fichier
-  `translations/messages.<code>.yaml` par langue (voir [Traductions](#traductions)).
-- Le sélecteur de langue apparaît dans l'en-tête, le menu mobile et le pied de page ; `<html lang dir>`,
-  `og:locale`, les balises `hreflang` et le sitemap (une entrée par langue, avec alternatives) suivent.
-- Ne lancez pas `multilang:install` : la configuration et les routes sont déjà fournies par le starter.
+- **Les langues sont celles qui ont un fichier `translations/messages.<code>.yaml`** : le starter n'a que le français,
+  ajouter `messages.en.yaml` (et `validators.en.yaml`, `security.en.yaml`) ajoute l'anglais, sans autre configuration.
+  Le sélecteur de langue n'apparaît qu'à partir de deux langues.
+- Les pages du site et de la boutique sont préfixées par la langue (`/fr/contact`, `/en/contact`) ; `/` redirige vers
+  la langue du visiteur (cookie, puis `Accept-Language`). `sitemap.xml`, `robots.txt` et `/admin` restent à la racine.
+- Le sélecteur apparaît dans l'en-tête, le menu mobile et le pied de page ; `<html lang dir>`, `og:locale`,
+  les balises `hreflang` et le sitemap (une entrée par langue, avec alternatives) suivent.
+- Réglages (détection du navigateur, cookie…) : `config/modules/multilang/multi_lang.yaml`.
+  Ne lancez pas `multilang:install` : la configuration et les routes sont déjà fournies par le starter.
+- Après l'installation, recompilez le CSS (`make tailwind-build`) : il inclut alors les styles du sélecteur.
 
 ### Boutique
 

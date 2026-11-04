@@ -61,7 +61,7 @@
     <div class="border-t border-gray-200">
         <div class="container-page flex flex-wrap items-center justify-between gap-4 py-6">
             <p class="text-xs text-muted">{{ 'footer.copyright'|trans({'%year%': 'now'|date('Y'), '%company%': site.name}) }}</p>
-            {% if app_module('multilang') %}
+            {% if app_multilingual() %}
                 <twig:MultiLang:LocaleSwitcher position="top" align="start" />
             {% endif %}
         </div>

@@ -26,7 +26,7 @@
 
         <div class="flex items-center gap-2">
             <div class="hidden items-center gap-2 md:flex">
-                {% if app_module('multilang') %}
+                {% if app_multilingual() %}
                     <twig:MultiLang:LocaleSwitcher display="code" />
                 {% endif %}
                 {% if is_granted('ROLE_ADMIN') %}
@@ -74,7 +74,7 @@
                     <twig:NavLink route="app_register" class="block">{{ 'auth.register'|trans }}</twig:NavLink>
                 {% endif %}
             </li>
-            {% if app_module('multilang') %}
+            {% if app_multilingual() %}
                 <li class="border-t border-gray-200 pt-3">
                     <twig:MultiLang:LocaleSwitcher variant="list" />
                 </li>

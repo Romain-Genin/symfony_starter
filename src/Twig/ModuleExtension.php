@@ -29,10 +29,12 @@ final class ModuleExtension extends AbstractExtension
 
     /**
      * @param list<string> $modules
+     * @param list<string> $locales
      */
     public function __construct(
         private readonly RequestStack $requestStack,
         #[Autowire('%app.modules%')] private readonly array $modules,
+        #[Autowire('%app.locales%')] private readonly array $locales,
         #[Autowire('%kernel.default_locale%')] private readonly string $defaultLocale,
     ) {
     }
@@ -41,6 +43,7 @@ final class ModuleExtension extends AbstractExtension
     {
         return [
             new TwigFunction('app_module', $this->hasModule(...)),
+            new TwigFunction('app_multilingual', $this->isMultilingual(...)),
             new TwigFunction('app_html_attributes', $this->htmlAttributes(...), ['needs_environment' => true, 'is_safe' => ['html']]),
             new TwigFunction('app_alternate_links', $this->alternateLinks(...), ['needs_environment' => true, 'is_safe' => ['html']]),
             new TwigFunction('app_html_lang', $this->htmlLang(...)),
@@ -51,6 +54,12 @@ final class ModuleExtension extends AbstractExtension
     public function hasModule(string $module): bool
     {
         return \in_array($module, $this->modules, true);
+    }
+
+    /** Module multilingue installé et au moins deux langues traduites : affiche le sélecteur. */
+    public function isMultilingual(): bool
+    {
+        return $this->hasModule('multilang') && \count($this->locales) > 1;
     }
 
     /** lang="…" dir="…" de la balise <html>. */

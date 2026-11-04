@@ -55,6 +55,8 @@ jobs:
           done
           composer require --no-interaction $packages
           grep -E 'MultiLangBundle|AstraCheckoutBundle|ImageOptimizerBundle' config/bundles.php
+          # Le starter est monolingue : une seconde langue (copie du français) active le changement de langue.
+          for f in translations/*.fr.yaml; do cp "$f" "${f%.fr.yaml}.en.yaml"; done
 
       - name: Assets
         run: |
