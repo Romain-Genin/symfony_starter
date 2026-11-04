@@ -1,18 +1,38 @@
+# see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
     secret: '%env(APP_SECRET)%'
-    http_method_override: false
-    handle_all_throwables: true
+    enabled_locales: ['fr']
+
+    # Derrière le reverse proxy de Coolify (Traefik / Caddy)
+    trusted_proxies: '%env(TRUSTED_PROXIES)%'
+    trusted_headers: ['x-forwarded-for', 'x-forwarded-host', 'x-forwarded-proto', 'x-forwarded-port', 'x-forwarded-prefix']
 
     session:
-        handler_id: null
         cookie_secure: auto
         cookie_samesite: lax
 
-    php_errors:
-        log: true
+    http_method_override: false
+    handle_all_throwables: true
+
+    rate_limiter:
+        # Formulaire de contact : 3 envois / 10 min par IP
+        contact_form:
+            policy: sliding_window
+            limit: 3
+            interval: '10 minutes'
+        # Inscription, renvoi d'email de vérification : 5 / heure par IP
+        account_actions:
+            policy: sliding_window
+            limit: 5
+            interval: '1 hour'
 
 when@test:
     framework:
         test: true
         session:
             storage_factory_id: session.storage.factory.mock_file
+        rate_limiter:
+            contact_form:
+                policy: no_limit
+            account_actions:
+                policy: no_limit

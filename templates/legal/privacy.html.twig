@@ -1,0 +1,66 @@
+{% extends 'legal/_layout.html.twig' %}
+
+{% block title %}Politique de confidentialité{% endblock %}
+{% block meta_description %}Comment {{ site.name }} collecte, utilise et protège vos données personnelles, et comment exercer vos droits (RGPD).{% endblock %}
+{% block updated_at %}04/11/2026{% endblock %}
+
+{% block legal_content %}
+    <p>La protection de vos données personnelles est une priorité. Cette politique explique quelles données nous collectons, pourquoi, combien de temps nous les conservons et quels sont vos droits, conformément au Règlement général sur la protection des données (RGPD) et à la loi « Informatique et Libertés ».</p>
+
+    <h2 id="responsable">Responsable du traitement</h2>
+    <p>{{ site.legal.company }}, {{ site.address.street }}, {{ site.address.postal_code }} {{ site.address.city }}. Contact pour toute question relative à vos données : <a href="mailto:{{ site.legal.dpo_email }}">{{ site.legal.dpo_email }}</a>.</p>
+
+    <h2 id="donnees">Données collectées, finalités et bases légales</h2>
+    <div class="not-prose overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200 text-left text-sm">
+            <caption class="sr-only">Traitements de données personnelles</caption>
+            <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-4 py-3 font-semibold text-ink">Traitement</th>
+                    <th scope="col" class="px-4 py-3 font-semibold text-ink">Données</th>
+                    <th scope="col" class="px-4 py-3 font-semibold text-ink">Base légale</th>
+                    <th scope="col" class="px-4 py-3 font-semibold text-ink">Durée de conservation</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 text-muted">
+                <tr>
+                    <th scope="row" class="px-4 py-3 font-medium text-ink">Formulaire de contact</th>
+                    <td class="px-4 py-3">Nom, email, téléphone (facultatif), objet, message</td>
+                    <td class="px-4 py-3">Consentement (art. 6.1.a RGPD)</td>
+                    <td class="px-4 py-3">{{ retentionMonths }} mois à compter de l'envoi</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="px-4 py-3 font-medium text-ink">Compte utilisateur</th>
+                    <td class="px-4 py-3">Email, prénom, nom, mot de passe (haché), dates d'inscription et de connexion</td>
+                    <td class="px-4 py-3">Exécution du contrat / des CGU (art. 6.1.b)</td>
+                    <td class="px-4 py-3">Jusqu'à la suppression du compte</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="px-4 py-3 font-medium text-ink">Sécurité du site</th>
+                    <td class="px-4 py-3">Adresse IP, journaux techniques</td>
+                    <td class="px-4 py-3">Intérêt légitime (art. 6.1.f)</td>
+                    <td class="px-4 py-3">12 mois maximum</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2 id="securite">Sécurité de vos données</h2>
+    <p>Vos données personnelles (nom, adresse email, téléphone, messages) sont <strong>chiffrées dans notre base de données</strong> à l'aide d'un algorithme moderne (XChaCha20-Poly1305). Les mots de passe ne sont jamais stockés en clair : seule une empreinte irréversible est conservée. Les échanges avec le site sont protégés par HTTPS.</p>
+
+    <h2 id="destinataires">Destinataires</h2>
+    <p>Vos données sont destinées exclusivement aux personnes habilitées de {{ site.legal.company }}. Elles peuvent être traitées par nos sous-traitants techniques, dans la stricte limite de leur mission :</p>
+    <ul>
+        <li><strong>Hébergement</strong> : {{ site.legal.host.name }} ;</li>
+        <li><strong>Envoi des emails transactionnels</strong> : Brevo (Sendinblue SAS, France), serveurs situés dans l'Union européenne.</li>
+    </ul>
+    <p>Vos données ne sont jamais vendues ni cédées à des tiers.</p>
+
+    <h2 id="droits">Vos droits</h2>
+    <p>Vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité de vos données, ainsi que du droit de retirer votre consentement à tout moment et de définir des directives relatives à leur sort après votre décès.</p>
+    <p>Pour les exercer, écrivez à <a href="mailto:{{ site.legal.dpo_email }}">{{ site.legal.dpo_email }}</a>. Si vous avez un compte, vous pouvez modifier vos informations ou supprimer votre compte directement depuis votre espace personnel.</p>
+    <p>Si vous estimez, après nous avoir contactés, que vos droits ne sont pas respectés, vous pouvez adresser une réclamation à la <a href="https://www.cnil.fr/fr/plaintes" rel="noopener" target="_blank">CNIL<span class="sr-only"> (nouvelle fenêtre)</span></a>.</p>
+
+    <h2 id="cookies">Cookies</h2>
+    <p>Voir notre <a href="{{ path('app_legal_cookies') }}">politique cookies</a>.</p>
+{% endblock %}

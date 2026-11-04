@@ -1,0 +1,31 @@
+{% extends 'legal/_layout.html.twig' %}
+
+{% block title %}Conditions générales d'utilisation{% endblock %}
+{% block meta_description %}Conditions générales d'utilisation du site {{ site.name }}.{% endblock %}
+{% block updated_at %}04/11/2026{% endblock %}
+
+{% block legal_content %}
+    <h2>1. Objet</h2>
+    <p>Les présentes conditions générales d'utilisation (CGU) encadrent l'accès et l'utilisation du site {{ url('app_home') }}, édité par {{ site.legal.company }}. L'utilisation du site vaut acceptation des présentes CGU.</p>
+
+    <h2>2. Accès au site</h2>
+    <p>Le site est accessible gratuitement à tout utilisateur disposant d'un accès à Internet. L'éditeur s'efforce d'en assurer la disponibilité mais ne peut garantir un accès continu ; il peut suspendre le site pour maintenance sans préavis.</p>
+
+    <h2>3. Compte utilisateur</h2>
+    <p>La création d'un compte nécessite une adresse email valide, confirmée par un lien de vérification. L'utilisateur est responsable de la confidentialité de son mot de passe et de toute activité réalisée depuis son compte. Il peut supprimer son compte à tout moment depuis son espace personnel.</p>
+
+    <h2>4. Comportement de l'utilisateur</h2>
+    <p>L'utilisateur s'engage à ne pas porter atteinte au fonctionnement du site, à ne pas tenter d'accéder sans autorisation à des données, et à ne pas transmettre de contenu illicite via les formulaires.</p>
+
+    <h2>5. Responsabilité</h2>
+    <p>Les informations publiées sont fournies à titre indicatif. L'éditeur ne saurait être tenu responsable des dommages directs ou indirects résultant de l'utilisation du site.</p>
+
+    <h2>6. Données personnelles</h2>
+    <p>Voir la <a href="{{ path('app_legal_privacy') }}">politique de confidentialité</a>.</p>
+
+    <h2>7. Modification des CGU</h2>
+    <p>L'éditeur peut modifier les présentes CGU à tout moment. La version applicable est celle en ligne au moment de la consultation.</p>
+
+    <h2>8. Droit applicable</h2>
+    <p>Les présentes CGU sont soumises au droit français.</p>
+{% endblock %}

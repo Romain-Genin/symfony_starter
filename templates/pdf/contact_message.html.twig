@@ -1,0 +1,13 @@
+{% extends 'pdf/base.html.twig' %}
+
+{% block title %}Message de contact n° {{ message.id }}{% endblock %}
+
+{% block content %}
+    <h1>{{ message.subject }}</h1>
+    <table class="meta">
+        <tr><td class="label">De</td><td>{{ message.name }} &lt;{{ message.email }}&gt;</td></tr>
+        {% if message.phone %}<tr><td class="label">Téléphone</td><td>{{ message.phone }}</td></tr>{% endif %}
+        <tr><td class="label">Reçu le</td><td>{{ message.createdAt|date('d/m/Y à H:i') }}</td></tr>
+    </table>
+    <div class="box">{{ message.message }}</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'emails/layout.html.twig' %}
+
+{% block content %}
+    <h1>Merci pour votre message, {{ message.name }} !</h1>
+    <p>Nous avons bien reçu votre demande « {{ message.subject }} » et vous répondrons dans les meilleurs délais.</p>
+    <p class="muted">Récapitulatif de votre message :</p>
+    <div class="box">{{ message.message }}</div>
+    
+    <p>À très bientôt,<br>L'équipe {{ site.name }}</p>
+{% endblock %}

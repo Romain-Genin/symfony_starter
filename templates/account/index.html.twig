@@ -1,0 +1,22 @@
+{% extends 'account/_layout.html.twig' %}
+
+{% block title %}Mon compte{% endblock %}
+{% block heading %}Mon compte{% endblock %}
+
+{% block account_content %}
+    <section aria-labelledby="account-infos" class="space-y-6">
+        <h2 id="account-infos" class="text-lg font-semibold text-ink">Mes informations</h2>
+        <dl class="grid gap-4 rounded-card bg-gray-50 p-5 text-sm sm:grid-cols-2">
+            <div><dt class="text-muted">Adresse email</dt><dd class="font-medium text-ink">{{ app.user.email }}</dd></div>
+            <div><dt class="text-muted">Membre depuis le</dt><dd class="font-medium text-ink">{{ app.user.createdAt|date('d/m/Y') }}</dd></div>
+        </dl>
+
+        {{ form_start(form, {attr: {novalidate: 'novalidate', class: 'space-y-5'}}) }}
+            <div class="grid gap-5 sm:grid-cols-2">
+                {{ form_row(form.firstName) }}
+                {{ form_row(form.lastName) }}
+            </div>
+            <twig:Button>Enregistrer</twig:Button>
+        {{ form_end(form) }}
+    </section>
+{% endblock %}

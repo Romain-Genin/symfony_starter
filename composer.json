@@ -1,46 +1,55 @@
 {
-    "name": "app/symfony-starter",
-    "description": "Symfony 7.4 LTS Docker starter",
+    "name": "symfony/skeleton",
     "type": "project",
-    "license": "proprietary",
+    "license": "MIT",
+    "description": "A minimal Symfony project recommended to create bare bones applications",
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.2",
+        "php": ">=8.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "doctrine/doctrine-bundle": "^2.12",
-        "doctrine/doctrine-migrations-bundle": "^3.3",
-        "doctrine/orm": "^3.2",
-        "dompdf/dompdf": "^2.0",
-        "minishlink/web-push": "^8.0",
-        "omines/datatables-bundle": "^0.8",
-        "symfony/asset": "^7.4",
-        "symfony/console": "^7.4",
-        "symfony/dotenv": "^7.4",
-        "symfony/flex": "^2",
-        "symfony/form": "^7.4",
-        "symfony/framework-bundle": "^7.4",
-        "symfony/http-client": "^7.4",
-        "symfony/mailer": "^7.4",
-        "symfony/password-hasher": "^7.4",
-        "symfony/property-access": "^7.4",
-        "symfony/runtime": "^7.4",
-        "symfony/security-bundle": "^7.4",
-        "symfony/twig-bundle": "^7.4",
-        "symfony/validator": "^7.4",
-        "symfony/webpack-encore-bundle": "^2.0",
-        "symfony/yaml": "^7.4",
-        "twig/extra-bundle": "^3.0",
-        "twig/twig": "^3.0"
-    },
-    "require-dev": {
-        "symfony/browser-kit": "^7.4",
-        "symfony/css-selector": "^7.4",
-        "symfony/debug-bundle": "^7.4",
-        "symfony/maker-bundle": "^1.0",
-        "symfony/stopwatch": "^7.4",
-        "symfony/web-profiler-bundle": "^7.4"
+        "ext-intl": "*",
+        "ext-sodium": "*",
+        "doctrine/doctrine-bundle": "^3.3.4",
+        "doctrine/doctrine-migrations-bundle": "^4.0.1",
+        "doctrine/orm": "^3.7.6",
+        "dompdf/dompdf": "^3.1.6",
+        "easycorp/easyadmin-bundle": "^5.8",
+        "symfony/asset": "8.1.*",
+        "symfony/asset-mapper": "8.1.*",
+        "symfony/brevo-mailer": "8.1.*",
+        "symfony/console": "8.1.*",
+        "symfony/dotenv": "8.1.*",
+        "symfony/expression-language": "8.1.*",
+        "symfony/flex": "^2.12",
+        "symfony/form": "8.1.*",
+        "symfony/framework-bundle": "8.1.*",
+        "symfony/http-client": "8.1.*",
+        "symfony/intl": "8.1.*",
+        "symfony/mailer": "8.1.*",
+        "symfony/monolog-bundle": "^4.1",
+        "symfony/rate-limiter": "8.1.*",
+        "symfony/runtime": "8.1.*",
+        "symfony/security-bundle": "8.1.*",
+        "symfony/serializer": "8.1.*",
+        "symfony/stimulus-bundle": "^3.7",
+        "symfony/string": "8.1.*",
+        "symfony/translation": "8.1.*",
+        "symfony/twig-bundle": "8.1.*",
+        "symfony/uid": "8.1.*",
+        "symfony/ux-icons": "^3.7",
+        "symfony/ux-turbo": "^3.7",
+        "symfony/ux-twig-component": "^3.7",
+        "symfony/validator": "8.1.*",
+        "symfony/yaml": "8.1.*",
+        "symfonycasts/reset-password-bundle": "^1.26.1",
+        "symfonycasts/tailwind-bundle": "^1.0",
+        "symfonycasts/verify-email-bundle": "^1.18",
+        "twig/cssinliner-extra": "^3.26",
+        "twig/extra-bundle": "^3.29",
+        "twig/intl-extra": "^3.30",
+        "twig/string-extra": "^3.24"
     },
     "config": {
         "allow-plugins": {
@@ -48,10 +57,10 @@
             "symfony/flex": true,
             "symfony/runtime": true
         },
+        "bump-after-update": true,
         "sort-packages": true,
-        "optimize-autoloader": true,
-        "preferred-install": {
-            "*": "dist"
+        "platform": {
+            "php": "8.4.1"
         }
     },
     "autoload": {
@@ -72,12 +81,15 @@
         "symfony/polyfill-php74": "*",
         "symfony/polyfill-php80": "*",
         "symfony/polyfill-php81": "*",
-        "symfony/polyfill-php82": "*"
+        "symfony/polyfill-php82": "*",
+        "symfony/polyfill-php83": "*",
+        "symfony/polyfill-php84": "*"
     },
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+            "assets:install %PUBLIC_DIR%": "symfony-cmd",
+            "importmap:install": "symfony-cmd"
         },
         "post-install-cmd": [
             "@auto-scripts"
@@ -91,8 +103,25 @@
     },
     "extra": {
         "symfony": {
-            "allow-contrib": false,
-            "require": "^7.4"
+            "allow-contrib": true,
+            "require": "8.1.*"
         }
+    },
+    "require-dev": {
+        "dama/doctrine-test-bundle": "^8.7",
+        "doctrine/doctrine-fixtures-bundle": "^4.3",
+        "friendsofphp/php-cs-fixer": "^3.95",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-doctrine": "^2.0",
+        "phpstan/phpstan-symfony": "^2.0",
+        "phpunit/phpunit": "^13.4",
+        "symfony/browser-kit": "8.1.*",
+        "symfony/css-selector": "8.1.*",
+        "symfony/debug-bundle": "8.1.*",
+        "symfony/maker-bundle": "^1.68",
+        "symfony/stopwatch": "8.1.*",
+        "symfony/web-profiler-bundle": "8.1.*",
+        "zenstruck/foundry": "^2.15"
     }
 }

@@ -1,0 +1,28 @@
+{% extends 'legal/_layout.html.twig' %}
+
+{% block title %}Plan du site{% endblock %}
+{% block meta_description %}Plan du site {{ site.name }} : accès direct à toutes les pages.{% endblock %}
+{% block updated_at %}04/11/2026{% endblock %}
+
+{% block legal_content %}
+    <ul>
+        <li><a href="{{ path('app_home') }}">Accueil</a></li>
+        <li><a href="{{ path('app_contact') }}">Contact</a></li>
+        <li>Mon espace
+            <ul>
+                <li><a href="{{ path('app_login') }}">Connexion</a></li>
+                <li><a href="{{ path('app_register') }}">Créer un compte</a></li>
+                <li><a href="{{ path('app_forgot_password_request') }}">Mot de passe oublié</a></li>
+            </ul>
+        </li>
+        <li>Informations légales
+            <ul>
+                <li><a href="{{ path('app_legal_notice') }}">Mentions légales</a></li>
+                <li><a href="{{ path('app_legal_privacy') }}">Politique de confidentialité</a></li>
+                <li><a href="{{ path('app_legal_cookies') }}">Politique cookies</a></li>
+                <li><a href="{{ path('app_legal_terms') }}">Conditions générales d'utilisation</a></li>
+                <li><a href="{{ path('app_legal_accessibility') }}">Déclaration d'accessibilité</a></li>
+            </ul>
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{{ site.name }}{% endblock %}</title>
+    <style>
+        @page { margin: 2cm 1.8cm; }
+        body { font-family: "DejaVu Sans", sans-serif; font-size: 11px; color: #1f2333; line-height: 1.5; }
+        h1 { font-size: 18px; margin: 0 0 12px; color: #3b2fa8; }
+        .header { border-bottom: 2px solid #3b2fa8; padding-bottom: 8px; margin-bottom: 20px; }
+        .brand { font-size: 14px; font-weight: bold; color: #3b2fa8; }
+        .muted { color: #5b6075; }
+        table.meta { border-collapse: collapse; margin-bottom: 16px; }
+        table.meta td { padding: 3px 12px 3px 0; vertical-align: top; }
+        table.meta td.label { color: #5b6075; }
+        .box { border: 1px solid #ddd; border-radius: 4px; padding: 12px; white-space: pre-line; }
+        .footer { position: fixed; bottom: -1cm; left: 0; right: 0; font-size: 9px; color: #5b6075; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="header"><span class="brand">{{ site.name }}</span></div>
+    <div class="footer">{{ site.name }} — document généré le {{ 'now'|date('d/m/Y à H:i') }}</div>
+    {% block content %}{% endblock %}
+</body>
+</html>

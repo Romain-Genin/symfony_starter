@@ -1,0 +1,17 @@
+{% extends 'emails/layout.html.twig' %}
+
+{% block content %}
+    <h1>Nouveau message de contact</h1>
+    <table class="meta">
+        <tr><td class="label">Nom</td><td>{{ message.name }}</td></tr>
+        <tr><td class="label">Email</td><td><a href="mailto:{{ message.email }}">{{ message.email }}</a></td></tr>
+        {% if message.phone %}<tr><td class="label">Téléphone</td><td>{{ message.phone }}</td></tr>{% endif %}
+        <tr><td class="label">Objet</td><td>{{ message.subject }}</td></tr>
+        <tr><td class="label">Reçu le</td><td>{{ message.createdAt|date('d/m/Y à H:i') }}</td></tr>
+    </table>
+    
+    <div class="box">{{ message.message }}</div>
+    
+    <p>Répondez directement à cet email pour écrire à {{ message.name }}.</p>
+    <p><a href="{{ url('admin') }}">Voir les messages dans l'administration</a></p>
+{% endblock %}

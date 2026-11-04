@@ -1,0 +1,31 @@
+{% extends 'layout/auth.html.twig' %}
+
+{% block title %}Créer un compte{% endblock %}
+{% block heading %}Créer un compte{% endblock %}
+{% block subheading %}Un email de confirmation vous sera envoyé.{% endblock %}
+
+{% block card %}
+    {{ form_start(form, {attr: {novalidate: 'novalidate', class: 'space-y-5'}}) }}
+        {{ form_errors(form) }}
+        <div class="grid gap-5 sm:grid-cols-2">
+            {{ form_row(form.firstName) }}
+            {{ form_row(form.lastName) }}
+        </div>
+        {{ form_row(form.email) }}
+        {{ form_row(form.plainPassword) }}
+        {{ form_row(form.agreeTerms, {label_html: false}) }}
+        {{ form_row(form.antispam) }}
+        {{ form_rest(form) }}
+        <p class="text-xs text-muted">
+            Consultez notre <a href="{{ path('app_legal_privacy') }}" class="link">politique de confidentialité</a>
+            pour savoir comment vos données sont utilisées et protégées.
+        </p>
+        <twig:Button class="w-full" icon="lucide:user-plus" iconPosition="start">Créer mon compte</twig:Button>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block after_card %}
+    <p class="mt-6 text-center text-sm text-muted">
+        Déjà inscrit ? <a href="{{ path('app_login') }}" class="link">Se connecter</a>
+    </p>
+{% endblock %}

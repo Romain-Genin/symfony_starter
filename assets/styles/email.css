@@ -1,0 +1,19 @@
+/* Styles des emails (inlinés via le filtre inline_css). Rester sur du CSS simple. */
+body, table, td { font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #1f2333; }
+body { background: #f4f4f8; margin: 0; padding: 0; }
+.wrapper { background: #f4f4f8; padding: 24px 0; }
+.container { background: #ffffff; border-radius: 12px; }
+.content { padding: 32px; font-size: 16px; line-height: 1.6; }
+.header { padding: 24px 32px 0; }
+.brand { font-size: 20px; font-weight: 700; color: #4b3fbf; text-decoration: none; }
+h1 { font-size: 22px; line-height: 1.3; margin: 0 0 16px; color: #1f2333; }
+p { margin: 0 0 16px; }
+a { color: #4b3fbf; }
+.button { display: inline-block; background: #4b3fbf; color: #ffffff !important; text-decoration: none; font-weight: 600; padding: 12px 24px; border-radius: 8px; }
+.muted { color: #5b6075; font-size: 14px; }
+.box { background: #f6f5ff; border-left: 4px solid #4b3fbf; padding: 16px; border-radius: 4px; white-space: pre-line; }
+.footer { padding: 16px 32px 32px; text-align: center; color: #5b6075; font-size: 12px; }
+.meta td { padding: 4px 8px 4px 0; vertical-align: top; font-size: 14px; }
+.meta td.label { color: #5b6075; white-space: nowrap; }
+.cta { text-align: center; margin: 24px 0; }
+.box { margin: 16px 0 24px; }

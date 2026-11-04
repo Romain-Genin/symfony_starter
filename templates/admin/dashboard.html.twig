@@ -1,0 +1,44 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block page_title %}Tableau de bord{% endblock %}
+
+{% block main %}
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card"><div class="card-body">
+                <p class="text-muted mb-1">Utilisateurs</p>
+                <p class="h2 mb-0">{{ usersCount }}</p>
+            </div></div>
+        </div>
+        <div class="col-md-4">
+            <div class="card"><div class="card-body">
+                <p class="text-muted mb-1">Messages reçus</p>
+                <p class="h2 mb-0">{{ messagesCount }}</p>
+            </div></div>
+        </div>
+        <div class="col-md-4">
+            <div class="card"><div class="card-body">
+                <p class="text-muted mb-1">Messages non lus</p>
+                <p class="h2 mb-0 {{ unreadCount ? 'text-danger' }}">{{ unreadCount }}</p>
+            </div></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header"><h2 class="h5 mb-0">Derniers messages</h2></div>
+        <div class="list-group list-group-flush">
+            {% for message in latestMessages %}
+                <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-start"
+                   href="{{ ea_url().setController('App\\Controller\\Admin\\ContactMessageCrudController').setAction('detail').setEntityId(message.id) }}">
+                    <span>
+                        {% if not message.read %}<span class="badge bg-danger me-2">Nouveau</span>{% endif %}
+                        <strong>{{ message.name }}</strong> — {{ message.subject }}
+                    </span>
+                    <small class="text-muted">{{ message.createdAt|date('d/m/Y H:i') }}</small>
+                </a>
+            {% else %}
+                <p class="list-group-item text-muted mb-0">Aucun message pour le moment.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

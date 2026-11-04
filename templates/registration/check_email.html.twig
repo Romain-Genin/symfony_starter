@@ -1,0 +1,18 @@
+{% extends 'layout/auth.html.twig' %}
+
+{% block title %}Vérifiez vos emails{% endblock %}
+{% block heading %}Vérifiez vos emails{% endblock %}
+
+{% block card %}
+    <div class="space-y-4 text-sm text-muted">
+        <div class="flex justify-center"><twig:ux:icon name="lucide:mail-check" class="size-12 text-brand-700" /></div>
+        <p>Si l'adresse indiquée correspond à un compte en attente de confirmation, vous allez recevoir un email contenant un lien de confirmation.</p>
+        <p>Ce lien est valable une heure. Pensez à vérifier vos courriers indésirables.</p>
+    </div>
+{% endblock %}
+
+{% block after_card %}
+    <p class="mt-6 text-center text-sm text-muted">
+        Rien reçu ? <a href="{{ path('app_register_resend') }}" class="link">Renvoyer le lien</a>
+    </p>
+{% endblock %}

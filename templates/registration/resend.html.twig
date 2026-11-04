@@ -1,0 +1,12 @@
+{% extends 'layout/auth.html.twig' %}
+
+{% block title %}Renvoyer l'email de confirmation{% endblock %}
+{% block heading %}Renvoyer l'email de confirmation{% endblock %}
+{% block subheading %}Indiquez l'adresse utilisée lors de votre inscription.{% endblock %}
+
+{% block card %}
+    {{ form_start(form, {attr: {novalidate: 'novalidate', class: 'space-y-5'}}) }}
+        {{ form_row(form.email) }}
+        <twig:Button class="w-full" icon="lucide:send">Renvoyer le lien</twig:Button>
+    {{ form_end(form) }}
+{% endblock %}

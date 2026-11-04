@@ -1,0 +1,11 @@
+{# Messages flash : région live pour être annoncés par les lecteurs d'écran #}
+{% set flashes = app.flashes %}
+{% if flashes|length %}
+    <div class="container-page mt-6 space-y-3" aria-live="polite">
+        {% for type, messages in flashes %}
+            {% for message in messages %}
+                <twig:Alert :type="type in ['success', 'error', 'warning', 'info'] ? type : 'info'" dismissible>{{ message }}</twig:Alert>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endif %}

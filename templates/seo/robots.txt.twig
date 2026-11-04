@@ -1,0 +1,11 @@
+{% if allow -%}
+User-agent: *
+Disallow: /admin
+Disallow: /mon-compte
+
+Sitemap: {{ url('app_sitemap') }}
+{%- else -%}
+# Indexation désactivée sur cet environnement (APP_INDEXABLE=0)
+User-agent: *
+Disallow: /
+{%- endif %}

@@ -1,0 +1,22 @@
+{# Mise en page des écrans d'authentification (connexion, inscription, mot de passe…) #}
+{% extends 'base.html.twig' %}
+
+{% block robots %}noindex, follow{% endblock %}
+
+{% block body %}
+    <div class="container-page flex justify-center py-12 sm:py-16">
+        <div class="w-full max-w-md">
+            <div class="mb-8 text-center">
+                <img src="{{ asset('images/logo.svg') }}" alt="" width="40" height="46" class="mx-auto h-12 w-auto">
+                <h1 class="mt-4 text-2xl font-bold tracking-tight text-ink">{{ block('heading') }}</h1>
+                {% if block('subheading') is defined and block('subheading')|trim %}
+                    <p class="mt-2 text-sm text-muted">{{ block('subheading') }}</p>
+                {% endif %}
+            </div>
+            <div class="rounded-card bg-white p-6 shadow-sm ring-1 ring-gray-200 sm:p-8">
+                {% block card %}{% endblock %}
+            </div>
+            {% block after_card %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}

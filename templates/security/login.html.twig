@@ -1,101 +1,46 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion — Administration</title>
-    {{ encore_entry_link_tags('app') }}
-</head>
-<body class="satoshi login-bg min-h-screen flex items-center justify-center p-[2rem] relative overflow-hidden">
+{% extends 'layout/auth.html.twig' %}
 
-    <div class="login-blob-purple"></div>
-    <div class="login-blob-pink"></div>
+{% block title %}Connexion{% endblock %}
+{% block heading %}Connexion{% endblock %}
+{% block subheading %}Accédez à votre espace personnel.{% endblock %}
 
-    <div class="login-grid">
+{% block card %}
+    {% if error %}
+        <twig:Alert type="error" class="mb-6">{{ error.messageKey|trans(error.messageData, 'security') }}</twig:Alert>
+    {% endif %}
 
-        {# ── Left panel ──────────────────────────────────────────── #}
-        <div class="login-panel-left">
-            <div>
-                <div class="login-logo-box">
-                    <img src="/studioastra/logo.svg" class="h-[2.8rem]" alt="Logo StudioAstra">
-                </div>
-                <p class="text-[1rem] font-bold uppercase tracking-[0.08em] text-[var(--admin-fg-muted)] mb-[1rem]">Portail sécurisé</p>
-                <h1 class="text-[2.8rem] font-bold leading-tight text-[var(--admin-fg)] mb-[1.2rem]">Gérez votre site web en toute simplicité.</h1>
-                <p class="text-[1.3rem] text-[var(--admin-fg-muted)] leading-relaxed">Modifiez vos informations, vos photos et vos contenus directement depuis votre espace personnel.</p>
+    <form method="post" action="{{ path('app_login') }}" class="space-y-5">
+        <div class="space-y-1.5">
+            <label for="username" class="block text-sm font-medium text-ink">Adresse email</label>
+            <input type="email" value="{{ last_username }}" name="_username" id="username" required autofocus autocomplete="email"
+                   class="block w-full rounded-lg border-gray-300 px-3 py-2.5 shadow-sm focus:border-brand-600 focus:ring-brand-600 sm:text-sm"
+                   {% if error %}aria-invalid="true"{% endif %}>
+        </div>
+        <div class="space-y-1.5">
+            <div class="flex items-center justify-between">
+                <label for="password" class="block text-sm font-medium text-ink">Mot de passe</label>
+                <a href="{{ path('app_forgot_password_request') }}" class="text-sm text-brand-700 hover:underline">Mot de passe oublié ?</a>
             </div>
-            <ul class="list-none p-0 mt-[3.2rem] flex flex-col gap-[1rem]">
-                <li class="flex items-center gap-[1rem] text-[1.3rem] text-[var(--admin-fg)]">
-                    <span class="w-[0.7rem] h-[0.7rem] rounded-full flex-shrink-0 bg-violet-400 inline-block"></span>
-                    Mise à jour des photos et médias
-                </li>
-                <li class="flex items-center gap-[1rem] text-[1.3rem] text-[var(--admin-fg)]">
-                    <span class="w-[0.7rem] h-[0.7rem] rounded-full flex-shrink-0 bg-rose-300 inline-block"></span>
-                    Gestion des informations de contact
-                </li>
-                <li class="flex items-center gap-[1rem] text-[1.3rem] text-[var(--admin-fg)]">
-                    <span class="w-[0.7rem] h-[0.7rem] rounded-full flex-shrink-0 bg-green-300 inline-block"></span>
-                    Personnalisation des contenus
-                </li>
-            </ul>
+            <input type="password" name="_password" id="password" required autocomplete="current-password"
+                   class="block w-full rounded-lg border-gray-300 px-3 py-2.5 shadow-sm focus:border-brand-600 focus:ring-brand-600 sm:text-sm"
+                   {% if error %}aria-invalid="true"{% endif %}>
+        </div>
+        <div class="flex items-center gap-3">
+            <input type="checkbox" name="_remember_me" id="remember_me" class="size-4 rounded border-gray-400 text-brand-700 focus:ring-brand-600">
+            <label for="remember_me" class="text-sm text-ink">Rester connecté</label>
         </div>
 
-        {# ── Right: login form ────────────────────────────────────── #}
-        <div class="login-panel-right">
-            <h2 class="text-[2.2rem] font-bold text-[var(--admin-fg)] mb-[0.4rem]">Connexion</h2>
-            <p class="text-[1.3rem] text-[var(--admin-fg-muted)] mb-[2.4rem]">Accédez à votre espace d'administration.</p>
+        <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
 
-            {% if error %}
-            <div class="flash flash-error mb-[1.6rem]">
-                <i data-lucide="alert-circle" class="w-[1.4rem] h-[1.4rem] mt-[0.1rem] flex-shrink-0"></i>
-                <span>{{ error.messageKey|trans(error.messageData, 'security') }}</span>
-            </div>
-            {% endif %}
+        <twig:Button class="w-full">Se connecter</twig:Button>
+    </form>
+{% endblock %}
 
-            <form method="post" novalidate class="flex flex-col gap-[1.4rem]">
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-                <div>
-                    <label for="username" class="admin-label">Adresse e-mail</label>
-                    <div class="admin-input-wrap">
-                        <span class="admin-input-icon">
-                            <i data-lucide="mail" class="w-[1.4rem] h-[1.4rem]"></i>
-                        </span>
-                        <input id="username" type="email" name="_username" value="{{ last_username }}"
-                               autocomplete="email" autofocus required
-                               placeholder="nom@exemple.com"
-                               class="admin-input with-icon">
-                    </div>
-                </div>
-
-                <div>
-                    <label for="password" class="admin-label">Mot de passe</label>
-                    <div class="admin-input-wrap">
-                        <span class="admin-input-icon">
-                            <i data-lucide="lock" class="w-[1.4rem] h-[1.4rem]"></i>
-                        </span>
-                        <input id="password" type="password" name="_password"
-                               autocomplete="current-password" required
-                               placeholder="••••••••"
-                               class="admin-input with-icon">
-                    </div>
-                    <div class="text-right mt-[0.6rem]">
-                        <a href="#" class="text-[1.2rem] text-violet-400 font-medium no-underline">Mot de passe oublié ?</a>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn-login">
-                    <i data-lucide="arrow-right" class="w-[1.5rem] h-[1.5rem]"></i>
-                    Se connecter
-                </button>
-            </form>
-
-            <div class="mt-[2rem] pt-[1.6rem] border-t border-black/[0.06] text-[1.2rem] text-[var(--admin-fg-muted)] text-center">
-                Plateforme administrée par <span class="text-violet-400 font-semibold">StudioAstra</span>
-            </div>
-        </div>
-
-    </div>
-
-    {{ encore_entry_script_tags('app') }}
-</body>
-</html>
+{% block after_card %}
+    <p class="mt-6 text-center text-sm text-muted">
+        Pas encore de compte ? <a href="{{ path('app_register') }}" class="link">Créer un compte</a>
+    </p>
+    <p class="mt-2 text-center text-sm text-muted">
+        Email de confirmation non reçu ? <a href="{{ path('app_register_resend') }}" class="link">Renvoyer le lien</a>
+    </p>
+{% endblock %}

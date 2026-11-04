@@ -1,27 +1,103 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="h-full">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Mon Projet{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="manifest" href="/manifest.webmanifest">
-    <meta name="theme-color" content="#3b82f6">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Mon Projet">
-    <link rel="apple-touch-icon" href="/icons/icon.svg">
-    <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
-    <meta name="vapid-public-key" content="{{ vapid_public_key }}">
+    {%- set page_title = block('title') is defined ? block('title')|trim : '' -%}
+    <title>{{ page_title ? page_title ~ ' | ' ~ site.name : site.name ~ ' — ' ~ site.baseline }}</title>
 
-    {% block stylesheets %}{{ encore_entry_link_tags('app') }}{% endblock %}
-            {{ encore_entry_link_tags('app') }}
-    {% block head %}{% endblock %}
+    {%- set meta_description = block('meta_description') is defined and block('meta_description')|trim ? block('meta_description')|trim : site.description -%}
+    {%- set canonical = block('canonical') is defined and block('canonical')|trim ? block('canonical')|trim : url(app.current_route ?? 'app_home', app.current_route_parameters ?? {}) -%}
+    {%- set og_image = block('og_image') is defined and block('og_image')|trim ? block('og_image')|trim : absolute_url(asset('images/og-default.png')) -%}
+    {%- set robots = block('robots') is defined and block('robots')|trim ? block('robots')|trim : 'index, follow, max-image-preview:large' -%}
+    {%- if not indexable -%}{%- set robots = 'noindex, nofollow' -%}{%- endif -%}
+
+    <meta name="description" content="{{ meta_description }}">
+    <meta name="robots" content="{{ robots }}">
+    <link rel="canonical" href="{{ canonical }}">
+
+    {# Open Graph / réseaux sociaux #}
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:site_name" content="{{ site.name }}">
+    <meta property="og:locale" content="{{ site.locale }}">
+    <meta property="og:title" content="{{ page_title ?: site.name }}">
+    <meta property="og:description" content="{{ meta_description }}">
+    <meta property="og:url" content="{{ canonical }}">
+    <meta property="og:image" content="{{ og_image }}">
+    <meta name="twitter:card" content="summary_large_image">
+
+    {# Icônes & thème #}
+    <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
+    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="32x32">
+    <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
+    <meta name="theme-color" content="{{ site.theme_color }}">
+    <meta name="format-detection" content="telephone=no">
+
+    {# Turbo : transitions natives entre pages (navigateurs compatibles) #}
+    <meta name="view-transition" content="same-origin">
+    <meta name="cookie-consent-version" content="{{ cookie_consent_version }}">
+
+    <link rel="preload" href="{{ asset('fonts/satoshi/Satoshi-Variable.woff2') }}" as="font" type="font/woff2" crossorigin>
+
+    {% block stylesheets %}{% endblock %}
+    {% block javascripts %}
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
+    {% endblock %}
+
+    {# Données structurées : organisation + site #}
+    {%- set same_as = [] -%}
+    {%- for social_url in site.social|filter(v => v) -%}{%- set same_as = same_as|merge([social_url]) -%}{%- endfor -%}
+    <script type="application/ld+json">{{ {
+        '@context': 'https://schema.org',
+        '@graph': [
+            {
+                '@type': 'Organization',
+                '@id': url('app_home') ~ '#organization',
+                name: site.name,
+                url: url('app_home'),
+                logo: absolute_url(asset('images/logo.svg')),
+                email: site.email,
+                telephone: site.phone,
+                address: {
+                    '@type': 'PostalAddress',
+                    streetAddress: site.address.street,
+                    postalCode: site.address.postal_code,
+                    addressLocality: site.address.city,
+                    addressCountry: site.address.country_code,
+                },
+                sameAs: same_as,
+            },
+            {
+                '@type': 'WebSite',
+                '@id': url('app_home') ~ '#website',
+                name: site.name,
+                url: url('app_home'),
+                inLanguage: 'fr-FR',
+                publisher: {'@id': url('app_home') ~ '#organization'},
+            },
+        ],
+    }|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_UNESCAPED_UNICODE') b-or constant('JSON_HEX_TAG'))|raw }}</script>
+    {% block structured_data %}{% endblock %}
 </head>
-<body class="bg-gray-50 text-gray-900 font-sans">
-    {% block body %}{% endblock %}
-    {% block javascripts %}{{ encore_entry_script_tags('app') }}{% endblock %}
-            {{ encore_entry_script_tags('app') }}
+<body class="flex min-h-full flex-col">
+    {# Lien d'évitement : premier élément focusable (RGAA 12.7) #}
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-brand-700 focus:px-4 focus:py-2 focus:text-white focus:shadow-lg">
+        Aller au contenu principal
+    </a>
+
+    {% block header %}{{ include('layout/_header.html.twig') }}{% endblock %}
+
+    <main id="main-content" tabindex="-1" class="flex-1 focus:outline-none">
+        {{ include('layout/_flashes.html.twig') }}
+        {% block body %}{% endblock %}
+    </main>
+
+    {% block footer %}{{ include('layout/_footer.html.twig') }}{% endblock %}
+
+    {{ include('layout/_cookie_banner.html.twig') }}
+
+    {# Annonce des changements de page Turbo aux lecteurs d'écran (assets/js/a11y.js) #}
+    <div id="route-announcer" class="sr-only" aria-live="assertive" aria-atomic="true" data-turbo-permanent></div>
 </body>
 </html>

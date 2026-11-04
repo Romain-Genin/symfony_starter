@@ -1,0 +1,19 @@
+{% extends 'layout/auth.html.twig' %}
+
+{% block title %}Vérifiez vos emails{% endblock %}
+{% block heading %}Vérifiez vos emails{% endblock %}
+
+{% block card %}
+    <div class="space-y-4 text-sm text-muted">
+        <div class="flex justify-center"><twig:ux:icon name="lucide:mail-check" class="size-12 text-brand-700" /></div>
+        <p>Si un compte correspond à cette adresse, un email contenant un lien de réinitialisation vient d'être envoyé.</p>
+        <p>Ce lien expirera dans {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>
+        <p>Pensez à vérifier vos courriers indésirables.</p>
+    </div>
+{% endblock %}
+
+{% block after_card %}
+    <p class="mt-6 text-center text-sm text-muted">
+        <a href="{{ path('app_forgot_password_request') }}" class="link">Faire une nouvelle demande</a>
+    </p>
+{% endblock %}

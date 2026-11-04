@@ -1,0 +1,34 @@
+{#
+    Pages d'erreur (prod). Prévisualisation en dev : /_error/404, /_error/403, /_error/500…
+    Le texte s'adapte au code HTTP ; un template errorXXX.html.twig peut surcharger un code précis.
+#}
+{% extends 'base.html.twig' %}
+
+{%- set messages = {
+    400: {title: 'Requête invalide', text: 'La requête envoyée n\'a pas pu être comprise par le serveur.'},
+    403: {title: 'Accès refusé', text: 'Vous n\'avez pas l\'autorisation d\'accéder à cette page.'},
+    404: {title: 'Page introuvable', text: 'La page que vous cherchez n\'existe pas ou a été déplacée.'},
+    405: {title: 'Méthode non autorisée', text: 'Cette action n\'est pas permise sur cette page.'},
+    410: {title: 'Page supprimée', text: 'Cette page n\'existe plus.'},
+    419: {title: 'Session expirée', text: 'Votre session a expiré. Merci de recharger la page.'},
+    429: {title: 'Trop de requêtes', text: 'Vous avez effectué trop de requêtes. Merci de patienter quelques instants.'},
+    500: {title: 'Erreur interne', text: 'Une erreur inattendue est survenue. Nos équipes ont été prévenues.'},
+    503: {title: 'Site en maintenance', text: 'Le site est momentanément indisponible. Merci de revenir dans quelques minutes.'},
+} -%}
+{%- set message = messages[status_code] ?? {title: 'Une erreur est survenue', text: 'Merci de réessayer plus tard.'} -%}
+
+{% block title %}{{ message.title }}{% endblock %}
+{% block robots %}noindex, nofollow{% endblock %}
+{% block canonical %}{{ url('app_home') }}{% endblock %}
+
+{% block body %}
+    <section class="container-page flex flex-col items-center py-20 text-center sm:py-28" aria-labelledby="error-title">
+        <p class="text-sm font-semibold uppercase tracking-widest text-brand-700">Erreur {{ status_code }}</p>
+        <h1 id="error-title" class="mt-3 text-4xl font-black tracking-tight text-ink sm:text-5xl">{{ message.title }}</h1>
+        <p class="mt-4 max-w-lg text-lg text-muted">{{ message.text }}</p>
+        <div class="mt-10 flex flex-col gap-3 sm:flex-row">
+            <twig:Button href="{{ path('app_home') }}" icon="lucide:house" iconPosition="start">Retour à l'accueil</twig:Button>
+            <twig:Button href="{{ path('app_contact') }}" variant="secondary">Signaler un problème</twig:Button>
+        </div>
+    </section>
+{% endblock %}

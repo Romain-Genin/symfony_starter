@@ -1,0 +1,43 @@
+{#
+    Layout des emails : tableaux HTML (compatibilité Outlook / Gmail) + CSS inliné (twig/cssinliner-extra).
+    Les emails étendent ce template et remplissent le bloc « content ».
+#}
+{% apply inline_css(source('@styles/email.css')) %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <title>{{ email.subject }}</title>
+</head>
+<body>
+    <table role="presentation" class="wrapper" width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+            <td align="center">
+                <table role="presentation" class="container" width="600" cellpadding="0" cellspacing="0" style="max-width: 600px; width: 100%;">
+                    <tr>
+                        <td class="header">
+                            <a href="{{ url('app_home') }}" class="brand">{{ site.name }}</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="content">
+                            {% block content %}{% endblock %}
+                        </td>
+                    </tr>
+                </table>
+                <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width: 600px; width: 100%;">
+                    <tr>
+                        <td class="footer">
+                            <p>{{ site.name }} — {{ site.address.street }}, {{ site.address.postal_code }} {{ site.address.city }}</p>
+                            <p>Cet email vous a été envoyé automatiquement.</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+{% endapply %}

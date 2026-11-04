@@ -1,371 +1,176 @@
-# Symfony 7.4 LTS Docker Starter
+# Starter Symfony 8 — Studio Astra
 
-Projet **Symfony blank** prêt à développer : stack Docker complète, Tailwind CSS v3 avec thème personnalisable, PWA (Service Worker + push notifications) et back-office admin.
+Socle de projet prêt à développer : pages essentielles, back-office, emails transactionnels, SEO, accessibilité et **données personnelles chiffrées en base**.
 
-**Stack :** PHP 8.3-FPM · Nginx · MariaDB 10.11 · Mailpit · Webpack Encore · Tailwind CSS v3 · PWA · Admin custom
-
----
-
-## Fonctionnalités incluses
-
-| Feature | Détail |
+| Brique | Choix |
 |---|---|
-| **Docker** | PHP 8.3, Nginx, MariaDB, Mailpit |
-| **Tailwind CSS v3** | via Webpack Encore |
-| **Couleurs personnalisables** | variables CSS dans `assets/styles/_theme.css` |
-| **PWA** | `public/sw.js`, `public/manifest.webmanifest`, `assets/js/pwa.js` |
-| **Push notifications** | clés VAPID via `make vapid-keys` |
-| **Admin** | login + dashboard sur `/admin` |
-| **Services** | Mailer, PDF (DOMPDF), DataTables |
+| Back | **Symfony 8.1**, PHP 8.4, Doctrine ORM 3, PostgreSQL 17 |
+| Front | **AssetMapper** (aucun build Node), **Tailwind CSS v4**, **Alpine.js**, **Turbo**, **Twig Components**, UX Icons (Lucide) |
+| Admin | **EasyAdmin 5** (utilisateurs, messages de contact, export PDF) |
+| Emails | Symfony Mailer + **Brevo** (prod) / **Mailpit** (local), templates Twig avec CSS inliné |
+| Sécurité | Inscription + confirmation d'email, mot de passe oublié, limitation des tentatives, anti-spam maison |
+| Qualité | PHPUnit (+ Foundry, DAMA), PHPStan niveau 6, PHP-CS-Fixer |
+| Infra | Docker local (php-fpm + nginx + postgres + mailpit), Docker prod pour **Coolify** |
 
 ---
 
-## Stack technique
-
-| Composant | Version |
-|---|---|
-| PHP | 8.3-FPM |
-| Symfony | 7.4.13 LTS |
-| MariaDB | 10.11 |
-| Node.js | 22 |
-| Tailwind CSS | v3 |
-| Webpack Encore | ^4 |
-
-**Packages notables :** jQuery · Moment.js (fr) · Lucide Icons · DataTables · DOMPDF · minishlink/web-push · omines/datatables-bundle
-
----
-
-## Premier démarrage
+## Démarrage
 
 ```bash
-# Copier et adapter les variables d'environnement
-cp .env .env.local
-
-# Lancer l'installation complète (Docker build + deps + DB + assets)
-make install
+cp .env .env.local      # facultatif : surcharges locales
+make install            # build, composer, importmap, tailwind, migrations, fixtures
+make tailwind           # dans un autre terminal : recompile le CSS à chaque modification
 ```
 
-> **Prérequis :** Docker + Docker Compose v2
+| URL | |
+|---|---|
+| http://localhost:8080 | Site |
+| http://localhost:8080/admin | Admin — `admin@example.com` / `password-de-test-123` (fixtures) |
+| http://localhost:8025 | Mailpit (tous les emails envoyés en local) |
+
+`make` liste toutes les commandes disponibles (`make test`, `make qa`, `make migration`, `make admin email=…`, etc.).
 
 ---
 
-## Personnalisation des couleurs
-
-Toutes les couleurs du projet sont centralisées dans `assets/styles/_theme.css`. Modifier les variables CSS suffit pour rebrander l'ensemble du site et de l'admin.
-
-```css
-:root {
-    --color-primary:        #3b82f6;   /* couleur principale */
-    --color-primary-dark:   #1d4ed8;
-    --color-primary-light:  #93c5fd;
-    --color-secondary:      #6b7280;   /* couleur secondaire */
-    --color-secondary-dark: #374151;
-    --color-success:        #10b981;
-    --color-danger:         #ef4444;
-    --color-warning:        #f59e0b;
-    --color-info:           #3b82f6;
-    --color-bg:             #f9fafb;   /* fond de page */
-    --color-surface:        #ffffff;   /* cartes, surfaces */
-    --color-border:         #e5e7eb;
-    --color-text:           #111827;   /* texte principal */
-    --color-text-muted:     #6b7280;   /* texte secondaire */
-}
-```
-
-Les couleurs sont exposées à Tailwind via `tailwind.config.js` (ex. `bg-primary`, `text-secondary`).
-
-Après modification, rebuilder les assets :
-
-```bash
-make assets-watch   # en dev (rebuild automatique)
-make assets-dev     # build unique en dev
-make assets         # build production
-```
-
----
-
-## Commandes Make
-
-### Setup
-
-| Commande | Description |
-|---|---|
-| `make install` | Installation complète (à lancer une seule fois) |
-| `make start` | Démarrer les conteneurs |
-| `make stop` | Arrêter les conteneurs |
-| `make restart` | Redémarrer les conteneurs |
-| `make build` | Rebuild les images Docker |
-
-### Développement
-
-| Commande | Description |
-|---|---|
-| `make bash` | Ouvrir un shell dans le conteneur PHP |
-| `make cc` | Vider le cache Symfony |
-| `make logs` | Suivre les logs des conteneurs |
-| `make routes` | Lister toutes les routes |
-| `make entities` | Lister les mappings Doctrine |
-
-### Assets
-
-| Commande | Description |
-|---|---|
-| `make assets-dev` | Build assets (dev, une fois) |
-| `make assets-watch` | Watch & rebuild automatiquement |
-| `make assets` | Build assets (production) |
-
-### Base de données
-
-| Commande | Description |
-|---|---|
-| `make migration` | Générer une migration depuis les entités |
-| `make migrate` | Appliquer les migrations en attente |
-| `make db-shell` | Shell MySQL interactif |
-
-### Admin & PWA
-
-| Commande | Description |
-|---|---|
-| `make create-admin` | Créer un compte administrateur (interactif) |
-| `make vapid-keys` | Générer les clés VAPID pour les push notifications |
-
-### Tests
-
-| Commande | Description |
-|---|---|
-| `make test` | Lancer PHPUnit |
-
----
-
-## URLs
-
-| Service | URL |
-|---|---|
-| Application | http://localhost:8080 |
-| Admin | http://localhost:8080/admin |
-| Mailpit (emails dev) | http://localhost:8025 |
-| MariaDB | localhost:3306 |
-
-> Les ports sont configurables dans `.env` (`NGINX_PORT`, `MAILPIT_UI_PORT`, `DB_PORT`).
-
----
-
-## Variables d'environnement
-
-Copier `.env` en `.env.local` et adapter les valeurs. Ne jamais committer `.env.local`.
-
-| Variable | Description | Défaut |
-|---|---|---|
-| `APP_SECRET` | Clé secrète Symfony | `changeme_...` |
-| `DB_*` | Paramètres MariaDB | `symfony/symfony` |
-| `DATABASE_URL` | DSN Doctrine (auto-construit) | — |
-| `MAILER_DSN` | DSN mailer (Mailpit en dev) | `smtp://mailpit:1025` |
-| `MAILER_SENDER_EMAIL` | Adresse expéditeur | `noreply@monprojet.fr` |
-| `MAILER_SENDER_NAME` | Nom expéditeur | `Mon Projet` |
-| `VAPID_PUBLIC_KEY` | Clé publique VAPID | générer via `make vapid-keys` |
-| `VAPID_PRIVATE_KEY` | Clé privée VAPID | générer via `make vapid-keys` |
-| `VAPID_SUBJECT` | Subject VAPID (mailto:) | `mailto:contact@monprojet.fr` |
-| `NGINX_PORT` | Port HTTP exposé | `8080` |
-| `MAILPIT_UI_PORT` | Port UI Mailpit | `8025` |
-
-### Mailer Scaleway TEM (production)
-
-Dans `.env.local` :
+## Structure
 
 ```
-MAILER_DSN=smtp://<project_id>:<api_key>@smtp.tem.scw.cloud:587
-```
-
----
-
-## Architecture
-
-```
-.docker/
-  nginx/default.conf      # Config Nginx
-  php/Dockerfile          # PHP 8.3-FPM + Composer + Node 22
-  php/php.ini             # Config PHP custom
-
 assets/
-  js/app.js               # Point d'entrée JS (jQuery, Moment, DataTables, Lucide)
-  js/pwa.js               # Enregistrement SW + abonnement push
-  styles/app.css          # Tailwind + composants (@layer components)
-  styles/_theme.css       # Variables CSS (couleurs, typo, ombres…)
-
-config/
-  bundles.php             # Bundles Symfony enregistrés
-  packages/               # Configuration des bundles
-  routes.yaml             # Chargement des routes depuis src/Controller/
-  services.yaml           # Injection de dépendances
-
-public/
-  index.php               # Point d'entrée Symfony
-  sw.js                   # Service Worker (cache + push)
-  manifest.webmanifest    # Manifest PWA
-  icons/icon.svg          # Icône PWA
-
+  app.js                  Entrée JS : Stimulus/Turbo + Alpine (+ plugins focus, collapse)
+  js/cookie-consent.js    Store Alpine « consent » (bannière CNIL)
+  js/a11y.js              Annonce/focus lors des navigations Turbo
+  styles/app.css          Tailwind v4 (thème dans @theme)
+  styles/email.css        CSS des emails (inliné)
+  icons/lucide/           Icônes SVG locales → {{ ux_icon('lucide:mail') }}
+config/packages/
+  app_site.yaml           ⚠️ Identité du site / infos légales (variable Twig `site`)
+docker/                   Dockerfile de dev, nginx, php.ini, entrypoint prod
 src/
-  Command/
-    CreateAdminUserCommand.php      # app:create-admin
-    GenerateVapidKeysCommand.php    # app:generate-vapid-keys
-  Controller/
-    Admin/DashboardController.php   # /admin (ROLE_ADMIN)
-    SecurityController.php          # /admin/login + /admin/logout
-    PushSubscriptionController.php  # /push/subscribe + /push/unsubscribe
-  Entity/
-    User.php                        # UserInterface + ROLE_ADMIN
-    PushSubscription.php            # Abonnements push VAPID
-  Service/
-    Mailer/AppMailer.php            # Envoi d'emails via template Twig
-    Pdf/PdfService.php              # Génération PDF (DOMPDF)
-    Push/PushNotificationService.php # Envoi push notifications
-
+  Doctrine/Type/EncryptedType.php    Type Doctrine « encrypted »
+  Security/Encryption/Encryptor.php  Chiffrement + blind index
+  Spam/SpamChecker.php               Anti-spam (honeypot + jeton horodaté)
+  Mailer/AppMailer.php               Tous les emails transactionnels
+  Twig/Components/                   Composants avec logique (NavLink, Breadcrumb)
 templates/
-  base.html.twig                    # Layout public (meta tags PWA)
-  security/login.html.twig          # Page de connexion admin
-  admin/
-    base.html.twig                  # Layout admin (sidebar + topbar)
-    _nav.html.twig                  # Navigation sidebar (macro Twig)
-    dashboard/index.html.twig       # Dashboard avec cartes de stats
+  components/             Composants anonymes (Button, Alert, Card, Section, PageHeader…)
+  form/tailwind_theme.html.twig      Thème de formulaire accessible
+  bundles/TwigBundle/Exception/      Pages d'erreur
+  legal/                  Mentions légales, confidentialité, cookies, CGU, accessibilité
+Dockerfile, docker-compose.yml       Production (Coolify)
+compose.yaml                         Développement local
 ```
 
 ---
 
-## Accès admin
+## Chiffrement des données
 
-1. Générer les clés VAPID : `make vapid-keys` (coller dans `.env.local`)
-2. Créer un compte admin : `make create-admin`
-3. Se connecter sur http://localhost:8080/admin/login
+Les données personnelles (email, nom, prénom, téléphone, messages) sont chiffrées **au niveau applicatif** avant d'être écrites en base : un dump SQL ou un accès direct à la base ne révèle rien.
 
----
+- Algorithme : **XChaCha20-Poly1305** (libsodium), nonce aléatoire par valeur, chiffrement authentifié (toute altération est détectée).
+- Les sous-clés sont dérivées de `APP_ENCRYPTION_KEY`.
+- Usage dans une entité :
 
-## PWA & Push Notifications
+  ```php
+  #[ORM\Column(type: EncryptedType::NAME, nullable: true)]
+  private ?string $phone = null;
+  ```
 
-La PWA est déjà câblée dans le starter :
+- Une colonne chiffrée n'est **ni triable, ni filtrable** en SQL. Pour une recherche exacte, ajoutez un **blind index** (empreinte HMAC), comme `User::$emailHash`, utilisé pour la connexion et l'unicité des emails (contrainte `#[UniqueEmail]`).
+- Les mots de passe sont hachés (bcrypt/argon), jamais chiffrés.
 
-- **Manifest + meta tags** dans `templates/base.html.twig`
-- **Service Worker** (`public/sw.js`) : cache des assets + gestion des push
-- **Abonnement push** côté front via `assets/js/pwa.js`
-
-### Activer les push en dev
-
-```bash
-make vapid-keys    # copier les clés dans .env.local
-make create-admin  # créer un compte admin
-```
-
-### Service Worker
-
-Le SW (`public/sw.js`) implémente :
-
-- **Cache-first** pour les assets statiques (JS/CSS/images)
-- **Network-first** pour les pages HTML
-- Listener `push` → affichage de la notification
-- Listener `notificationclick` → focus ou ouverture de l'onglet
-
-### Clés VAPID
-
-```bash
-make vapid-keys
-# → VAPID_PUBLIC_KEY=...
-# → VAPID_PRIVATE_KEY=...
-```
-
-Coller les valeurs dans `.env.local`. Ne jamais committer `VAPID_PRIVATE_KEY`.
-
-### Demander la permission (front)
-
-```js
-// Disponible globalement après chargement de app.js
-await window.requestPushPermission();
-```
-
-### Envoyer une notification (back)
-
-```php
-$this->pushNotificationService->sendToAll('Titre', 'Corps', '/url');
-```
+> ⚠️ **La clé est critique.** Générez-la avec `make encryption-key`, stockez-la dans les variables Coolify **et** dans un gestionnaire de secrets. Si vous la perdez ou la changez, les données existantes deviennent définitivement illisibles.
 
 ---
 
-## Services réutilisables
+## Emails (Brevo)
 
-### AppMailer
+- Local : `MAILER_DSN=smtp://mailpit:1025` (valeur par défaut).
+- Prod : `MAILER_DSN=brevo+api://VOTRE_CLE_API@default`. Pensez à authentifier le domaine d'envoi dans Brevo (SPF, DKIM, DMARC).
+- L'expéditeur est défini globalement par `MAILER_FROM`, le destinataire du formulaire de contact par `CONTACT_RECIPIENT`.
+- Chaque email porte un tag Brevo (`contact-notification`, `verify-email`…) pour les statistiques.
 
-```php
-use App\Service\Mailer\AppMailer;
+## Formulaire de contact & anti-spam
 
-$mailer->send(
-    to: 'destinataire@example.com',
-    subject: 'Sujet',
-    template: 'emails/montemplate.html.twig',
-    context: ['variable' => 'valeur'],
-);
-```
+Les messages sont **enregistrés chiffrés** (consultables dans l'admin) puis notifiés par email, avec un accusé de réception envoyé à l'expéditeur. L'anti-spam n'utilise aucun service tiers, donc aucun cookie ni transfert de données :
 
-### PdfService
+1. un champ « pot de miel » invisible ;
+2. un jeton horodaté signé, qui rejette les envois en moins de 3 s et les jetons falsifiés ou expirés ;
+3. une limitation de débit à 3 envois / 10 min par IP.
 
-```php
-use App\Service\Pdf\PdfService;
+Un robot détecté reçoit une fausse confirmation, pour ne pas lui donner d'indice.
 
-// Depuis un template Twig
-$pdf = $pdfService->generateFromTemplate('pdf/facture.html.twig', ['data' => $data]);
+Conservation RGPD : `app.contact_retention_months` (12 mois par défaut). Planifiez `php bin/console app:contact:purge` (tâche planifiée Coolify, une fois par jour).
 
-// Depuis du HTML brut
-$pdf = $pdfService->generateFromHtml('<h1>Hello</h1>');
+## SEO
 
-// $pdf est une instance Dompdf — appeler output() pour récupérer le binaire
-```
+- `<title>`, meta description, canonical, Open Graph et Twitter Card, par page via des blocs Twig (`title`, `meta_description`, `og_image`, `robots`…).
+- JSON-LD : `Organization` et `WebSite` dans le layout, `BreadcrumbList` via `<twig:Breadcrumb>`, `ContactPage`.
+- `/sitemap.xml` généré à partir des routes qui déclarent `options: ['sitemap' => [...]]`.
+- `/robots.txt` dynamique. **L'indexation est bloquée tant que `APP_INDEXABLE=1` n'est pas défini** (robots.txt, meta robots et en-tête `X-Robots-Tag`), ce qui protège les préprods.
 
----
+## Accessibilité
 
-## DataTables
+Lien d'évitement, un seul `h1` par page, landmarks, `aria-current` dans la navigation, focus visible renforcé, formulaires avec erreurs reliées aux champs (`aria-describedby`, `aria-invalid`), champs obligatoires signalés, annonce des changements de page Turbo, menu mobile et modale cookies avec focus piégé et touche Échap, respect de `prefers-reduced-motion`. Contrastes AA vérifiés avec axe-core.
 
-Auto-initialisation via attribut `data-datatable` :
+La page `/accessibilite` contient un modèle de déclaration RGAA, à mettre à jour après audit (statut actuel : « non conforme »).
+
+## Cookies
+
+La bannière respecte les recommandations de la CNIL : « Tout refuser » est aussi accessible que « Tout accepter », le choix est conservé 6 mois et reste modifiable depuis le lien « Gérer les cookies » du footer. Pour charger un script uniquement après consentement :
 
 ```html
-<table data-datatable>
-    <thead>...</thead>
-    <tbody>...</tbody>
-</table>
+<script type="text/plain" data-consent="analytics" data-src="https://exemple.com/analytics.js"></script>
 ```
 
-Configuration globale dans `config/packages/datatables.yaml`.
+Incrémentez `app.cookie_consent_version` pour redemander le consentement à tout le monde.
+
+## Composants Twig
+
+```twig
+<twig:Button href="{{ path('app_contact') }}" icon="lucide:arrow-right">Contact</twig:Button>
+<twig:Button variant="secondary" size="sm" type="button">Annuler</twig:Button>
+<twig:Alert type="success" dismissible>Enregistré.</twig:Alert>
+<twig:Card title="Titre" icon="lucide:zap">Contenu</twig:Card>
+<twig:Section id="atouts" title="Nos atouts" intro="…">…</twig:Section>
+<twig:PageHeader title="Contact" :breadcrumb="[{label: 'Contact'}]" />
+<twig:NavLink route="app_contact">Contact</twig:NavLink>
+```
+
+Ajouter une icône : `php bin/console ux:icons:import lucide:nom-icone`.
 
 ---
 
-## Ajouter des entités
+## Production (Coolify)
+
+Coolify construit `docker-compose.yml`, qui utilise le `Dockerfile` racine : la cible `php` (php-fpm) et la cible `nginx` (fichiers statiques embarqués). À chaque démarrage, l'entrypoint applique les migrations et préchauffe le cache.
+
+Variables d'environnement à définir dans Coolify :
+
+| Variable | Exemple |
+|---|---|
+| `APP_SECRET` | chaîne aléatoire de 32+ caractères |
+| `APP_ENCRYPTION_KEY` | `make encryption-key` ⚠️ à sauvegarder |
+| `DATABASE_URL` | `postgresql://user:pass@host:5432/app?serverVersion=17&charset=utf8` |
+| `DEFAULT_URI` | `https://www.mon-site.fr` |
+| `MAILER_DSN` | `brevo+api://CLE@default` |
+| `MAILER_FROM` | `"Mon Site <no-reply@mon-site.fr>"` |
+| `CONTACT_RECIPIENT` | `contact@mon-site.fr` |
+| `APP_INDEXABLE` | `1` **uniquement** sur le domaine de production |
+| `TRUSTED_PROXIES` | `private_ranges` (défaut) |
+
+Après le premier déploiement, créez l'administrateur :
 
 ```bash
-make bash
-php bin/console make:entity MonEntite
-php bin/console make:migration
-exit
-make migrate
+php bin/console app:user:create admin@mon-site.fr --admin
 ```
 
----
+## Avant la mise en ligne
 
-## Déploiement (production)
-
-```bash
-# Sur le serveur
-APP_ENV=prod composer install --no-dev --optimize-autoloader
-npm run build
-php bin/console doctrine:migrations:migrate --no-interaction
-php bin/console cache:clear --env=prod
-```
-
-Ne pas oublier de configurer `.env.local` avec les vraies valeurs (Scaleway TEM, VAPID keys, APP_SECRET fort).
-
----
-
-## Git
-
-Si la branche locale a été réinitialisée sur le starter et que le remote contient encore l'ancien code, synchroniser avec :
-
-```bash
-git push --force origin main
-```
-
-> ⚠️ À utiliser uniquement si personne d'autre ne travaille sur le dépôt.
+- [ ] Compléter `config/packages/app_site.yaml` (raison sociale, SIRET, hébergeur, adresse…)
+- [ ] Relire les pages légales, mettre à jour les dates
+- [ ] Remplacer le logo, `assets/images/og-default.png` (1200×630) et les favicons
+- [ ] Ajuster les couleurs dans `assets/styles/app.css` (`@theme`)
+- [ ] Générer et sauvegarder `APP_ENCRYPTION_KEY`
+- [ ] Authentifier le domaine d'envoi dans Brevo
+- [ ] `APP_INDEXABLE=1` en production
+- [ ] Planifier `app:contact:purge`

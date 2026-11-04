@@ -1,0 +1,18 @@
+{% extends 'layout/auth.html.twig' %}
+
+{% block title %}Mot de passe oublié{% endblock %}
+{% block heading %}Mot de passe oublié{% endblock %}
+{% block subheading %}Nous vous enverrons un lien pour choisir un nouveau mot de passe.{% endblock %}
+
+{% block card %}
+    {{ form_start(form, {attr: {novalidate: 'novalidate', class: 'space-y-5'}}) }}
+        {{ form_row(form.email) }}
+        <twig:Button class="w-full" icon="lucide:send">Recevoir le lien</twig:Button>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block after_card %}
+    <p class="mt-6 text-center text-sm text-muted">
+        <a href="{{ path('app_login') }}" class="link">Retour à la connexion</a>
+    </p>
+{% endblock %}

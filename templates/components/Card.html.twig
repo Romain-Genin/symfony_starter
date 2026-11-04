@@ -1,0 +1,13 @@
+{# <twig:Card title="Titre" icon="lucide:zap">Contenu</twig:Card> #}
+{% props title = null, icon = null, headingLevel = 3 %}
+<div {{ attributes.defaults({class: 'rounded-card bg-white p-6 shadow-sm ring-1 ring-gray-200'}) }}>
+    {% if icon %}
+        <div class="mb-4 inline-flex size-11 items-center justify-center rounded-xl bg-brand-50 text-brand-700">
+            <twig:ux:icon :name="icon" class="size-6" />
+        </div>
+    {% endif %}
+    {% if title %}
+        <h{{ headingLevel }} class="text-lg font-semibold text-ink">{{ title }}</h{{ headingLevel }}>
+    {% endif %}
+    <div class="{{ title ? 'mt-2' }} text-muted">{% block content %}{% endblock %}</div>
+</div>

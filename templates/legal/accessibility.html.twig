@@ -1,0 +1,29 @@
+{% extends 'legal/_layout.html.twig' %}
+
+{% block title %}Déclaration d'accessibilité{% endblock %}
+{% block meta_description %}Déclaration d'accessibilité du site {{ site.name }} (RGAA 4.1).{% endblock %}
+{% block updated_at %}04/11/2026{% endblock %}
+
+{% block legal_content %}
+    <p>{{ site.legal.company }} s'engage à rendre son site accessible conformément à l'article 47 de la loi n° 2005-102 du 11 février 2005.</p>
+    <p>Cette déclaration d'accessibilité s'applique au site <strong>{{ url('app_home') }}</strong>.</p>
+
+    <h2>État de conformité</h2>
+    <p>Le site <strong>n'est pas encore conforme</strong> au référentiel général d'amélioration de l'accessibilité (RGAA) version 4.1 : aucun audit n'a encore été réalisé. {# Mettre à jour après audit : « partiellement conforme » / « totalement conforme », avec le taux de conformité. #}</p>
+
+    <h2>Mesures mises en place</h2>
+    <ul>
+        <li>Structure sémantique (titres hiérarchisés, régions, listes) et lien d'évitement vers le contenu ;</li>
+        <li>navigation entièrement utilisable au clavier, avec un focus toujours visible ;</li>
+        <li>formulaires avec étiquettes explicites, champs obligatoires signalés, erreurs reliées aux champs ;</li>
+        <li>contrastes de couleurs conformes au niveau AA ;</li>
+        <li>annonce des changements de page aux technologies d'assistance ;</li>
+        <li>respect du réglage « réduire les animations » du système.</li>
+    </ul>
+
+    <h2>Retour d'information et contact</h2>
+    <p>Si vous n'arrivez pas à accéder à un contenu ou à un service, vous pouvez nous contacter pour être orienté vers une alternative accessible ou obtenir le contenu sous une autre forme : <a href="{{ path('app_contact') }}">formulaire de contact</a> ou <a href="mailto:{{ site.email }}">{{ site.email }}</a>.</p>
+
+    <h2>Voies de recours</h2>
+    <p>Si vous constatez un défaut d'accessibilité vous empêchant d'accéder à un contenu, que vous nous l'avez signalé et que vous n'avez pas obtenu de réponse satisfaisante, vous pouvez saisir le <a href="https://formulaire.defenseurdesdroits.fr/" rel="noopener" target="_blank">Défenseur des droits<span class="sr-only"> (nouvelle fenêtre)</span></a>.</p>
+{% endblock %}

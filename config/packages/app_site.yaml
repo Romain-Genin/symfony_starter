@@ -1,0 +1,44 @@
+# ---------------------------------------------------------------------------
+# Identité du site — utilisée par le layout, le SEO (meta, JSON-LD),
+# les pages légales et les emails. Exposée dans Twig via la variable `site`.
+# ⚠️ Compléter TOUTES les valeurs « À compléter » avant la mise en ligne.
+# ---------------------------------------------------------------------------
+parameters:
+    # Incrémenter pour redemander le consentement cookies à tous les visiteurs
+    app.cookie_consent_version: 1
+
+    # Durée de conservation des messages de contact (RGPD), en mois
+    app.contact_retention_months: 12
+
+    app.site:
+        name: 'Studio Astra'
+        baseline: 'Starter Symfony 8'
+        description: 'Starter Symfony 8 : Tailwind CSS v4, Alpine.js, Turbo, Twig Components et EasyAdmin.'
+        locale: 'fr_FR'
+        email: 'contact@example.com'
+        phone: '+33 1 23 45 67 89'
+        theme_color: '#0f172a'
+        address:
+            street: '1 rue de l''Exemple'
+            postal_code: '75000'
+            city: 'Paris'
+            country: 'France'
+            country_code: 'FR'
+        social:
+            # Liens utilisés dans le footer et dans le JSON-LD (sameAs). Laisser vide pour masquer.
+            linkedin: ''
+            instagram: ''
+            facebook: ''
+        legal:
+            company: 'À compléter (raison sociale)'
+            legal_form: 'À compléter (SAS, SARL, EI…)'
+            capital: 'À compléter'
+            siret: 'À compléter'
+            rcs: 'À compléter (RCS Ville)'
+            vat: 'À compléter'
+            publication_director: 'À compléter'
+            dpo_email: 'contact@example.com'
+            host:
+                name: 'À compléter (hébergeur)'
+                address: 'À compléter'
+                phone: 'À compléter'

@@ -1,0 +1,66 @@
+{%- set nav = [
+    {route: 'app_home', label: 'Accueil'},
+    {route: 'app_contact', label: 'Contact'},
+] -%}
+<header class="sticky top-0 z-40 border-b border-gray-200/80 bg-white/90 backdrop-blur"
+        x-data="{ open: false }"
+        @keydown.escape.window="open = false"
+        @app:before-cache.window="open = false">
+    <div class="container-page flex h-16 items-center justify-between gap-4">
+        <a href="{{ path('app_home') }}" class="flex items-center gap-2 rounded-lg font-bold text-ink">
+            <img src="{{ asset('images/logo.svg') }}" alt="" width="28" height="32" class="h-8 w-auto">
+            <span>{{ site.name }}<span class="sr-only"> — retour à l'accueil</span></span>
+        </a>
+
+        <nav aria-label="Navigation principale" class="hidden md:block">
+            <ul class="flex items-center gap-1">
+                {% for item in nav %}
+                    <li><twig:NavLink :route="item.route">{{ item.label }}</twig:NavLink></li>
+                {% endfor %}
+            </ul>
+        </nav>
+
+        <div class="hidden items-center gap-2 md:flex">
+            {% if is_granted('ROLE_ADMIN') %}
+                <twig:Button href="{{ path('admin') }}" variant="ghost" size="sm" icon="lucide:gauge" iconPosition="start" data-turbo="false">Admin</twig:Button>
+            {% endif %}
+            {% if app.user %}
+                <twig:Button href="{{ path('app_account') }}" variant="secondary" size="sm" icon="lucide:circle-user-round" iconPosition="start">Mon compte</twig:Button>
+            {% else %}
+                <twig:Button href="{{ path('app_login') }}" variant="ghost" size="sm">Connexion</twig:Button>
+                <twig:Button href="{{ path('app_register') }}" size="sm">Créer un compte</twig:Button>
+            {% endif %}
+        </div>
+
+        <button type="button"
+                class="inline-flex items-center justify-center rounded-lg p-2 text-ink hover:bg-gray-100 md:hidden"
+                @click="open = !open"
+                :aria-expanded="open.toString()"
+                aria-expanded="false"
+                aria-controls="mobile-menu">
+            <span class="sr-only" x-text="open ? 'Fermer le menu' : 'Ouvrir le menu'">Ouvrir le menu</span>
+            <twig:ux:icon name="lucide:menu" class="size-6" x-show="!open" />
+            <twig:ux:icon name="lucide:x" class="size-6" x-show="open" x-cloak />
+        </button>
+    </div>
+
+    <nav id="mobile-menu" aria-label="Navigation principale (mobile)" class="border-t border-gray-200 md:hidden"
+         x-show="open" x-collapse x-cloak x-trap.noscroll="open" @click.outside="open = false">
+        <ul class="container-page space-y-1 py-4">
+            {% for item in nav %}
+                <li><twig:NavLink :route="item.route" class="block">{{ item.label }}</twig:NavLink></li>
+            {% endfor %}
+            <li class="border-t border-gray-200 pt-3">
+                {% if app.user %}
+                    <twig:NavLink route="app_account" activePrefix="app_account" class="block">Mon compte</twig:NavLink>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('admin') }}" data-turbo="false" class="block rounded-md px-3 py-2 text-sm font-medium text-ink hover:bg-brand-50">Administration</a>
+                    {% endif %}
+                {% else %}
+                    <twig:NavLink route="app_login" class="block">Connexion</twig:NavLink>
+                    <twig:NavLink route="app_register" class="block">Créer un compte</twig:NavLink>
+                {% endif %}
+            </li>
+        </ul>
+    </nav>
+</header>

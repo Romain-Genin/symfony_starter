@@ -1,0 +1,40 @@
+{% extends 'legal/_layout.html.twig' %}
+
+{% block title %}Politique cookies{% endblock %}
+{% block meta_description %}Les cookies utilisés sur {{ site.name }} et comment gérer vos préférences.{% endblock %}
+{% block updated_at %}04/11/2026{% endblock %}
+
+{% block legal_content %}
+    <p>Un cookie est un petit fichier déposé sur votre appareil lors de la visite d'un site. Conformément aux recommandations de la CNIL, les cookies non essentiels ne sont déposés qu'avec votre accord, que vous pouvez retirer à tout moment.</p>
+
+    <p class="not-prose">
+        <twig:Button type="button" x-data="" x-on:click="$store.consent.openPreferences()" icon="lucide:settings-2" iconPosition="start">Gérer mes préférences cookies</twig:Button>
+    </p>
+
+    <h2>Cookies strictement nécessaires</h2>
+    <p>Ils sont indispensables au fonctionnement du site et ne nécessitent pas votre consentement.</p>
+    <div class="not-prose overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200 text-left text-sm">
+            <caption class="sr-only">Cookies strictement nécessaires</caption>
+            <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-4 py-3 font-semibold text-ink">Nom</th>
+                    <th scope="col" class="px-4 py-3 font-semibold text-ink">Finalité</th>
+                    <th scope="col" class="px-4 py-3 font-semibold text-ink">Durée</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 text-muted">
+                <tr><th scope="row" class="px-4 py-3 font-mono text-xs text-ink">PHPSESSID</th><td class="px-4 py-3">Session (connexion, messages, sécurité des formulaires)</td><td class="px-4 py-3">Session</td></tr>
+                <tr><th scope="row" class="px-4 py-3 font-mono text-xs text-ink">REMEMBERME</th><td class="px-4 py-3">Option « Rester connecté »</td><td class="px-4 py-3">14 jours</td></tr>
+                <tr><th scope="row" class="px-4 py-3 font-mono text-xs text-ink">csrf-token</th><td class="px-4 py-3">Protection des formulaires contre les attaques CSRF</td><td class="px-4 py-3">Session</td></tr>
+                <tr><th scope="row" class="px-4 py-3 font-mono text-xs text-ink">cookie_consent</th><td class="px-4 py-3">Mémorisation de vos choix en matière de cookies</td><td class="px-4 py-3">6 mois</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2>Cookies soumis à votre consentement</h2>
+    <p>Aucun cookie de mesure d'audience ou publicitaire n'est actuellement déposé. Si nous en ajoutons, ils seront listés ici et ne seront activés qu'après votre accord.</p>
+
+    <h2>Paramétrer votre navigateur</h2>
+    <p>Vous pouvez également configurer votre navigateur pour bloquer les cookies. Le blocage des cookies nécessaires peut toutefois empêcher certaines fonctionnalités (connexion, formulaires).</p>
+{% endblock %}

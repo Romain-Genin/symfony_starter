@@ -1,118 +1,104 @@
+# ---------------------------------------------------------------------------
+# Commandes du projet (Docker local : compose.yaml)
+# `make` ou `make help` pour la liste.
+# ---------------------------------------------------------------------------
+DC       = docker compose
+PHP      = $(DC) exec php
+CONSOLE  = $(PHP) php bin/console
+COMPOSER = $(PHP) composer
+
+export UID := $(shell id -u)
+export GID := $(shell id -g)
+
 .DEFAULT_GOAL := help
-.PHONY: help install start stop restart build bash cc migration migrate assets assets-dev assets-watch logs db-shell test vapid-keys create-admin routes entities
+.PHONY: help install build up down restart logs sh composer console cc \
+        tailwind tailwind-build assets migration migrate fixtures admin encryption-key \
+        test db-test cs cs-fix phpstan qa purge-contacts
 
-DOCKER_COMPOSE   = docker compose
-PHP              = $(DOCKER_COMPOSE) exec php
-COMPOSER_FLAGS   = --no-interaction --prefer-dist
+help: ## Affiche cette aide
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-16s\033[0m %s\n", $$1, $$2}'
 
-_clean_flex = rm -f docker-compose.override.yml docker-compose.override.yaml \
-              compose.override.yml compose.override.yaml compose.yaml compose.yml
+## —— Docker ————————————————————————————————————————————————————————————————
+install: build up ## Installation complète (build, dépendances, assets, base, fixtures)
+	$(COMPOSER) install
+	$(CONSOLE) importmap:install
+	$(CONSOLE) tailwind:build
+	$(CONSOLE) doctrine:migrations:migrate -n
+	$(CONSOLE) doctrine:fixtures:load -n
+	@echo "Site : http://localhost:8080 | Admin : admin@example.com / password-de-test-123 | Mails : http://localhost:8025"
 
-##
-## ── SETUP ────────────────────────────────────────────────────
-##
+build: ## Construit les images
+	$(DC) build
 
-install: ## Premier lancement complet
-	$(call _clean_flex)
-	$(DOCKER_COMPOSE) build --no-cache
-	$(DOCKER_COMPOSE) up -d
-	@echo "→ Installation des dépendances PHP..."
-	$(DOCKER_COMPOSE) exec -e COMPOSER_NO_INTERACTION=1 php composer install $(COMPOSER_FLAGS)
-	@echo "→ Installation des dépendances JS..."
-	$(PHP) npm install
-	@echo "→ Migrations..."
-	$(PHP) php bin/console doctrine:migrations:diff --no-interaction || true
-	$(PHP) php bin/console doctrine:migrations:migrate --no-interaction
-	@echo "→ Build des assets..."
-	$(PHP) npm run dev
-	@echo ""
-	@echo "✔  Installation terminée !"
-	@echo "   App     → http://localhost:$$(grep ^NGINX_PORT .env | cut -d= -f2)"
-	@echo "   Mailpit → http://localhost:$$(grep ^MAILPIT_UI_PORT .env | cut -d= -f2)"
-	@echo ""
+up: ## Démarre les conteneurs
+	$(DC) up -d --remove-orphans
 
-##
-## ── DOCKER ───────────────────────────────────────────────────
-##
+down: ## Arrête les conteneurs
+	$(DC) down
 
-start: ## Démarrer les conteneurs
-	$(DOCKER_COMPOSE) up -d
+restart: down up ## Redémarre les conteneurs
 
-stop: ## Arrêter les conteneurs
-	$(DOCKER_COMPOSE) down
+logs: ## Logs en continu
+	$(DC) logs -f
 
-restart: ## Redémarrer les conteneurs
-	$(DOCKER_COMPOSE) down && $(DOCKER_COMPOSE) up -d
-
-build: ## Rebuild les images Docker
-	$(DOCKER_COMPOSE) build
-
-##
-## ── DÉVELOPPEMENT ────────────────────────────────────────────
-##
-
-bash: ## Shell dans le conteneur PHP
+sh: ## Shell dans le conteneur PHP
 	$(PHP) bash
 
-cc: ## Vider le cache Symfony
-	$(PHP) php bin/console cache:clear
+## —— Symfony ———————————————————————————————————————————————————————————————
+composer: ## Composer, ex : make composer c="require symfony/messenger"
+	$(COMPOSER) $(c)
 
-##
-## ── BASE DE DONNÉES ──────────────────────────────────────────
-##
+console: ## Console Symfony, ex : make console c="debug:router"
+	$(CONSOLE) $(c)
 
-migration: ## Créer une migration Doctrine
-	$(PHP) php bin/console make:migration
+cc: ## Vide le cache
+	$(CONSOLE) cache:clear
 
-migrate: ## Jouer les migrations en attente
-	$(PHP) php bin/console doctrine:migrations:migrate --no-interaction
+## —— Assets ————————————————————————————————————————————————————————————————
+tailwind: ## Compile Tailwind en continu (watch)
+	$(CONSOLE) tailwind:build --watch
 
-db-shell: ## Shell MySQL
-	$(DOCKER_COMPOSE) exec mariadb mariadb -u symfony -psymfony symfony
+tailwind-build: ## Compile Tailwind une fois
+	$(CONSOLE) tailwind:build
 
-##
-## ── ASSETS ───────────────────────────────────────────────────
-##
+assets: ## Réinstalle les dépendances JS de l'importmap
+	$(CONSOLE) importmap:install
 
-assets: ## Build assets (production)
-	$(PHP) npm run build
+## —— Base de données ———————————————————————————————————————————————————————
+migration: ## Génère une migration à partir des entités
+	$(CONSOLE) make:migration
 
-assets-dev: ## Build assets (développement)
-	$(PHP) npm run dev
+migrate: ## Applique les migrations
+	$(CONSOLE) doctrine:migrations:migrate -n
 
-assets-watch: ## Watch & rebuild automatiquement
-	$(PHP) npm run watch
+fixtures: ## Recharge les données de démo
+	$(CONSOLE) doctrine:fixtures:load -n
 
-##
-## ── SYMFONY ──────────────────────────────────────────────────
-##
+admin: ## Crée un administrateur, ex : make admin email=moi@exemple.fr
+	$(CONSOLE) app:user:create $(email) --admin
 
-create-admin: ## Créer un compte administrateur (interactif)
-	$(PHP) php bin/console app:create-admin
+encryption-key: ## Génère une clé APP_ENCRYPTION_KEY
+	$(CONSOLE) app:encryption:generate-key
 
-vapid-keys: ## Générer les clés VAPID (push notifications)
-	$(PHP) php bin/console app:generate-vapid-keys
+purge-contacts: ## Purge RGPD des anciens messages de contact
+	$(CONSOLE) app:contact:purge
 
-routes: ## Lister les routes
-	$(PHP) php bin/console debug:router
+## —— Qualité ———————————————————————————————————————————————————————————————
+db-test: ## (Re)crée la base de test
+	$(CONSOLE) doctrine:database:drop --env=test --force --if-exists
+	$(CONSOLE) doctrine:database:create --env=test
 
-entities: ## Lister les entités Doctrine
-	$(PHP) php bin/console debug:doctrine:mapping
-
-##
-## ── LOGS & TESTS ─────────────────────────────────────────────
-##
-
-logs: ## Suivre les logs des conteneurs
-	$(DOCKER_COMPOSE) logs -f
-
-test: ## Lancer PHPUnit
+test: ## Lance les tests PHPUnit
 	$(PHP) php bin/phpunit
 
-##
-## ────────────────────────────────────────────────────────────
-##
+cs: ## Vérifie le style de code
+	$(PHP) vendor/bin/php-cs-fixer fix --dry-run --diff
 
-help:
-	@grep -E '(^[a-zA-Z_-]+:.*?## .*)|(^##)' $(MAKEFILE_LIST) \
-		| awk 'BEGIN {FS = ":.*?## "}; /^##/ {print "\033[33m"$$0"\033[0m"} /^[^#]/ {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
+cs-fix: ## Corrige le style de code
+	$(PHP) vendor/bin/php-cs-fixer fix
+
+phpstan: ## Analyse statique
+	$(CONSOLE) cache:warmup
+	$(PHP) vendor/bin/phpstan analyse --memory-limit=1G
+
+qa: cs phpstan test ## Toutes les vérifications

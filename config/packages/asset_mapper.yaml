@@ -1,0 +1,12 @@
+framework:
+    asset_mapper:
+        paths:
+            - assets/
+        missing_import_mode: strict
+        # Navigateurs modernes uniquement : pas de polyfill importmap chargé depuis un CDN tiers
+        importmap_polyfill: false
+
+when@prod:
+    framework:
+        asset_mapper:
+            missing_import_mode: warn

@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {%- set legal_title = block('title') -%}
+    {%- set updated_at = block('updated_at') -%}
+    <twig:PageHeader :title="legal_title" :breadcrumb="[{label: legal_title}]">
+        <p class="mt-4 text-sm text-muted">Dernière mise à jour : {{ updated_at }}</p>
+    </twig:PageHeader>
+    <div class="container-page py-12">
+        <div class="prose prose-slate max-w-3xl prose-headings:scroll-mt-24 prose-headings:text-ink prose-a:text-brand-700 prose-a:underline-offset-4">
+            {% block legal_content %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}

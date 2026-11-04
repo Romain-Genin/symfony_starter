@@ -1,0 +1,20 @@
+# https://symfony.com/bundles/ux-icons/current/index.html
+# Icônes Lucide stockées localement dans assets/icons/lucide/*.svg → {{ ux_icon('lucide:mail') }}
+# Ajouter une icône : php bin/console ux:icons:import lucide:nom-de-l-icone
+ux_icons:
+    default_icon_attributes:
+        width: '1.25em'
+        height: '1.25em'
+    ignore_not_found: false
+
+when@dev:
+    ux_icons:
+        iconify:
+            auto_lock: true
+
+when@prod:
+    ux_icons:
+        ignore_not_found: true
+        # Toutes les icônes sont versionnées dans assets/icons : aucun appel réseau en prod
+        iconify:
+            enabled: false

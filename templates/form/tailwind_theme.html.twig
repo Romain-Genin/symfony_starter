@@ -1,0 +1,176 @@
+{#
+    Thème de formulaire Tailwind accessible :
+    - chaque champ est relié à son aide et à ses erreurs (aria-describedby) ;
+    - aria-invalid sur les champs en erreur ; erreurs préfixées d'une icône + texte ;
+    - champs obligatoires signalés visuellement ET textuellement ;
+    - groupes (cases à cocher, mots de passe répétés…) dans un fieldset/legend.
+#}
+{% use 'form_div_layout.html.twig' %}
+
+{# ---------------------------------------------------------------- Lignes #}
+
+{%- block form_row -%}
+    {%- if compound and not ('choice' in block_prefixes and not expanded) -%}
+        {{- block('fieldset_row') -}}
+    {%- else -%}
+        {%- set describedby = attr['aria-describedby'] is defined ? attr['aria-describedby']|split(' ') : [] -%}
+        {%- if help is not empty and (id ~ '_help') not in describedby -%}{%- set describedby = describedby|merge([id ~ '_help']) -%}{%- endif -%}
+        {%- if errors|length > 0 -%}{%- set describedby = describedby|merge([id ~ '_errors']) -%}{%- endif -%}
+        {%- set widget_attr = describedby is empty ? {} : {attr: {'aria-describedby': describedby|join(' ')}} -%}
+        {%- set row_attr = row_attr|merge({class: (row_attr.class|default('') ~ ' space-y-1.5')|trim}) -%}
+        <div{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
+            {{- form_label(form) -}}
+            {{- form_widget(form, widget_attr) -}}
+            {{- form_help(form) -}}
+            {{- form_errors(form) -}}
+        </div>
+    {%- endif -%}
+{%- endblock form_row -%}
+
+{%- block fieldset_row -%}
+    {%- set row_attr = row_attr|merge({class: (row_attr.class|default('') ~ ' space-y-3')|trim}) -%}
+    <fieldset{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}{% if errors|length > 0 or help is not empty %} aria-describedby="{{ help is not empty ? id ~ '_help' }} {{ errors|length > 0 ? id ~ '_errors' }}"{% endif %}>
+        {%- if label is not same as(false) -%}
+            {%- if label is empty -%}{%- set label = name|humanize -%}{%- endif -%}
+            <legend class="text-sm font-medium text-ink">
+                {{- translation_domain is same as(false) ? label : label|trans(label_translation_parameters, translation_domain) -}}
+                {%- if required %}<span class="text-red-700" aria-hidden="true"> *</span>{% endif -%}
+            </legend>
+        {%- endif -%}
+        {{- form_help(form) -}}
+        {{- form_errors(form) -}}
+        {{- form_widget(form) -}}
+    </fieldset>
+{%- endblock fieldset_row -%}
+
+{%- block checkbox_row -%}
+    {%- set describedby = [] -%}
+    {%- if help is not empty -%}{%- set describedby = describedby|merge([id ~ '_help']) -%}{%- endif -%}
+    {%- if errors|length > 0 -%}{%- set describedby = describedby|merge([id ~ '_errors']) -%}{%- endif -%}
+    {%- set widget_attr = describedby is empty ? {} : {attr: {'aria-describedby': describedby|join(' ')}} -%}
+    <div{% with {attr: row_attr|merge({class: (row_attr.class|default('') ~ ' space-y-1')|trim})} %}{{ block('attributes') }}{% endwith %}>
+        <div class="flex items-start gap-3">
+            <div class="flex h-6 items-center">{{- form_widget(form, widget_attr) -}}</div>
+            {{- form_label(form, null, {label_attr: {class: 'text-sm text-ink'}}) -}}
+        </div>
+        <div class="pl-7">
+            {{- form_help(form) -}}
+            {{- form_errors(form) -}}
+        </div>
+    </div>
+{%- endblock checkbox_row -%}
+
+{%- block hidden_row -%}
+    {{- form_widget(form) -}}
+{%- endblock hidden_row -%}
+
+{# ---------------------------------------------------------------- Labels / aide / erreurs #}
+
+{%- block form_label -%}
+    {%- if label is not same as(false) -%}
+        {%- set label_attr = label_attr|merge({class: (label_attr.class|default('block text-sm font-medium text-ink'))|trim}) -%}
+        {{- parent() -}}
+    {%- endif -%}
+{%- endblock form_label -%}
+
+{%- block form_label_content -%}
+    {{- parent() -}}
+    {%- if required -%}
+        <span class="text-red-700" aria-hidden="true"> *</span>
+    {%- elseif 'checkbox' not in block_prefixes and 'radio' not in block_prefixes -%}
+        <span class="font-normal text-muted"> (facultatif)</span>
+    {%- endif -%}
+{%- endblock form_label_content -%}
+
+{%- block form_help -%}
+    {%- if help is not empty -%}
+        <p id="{{ id }}_help" class="text-sm text-muted">
+            {{- translation_domain is same as(false) or help_translation_parameters is not defined ? help : help|trans(help_translation_parameters, translation_domain) -}}
+        </p>
+    {%- endif -%}
+{%- endblock form_help -%}
+
+{%- block form_errors -%}
+    {%- if errors|length > 0 -%}
+        {%- if compound and form.parent is null -%}
+            <twig:Alert type="error" class="mb-6">
+                <ul class="list-inside list-disc">
+                    {%- for error in errors %}<li>{{ error.message }}</li>{% endfor -%}
+                </ul>
+            </twig:Alert>
+        {%- else -%}
+            <ul id="{{ id }}_errors" class="space-y-1 text-sm font-medium text-red-700">
+                {%- for error in errors -%}
+                    <li class="flex items-start gap-1.5">
+                        <twig:ux:icon name="lucide:circle-x" class="mt-0.5 size-4 shrink-0" />
+                        <span><span class="sr-only">Erreur : </span>{{ error.message }}</span>
+                    </li>
+                {%- endfor -%}
+            </ul>
+        {%- endif -%}
+    {%- endif -%}
+{%- endblock form_errors -%}
+
+{# ---------------------------------------------------------------- Widgets #}
+
+{%- block form_widget_simple -%}
+    {%- if type is not defined or type not in ['hidden', 'file', 'range', 'color'] -%}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' ' ~ block('input_classes'))|trim}) -%}
+    {%- endif -%}
+    {%- if errors|length > 0 -%}{%- set attr = attr|merge({'aria-invalid': 'true'}) -%}{%- endif -%}
+    {{- parent() -}}
+{%- endblock form_widget_simple -%}
+
+{%- block textarea_widget -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' ' ~ block('input_classes'))|trim}) -%}
+    {%- if errors|length > 0 -%}{%- set attr = attr|merge({'aria-invalid': 'true'}) -%}{%- endif -%}
+    {{- parent() -}}
+{%- endblock textarea_widget -%}
+
+{%- block choice_widget_collapsed -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' ' ~ block('input_classes'))|trim}) -%}
+    {%- if errors|length > 0 -%}{%- set attr = attr|merge({'aria-invalid': 'true'}) -%}{%- endif -%}
+    {{- parent() -}}
+{%- endblock choice_widget_collapsed -%}
+
+{%- block choice_widget_expanded -%}
+    <div {{ block('widget_container_attributes') }} class="space-y-2">
+        {%- for child in form -%}
+            {{- form_row(child) -}}
+        {%- endfor -%}
+    </div>
+{%- endblock choice_widget_expanded -%}
+
+{%- block checkbox_widget -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' size-4 rounded border-gray-400 text-brand-700 focus:ring-brand-600')|trim}) -%}
+    {%- if errors|length > 0 -%}{%- set attr = attr|merge({'aria-invalid': 'true'}) -%}{%- endif -%}
+    {{- parent() -}}
+{%- endblock checkbox_widget -%}
+
+{%- block radio_widget -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' size-4 border-gray-400 text-brand-700 focus:ring-brand-600')|trim}) -%}
+    {{- parent() -}}
+{%- endblock radio_widget -%}
+
+{# Double saisie : les erreurs (non-correspondance, robustesse…) portent sur le groupe ;
+   elles sont affichées sous le premier champ et lui sont reliées. #}
+{%- block repeated_row -%}
+    <div class="space-y-5">
+        {{- form_row(form.first, errors|length > 0 ? {attr: {'aria-describedby': (form.first.vars.help ? form.first.vars.id ~ '_help ' : '') ~ id ~ '_errors', 'aria-invalid': 'true'}} : {}) -}}
+        {{- form_errors(form) -}}
+        {{- form_row(form.second) -}}
+    </div>
+{%- endblock repeated_row -%}
+
+{%- block input_classes -%}
+    block w-full rounded-lg border-gray-300 px-3 py-2.5 text-ink shadow-sm placeholder:text-gray-500 focus:border-brand-600 focus:ring-brand-600 aria-[invalid=true]:border-red-600 aria-[invalid=true]:focus:ring-red-600 sm:text-sm
+{%- endblock input_classes -%}
+
+{# Champs anti-spam : rendus tels quels (wrapper .hp-field défini dans AntiSpamType) #}
+{%- block antispam_row -%}
+    <div{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
+        {{- form_label(form.website) -}}
+        {{- form_widget(form.website, {attr: {class: ''}}) -}}
+        {{- form_widget(form.token) -}}
+    </div>
+{%- endblock antispam_row -%}

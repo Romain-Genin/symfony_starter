@@ -1,0 +1,13 @@
+{# <twig:Section title="Nos atouts" intro="…" id="atouts">…</twig:Section> #}
+{% props title = null, intro = null, id = null, headingLevel = 2 %}
+<section {% if id %}id="{{ id }}"{% if title %} aria-labelledby="{{ id }}-title"{% endif %}{% endif %} {{ attributes.defaults({class: 'py-16 sm:py-20'}) }}>
+    <div class="container-page">
+        {% if title %}
+            <div class="mx-auto mb-12 max-w-2xl text-center">
+                <h{{ headingLevel }} {% if id %}id="{{ id }}-title"{% endif %} class="text-2xl font-bold tracking-tight text-ink sm:text-3xl">{{ title }}</h{{ headingLevel }}>
+                {% if intro %}<p class="mt-3 text-lg text-muted">{{ intro }}</p>{% endif %}
+            </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </div>
+</section>

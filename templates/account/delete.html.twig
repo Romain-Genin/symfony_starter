@@ -1,0 +1,15 @@
+{% extends 'account/_layout.html.twig' %}
+
+{% block title %}Supprimer mon compte{% endblock %}
+{% block heading %}Supprimer mon compte{% endblock %}
+{% block breadcrumb %}1{% endblock %}
+
+{% block account_content %}
+    <twig:Alert type="warning" title="Action irréversible" class="mb-6">
+        Votre compte et toutes les données associées seront définitivement supprimés.
+    </twig:Alert>
+    {{ form_start(form, {attr: {novalidate: 'novalidate', class: 'space-y-5'}}) }}
+        {{ form_row(form.password) }}
+        <twig:Button variant="danger" icon="lucide:trash-2" iconPosition="start">Supprimer définitivement mon compte</twig:Button>
+    {{ form_end(form) }}
+{% endblock %}

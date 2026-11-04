@@ -1,0 +1,32 @@
+{#
+    Bouton / lien stylé.
+    <twig:Button>Envoyer</twig:Button>
+    <twig:Button href="{{ path('app_contact') }}" variant="secondary" icon="lucide:arrow-right">Nous contacter</twig:Button>
+    Variantes : primary | secondary | ghost | danger — Tailles : sm | md | lg
+#}
+{% props variant = 'primary', size = 'md', href = null, type = 'submit', icon = null, iconPosition = 'end' %}
+
+{%- set variants = {
+    primary: 'bg-brand-700 text-white shadow-sm hover:bg-brand-800 active:bg-brand-900',
+    secondary: 'bg-white text-ink ring-1 ring-inset ring-gray-300 shadow-sm hover:bg-gray-50',
+    ghost: 'text-brand-700 hover:bg-brand-50',
+    danger: 'bg-red-700 text-white shadow-sm hover:bg-red-800',
+} -%}
+{%- set sizes = {
+    sm: 'px-3 py-1.5 text-sm gap-1.5',
+    md: 'px-4 py-2.5 text-sm gap-2',
+    lg: 'px-6 py-3 text-base gap-2',
+} -%}
+{%- set classes = 'inline-flex items-center justify-center rounded-lg font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 disabled:cursor-not-allowed disabled:opacity-60 ' ~ variants[variant] ~ ' ' ~ sizes[size] -%}
+
+{%- set inner -%}
+    {% if icon and iconPosition == 'start' %}<twig:ux:icon :name="icon" class="size-4 shrink-0" />{% endif %}
+    <span>{% block content %}{% endblock %}</span>
+    {% if icon and iconPosition == 'end' %}<twig:ux:icon :name="icon" class="size-4 shrink-0" />{% endif %}
+{%- endset -%}
+
+{% if href %}
+    <a href="{{ href }}" {{ attributes.defaults({class: classes}) }}>{{ inner }}</a>
+{% else %}
+    <button type="{{ type }}" {{ attributes.defaults({class: classes}) }}>{{ inner }}</button>
+{% endif %}

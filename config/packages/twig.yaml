@@ -1,4 +1,18 @@
 twig:
     file_name_pattern: '*.twig'
+    form_themes: ['form/tailwind_theme.html.twig']
+    paths:
+        '%kernel.project_dir%/assets/styles': styles
+        '%kernel.project_dir%/assets/images': images
+    date:
+        format: 'd/m/Y H:i'
+        timezone: 'Europe/Paris'
     globals:
-        vapid_public_key: '%env(VAPID_PUBLIC_KEY)%'
+        # Informations de l'entreprise / du site : config/packages/app_site.yaml
+        site: '%app.site%'
+        cookie_consent_version: '%app.cookie_consent_version%'
+        indexable: '%app.indexable%'
+
+when@test:
+    twig:
+        strict_variables: true

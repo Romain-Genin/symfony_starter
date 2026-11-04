@@ -1,0 +1,17 @@
+<nav aria-label="Fil d'Ariane" {{ attributes.defaults({class: 'text-sm'}) }}>
+    <ol class="flex flex-wrap items-center gap-1 text-muted">
+        {% for link in this.links %}
+            <li class="flex items-center gap-1">
+                {% if not loop.first %}
+                    <twig:ux:icon name="lucide:chevron-right" class="size-4 shrink-0 text-gray-400" />
+                {% endif %}
+                {% if link.url and not loop.last %}
+                    <a href="{{ link.url }}" class="rounded hover:text-brand-700 hover:underline">{{ link.label }}</a>
+                {% else %}
+                    <span {% if loop.last %}aria-current="page" class="font-medium text-ink"{% endif %}>{{ link.label }}</span>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ol>
+</nav>
+<script type="application/ld+json">{{ this.jsonLd|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_UNESCAPED_UNICODE') b-or constant('JSON_HEX_TAG'))|raw }}</script>

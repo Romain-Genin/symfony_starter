@@ -1,0 +1,64 @@
+<footer class="mt-auto border-t border-gray-200 bg-gray-50" aria-labelledby="footer-title">
+    <h2 id="footer-title" class="sr-only">Pied de page</h2>
+    <div class="container-page grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="lg:col-span-2">
+            <a href="{{ path('app_home') }}" class="inline-flex items-center gap-2 rounded-lg font-bold text-ink">
+                <img src="{{ asset('images/logo.svg') }}" alt="" width="28" height="32" class="h-8 w-auto">
+                {{ site.name }}
+            </a>
+            <p class="mt-3 max-w-sm text-sm text-muted">{{ site.description }}</p>
+            <address class="mt-4 space-y-2 text-sm not-italic text-muted">
+                <p class="flex items-start gap-2">
+                    <twig:ux:icon name="lucide:map-pin" class="mt-0.5 size-4 shrink-0" />
+                    <span>{{ site.address.street }}, {{ site.address.postal_code }} {{ site.address.city }}</span>
+                </p>
+                <p class="flex items-center gap-2">
+                    <twig:ux:icon name="lucide:mail" class="size-4 shrink-0" />
+                    <a href="mailto:{{ site.email }}" class="hover:text-brand-700 hover:underline">{{ site.email }}</a>
+                </p>
+                {% if site.phone %}
+                    <p class="flex items-center gap-2">
+                        <twig:ux:icon name="lucide:phone" class="size-4 shrink-0" />
+                        <a href="tel:{{ site.phone|replace({' ': ''}) }}" class="hover:text-brand-700 hover:underline">{{ site.phone }}</a>
+                    </p>
+                {% endif %}
+            </address>
+        </div>
+
+        <nav aria-labelledby="footer-nav-site">
+            <h3 id="footer-nav-site" class="text-sm font-semibold text-ink">Le site</h3>
+            <ul class="mt-3 space-y-2 text-sm">
+                <li><a href="{{ path('app_home') }}" class="text-muted hover:text-brand-700 hover:underline">Accueil</a></li>
+                <li><a href="{{ path('app_contact') }}" class="text-muted hover:text-brand-700 hover:underline">Contact</a></li>
+                <li><a href="{{ path('app_sitemap_page') }}" class="text-muted hover:text-brand-700 hover:underline">Plan du site</a></li>
+                {% for network, social_url in site.social|filter(v => v) %}
+                    <li>
+                        <a href="{{ social_url }}" class="inline-flex items-center gap-1 text-muted hover:text-brand-700 hover:underline" target="_blank" rel="noopener">
+                            {{ network|capitalize }}
+                            <twig:ux:icon name="lucide:external-link" class="size-3.5" aria-label="(nouvelle fenêtre)" />
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </nav>
+
+        <nav aria-labelledby="footer-nav-legal">
+            <h3 id="footer-nav-legal" class="text-sm font-semibold text-ink">Informations légales</h3>
+            <ul class="mt-3 space-y-2 text-sm">
+                <li><a href="{{ path('app_legal_notice') }}" class="text-muted hover:text-brand-700 hover:underline">Mentions légales</a></li>
+                <li><a href="{{ path('app_legal_privacy') }}" class="text-muted hover:text-brand-700 hover:underline">Politique de confidentialité</a></li>
+                <li><a href="{{ path('app_legal_cookies') }}" class="text-muted hover:text-brand-700 hover:underline">Politique cookies</a></li>
+                <li><a href="{{ path('app_legal_terms') }}" class="text-muted hover:text-brand-700 hover:underline">Conditions d'utilisation</a></li>
+                <li><a href="{{ path('app_legal_accessibility') }}" class="text-muted hover:text-brand-700 hover:underline">Accessibilité : non conforme</a></li>
+                <li>
+                    <button type="button" x-data @click="$store.consent.openPreferences()" class="text-muted hover:text-brand-700 hover:underline">
+                        Gérer les cookies
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="border-t border-gray-200">
+        <p class="container-page py-6 text-xs text-muted">&copy; {{ 'now'|date('Y') }} {{ site.name }}. Tous droits réservés.</p>
+    </div>
+</footer>

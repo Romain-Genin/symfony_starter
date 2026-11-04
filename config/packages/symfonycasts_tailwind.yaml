@@ -1,0 +1,4 @@
+# Tailwind CSS v4 — binaire standalone téléchargé automatiquement (aucun Node requis)
+# Build : php bin/console tailwind:build [--watch] [--minify]
+symfonycasts_tailwind:
+    binary_version: 'v4.3.4'
